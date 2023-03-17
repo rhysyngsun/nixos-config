@@ -65,7 +65,7 @@
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = "nodev";
+    device = "/dev/sda";
     useOSProber = true;
   };
 
@@ -78,9 +78,54 @@
       extraGroups = [
         "docker"
         "wheel"
+        "vboxsf"
       ];
     };
   };
+
+  
+  #display
+  services.xserver = {
+    enable = true;
+    layout = "us";
+    xkbVariant = "";
+    screenSection = ''
+      Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+      Option       "AllowIndirectGLXProtocol" "off"
+      Option       "TripleBuffer" "on"
+    '';
+
+    displayManager = {
+      defaultSession = "none+bspwm";
+      lightdm = {
+        enable = true;
+        greeters.slick.enable = true;
+      };
+    };
+
+    windowManager.bspwm = {
+      enable = true;
+    };
+  };
+
+  
+
+  # Enable CUPS to print documents
+  services.printing.enable = true;
+  services.printing.drivers = [ pkgs.brlaser ];
+
+  # Enable sound
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  # Video support
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.driSupport = true;
+  hardware.nvidia.modesetting.enable = true;
+
+  virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.guest.x11 = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "22.11";

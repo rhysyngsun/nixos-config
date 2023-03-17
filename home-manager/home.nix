@@ -51,8 +51,10 @@
       GIT_EDITOR = EDITOR;
     };
 
-    file.".config/starship.toml".source = ./config/starship.toml;
-    file.".gitconfig".source = ./config/gitconfig;
+    file."${config.xdg.configHome}" = {
+      source = ./config;
+      recursive = true;
+    };
 
     shellAliases = import ./aliases.nix;
     packages = with pkgs; [
@@ -103,6 +105,10 @@
       nix-direnv.enable = true;
     };
 
+    firefox = {
+      enable = true;
+    };
+
     fzf = {
       enable = true;
       enableZshIntegration = true;
@@ -114,6 +120,14 @@
       delta = {
         enable = true;
       };
+
+      includes = [
+        { path = "~/.config/git/default.gitconfig"; }
+        {
+          path = "~/.config/git/ol.gitconfig";
+          condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
+        }
+      ];
     };
 
     go = {
@@ -156,10 +170,10 @@
   };
 
   # services
-  services.keybase.enable = true;
+  # services.keybase.enable = true;
 
   # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
+  # systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "22.11";

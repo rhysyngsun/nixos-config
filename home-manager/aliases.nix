@@ -1,9 +1,4 @@
 {
-  # superceded by pls aliases
-  # ll = "ls -alh --color=auto";
-  # ls = "ls --color=auto";
-
-
   # Git
   g = "git";
   gs = "git status";
@@ -67,9 +62,11 @@
 
   # Custom
   ip = "ifconfig en1 | grep inet | grep -v inet6 | cut -d \" \" -f 2";
+  clip = "xclip -selection c"; # copy to the clipboard
 
   # Vagrant
   vu = "vagrant up";
+  vup = "vagrant up --provision";
   vp = "vagrant provision";
   vr = "vagrant reload";
   vh = "vagrant halt -f";
