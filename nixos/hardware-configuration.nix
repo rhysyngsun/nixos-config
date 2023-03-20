@@ -16,11 +16,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/home/nathan/nixos-config" =
-    { device = "nixos-config";
-      fsType = "vboxsf";
-    };
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
