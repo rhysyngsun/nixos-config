@@ -6,11 +6,16 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
+    # outputs.nixosModules.themes.catppuccin
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
+    inputs.hyprland.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
+    # ./bspwm.nix
+    ./sxhkd.nix
+    ./themes.nix
     ./zsh.nix
   ];
 
@@ -41,14 +46,31 @@
     };
   };
 
+  i18n.inputMethod.enabled = "fcitx5";
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    xwayland = {
+      enable = true;
+    };
+  };
+
   home = {
     username = "nathan";
     homeDirectory = "/home/nathan";
+
+    activation = {
+      reloadPolybar = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        $DRY_RUN_CMD ${pkgs.polybarFull}/bin/polybar-msg cmd restart
+      '';
+    };
 
     sessionVariables = rec {
       EDITOR = "nvim";
       VISUAL = EDITOR;
       GIT_EDITOR = EDITOR;
+
+      SHELL = "${pkgs.zsh}/bin/zsh";
     };
 
     file."${config.xdg.configHome}" = {
@@ -56,20 +78,40 @@
       recursive = true;
     };
 
+    pointerCursor = {
+      x11.enable = true;
+      gtk.enable = true;
+    };
+
     shellAliases = import ./aliases.nix;
     packages = with pkgs; [
+      # user
+      libsForQt5.kcharselect
+      libsForQt5.pix
+
+      # xfce.thunar
+
+      pkgs.unstable.obsidian
+      wtf
+      xplr
+
       # system-ish
+      coreutils-full
+      cht-sh
       htop
       jdk
+      killall
+      ntfy
       man
       niv
+      polybarFull
       pstree
       starship
       tldr
       tree
-      zsh
 
       # dev
+      ffmpeg
       gita
       hostctl
       http-prompt
@@ -81,17 +123,14 @@
       usql
       vagrant
 
-      # fonts
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "FiraMono"
-          "Iosevka"
-        ];
-      })
+      # chats
+      discord
+      slack
     ];
   };
 
+  # https://pixabay.com/id/videos/garis-biru-latar-belakang-abstrak-4967/
+  
   # Fonts
   fonts.fontconfig.enable = true;
   xdg.dataFile."fonts" = {
@@ -102,6 +141,15 @@
   programs = {
     alacritty = {
       enable = true;
+      settings = {
+        window = {
+          padding = {
+            x = 8;
+            y = 8;
+          };
+        };
+        shell.program = config.home.sessionVariables.SHELL;
+      };
     };
 
     broot = {
@@ -136,9 +184,9 @@
       };
 
       includes = [
-        { path = "~/.config/git/default.gitconfig"; }
+        { path = "${config.xdg.configHome}/git/default.gitconfig"; }
         {
-          path = "~/.config/git/ol.gitconfig";
+          path = "${config.xdg.configHome}/git/ol.gitconfig";
           condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
         }
       ];
@@ -181,93 +229,54 @@
       enableAliases = true;
     };
 
+    rofi.enable = true;
+
+    vscode = {
+      enable = true;
+      extensions = with pkgs.unstable.vscode-extensions ; [
+        # nix
+        bbenoist.nix
+        jnoortheen.nix-ide
+
+        # configuration languages
+        bungcip.better-toml
+        redhat.vscode-yaml
+      ];
+    };
+
     zoxide = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
     };
-
   };
-
   # services
   services = {
+    flameshot = { 
+      enable = true;
+      settings = {
+        General = {
+          savePath = "${config.home.homeDirectory}/Pictures/Screenshots";
+        };
+      };
+    };
     keybase.enable = true;
     mpd.enable = true;
-    polybar = {
-      enable = true;
-      package = pkgs.polybarFull;
-      script = "polybar main &";
-    };
   };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
-  xdg.userDirs.enable = true;
-  xdg.configFile."polybar".source = pkgs.symlinkJoin {
-    name = "polybar-symlinks";
-    paths =
-      let
-        polybar-themes = pkgs.fetchFromGitHub {
-          owner = "adi1090x";
-          repo = "polybar-themes";
-          rev = "master"; # Or, better, use a specific commit so you don't have to update the sha256-hash all the time
-          sha256 = "sha256-yOiPE12iKyJVUhB9XOzTUIFQgjT/psE1LRT0OjXWp8E="; # Fill this in with the hash that nix provides when you attempt to build your config using this
-        };
-      in
-      [
-        "${polybar-themes}/fonts"
-        "${polybar-themes}/simple"
-      ];
-  };
-  xsession.windowManager.bspwm = {
+  xdg.userDirs = {
     enable = true;
-    extraConfigEarly = ''
-    #! /bin/sh
-    #
-    killall -9 sxhkd polybar
+    createDirectories = true;
+    extraConfig = {
+      XDG_SCREENSHOTS_DIR = "$XDG_PICTURES_DIR/Screenshots";
+    };
+  };
 
-    # Set the number of workspaces
-    bspc monitor -d 1 2 3 4 5 6
-
-    # Launch keybindings daemon
-    sxhkd &
-
-    # Window configurations
-    bspc config border_width         0
-    bspc config window_gap           8
-    bspc config split_ratio          0.5
-    bspc config borderless_monocle   true
-    bspc config gapless_monocle      true
-
-    # Padding outside of the window
-    bspc config top_padding            0
-    bspc config bottom_padding         0
-    bspc config left_padding           0
-    bspc config right_padding          0
-
-    # Move floating windows
-    bspc config pointer_action1 move
-
-    # Resize floating windows
-    bspc config pointer_action2 resize_side
-    bspc config pointer_action2 resize_corner
-
-    # Set background and top bar
-    #feh --bg-scale $HOME/.local/state/feh/active
-    bash -c "$HOME/.config/polybar/launch.sh --docky &"
-
-    sleep .25
-
-    bspc rule -a Code desktop='^1' follow=on
-
-    ${config.programs.alacritty.package}/bin/alacrity
-
-    sleep .25
-
-    bspc rule -a Code desktop='^3' follow=on
-    
-    '';
+  xsession = {
+    enable = true;
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

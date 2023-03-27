@@ -5,11 +5,12 @@
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
-    # outputs.nixosModules.example
+    # outputs.nixosModules.themes.catppuccin
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
+    # inputs.hyprland.nixosModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -58,7 +59,20 @@
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
     };
+
+    extraOptions = ''
+      plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
+    '';
   };
+
+  i18n.inputMethod.enabled = "fcitx5";
+
+  #programs.hyprland.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    nix-doc
+    gvfs
+  ];
 
   networking.hostName = "gaea";
   
@@ -66,25 +80,28 @@
     enable = true;
     version = 2;
     device = "/dev/sda";
-    useOSProber = true;
+    # useOSProber = true;
   };
 
-  users.users = {
-    nathan = {
-      # If you do, you can skip setting a root password by passing '--no-root-passwd' to nixos-install.
-      # Be sure to change it (using passwd) after rebooting!
-      initialPassword = "correcthorsebatterystaple";
-      isNormalUser = true;
-      extraGroups = [
-        "docker"
-        "wheel"
-        "vboxsf"
-      ];
+  users = {
+    defaultUserShell = pkgs.zsh;
+    users = {
+      nathan = {
+        # If you do, you can skip setting a root password by passing '--no-root-passwd' to nixos-install.
+        # Be sure to change it (using passwd) after rebooting!
+        initialPassword = "correcthorsebatterystaple";
+        isNormalUser = true;
+        extraGroups = [
+          "docker"
+          "wheel"
+          "vboxsf"
+        ];
+      };
     };
   };
 
   
-  #display
+  # display
   services.xserver = {
     enable = true;
     layout = "us";
@@ -99,7 +116,24 @@
       defaultSession = "none+bspwm";
       lightdm = {
         enable = true;
-        greeters.slick.enable = true;
+        background = ../backgrounds/the_valley.png;
+        greeters.gtk = let
+          flavor = "Mocha";
+          accent = "Lavender";
+          flavorLower = lib.toLower flavor;
+          accentLower = lib.toLower accent;
+        in {
+          enable = true;
+          theme = {
+            name = "Catppuccin-${flavor}-Compact-${accent}-Dark";
+            package = pkgs.unstable.catppuccin-gtk.override {
+              accents = [ accentLower ];
+              size = "compact";
+              tweaks = [ "rimless" "black" ];
+              variant = flavorLower;
+            };
+          };
+        };
       };
     };
 
@@ -108,7 +142,25 @@
     };
   };
 
-  fonts.fontDir.enable = true;
+  fonts = {
+    fontconfig.enable = true;
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "FiraMono"
+          "Iosevka"
+        ];
+      })
+    ];
+  };
+
+  programs.dconf.enable = true;
+
+  # Shells
+  programs.zsh.enable = true;
+  environment.shells = with pkgs; [ zsh bash ];
 
   # Enable CUPS to print documents
   services.printing.enable = true;
@@ -125,7 +177,7 @@
   hardware.nvidia.modesetting.enable = true;
 
   virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.guest.x11 = true;
+  #virtualisation.virtualbox.guest.x11 = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "22.11";
