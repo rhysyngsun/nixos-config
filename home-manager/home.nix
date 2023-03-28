@@ -50,6 +50,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    systemdIntegration = true;
     xwayland = {
       enable = true;
     };
@@ -90,6 +91,10 @@
       libsForQt5.pix
 
       # xfce.thunar
+      wofi
+      swaybg
+      wlsunset
+      wl-clipboard
 
       pkgs.unstable.obsidian
       wtf

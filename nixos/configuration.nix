@@ -10,7 +10,7 @@
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
-    # inputs.hyprland.nixosModules.default
+    inputs.hyprland.nixosModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -60,6 +60,12 @@
       auto-optimise-store = true;
     };
 
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+
     extraOptions = ''
       plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
     '';
@@ -70,8 +76,8 @@
   #programs.hyprland.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nix-doc
-    gvfs
+    # nix-doc
+    # gvfs
   ];
 
   networking.hostName = "gaea";
@@ -81,6 +87,14 @@
     version = 2;
     device = "/dev/sda";
     # useOSProber = true;
+  };
+
+  # enable audio
+  services.pipewire = {
+    enable = false;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
   users = {
@@ -113,28 +127,29 @@
     '';
 
     displayManager = {
-      defaultSession = "none+bspwm";
-      lightdm = {
-        enable = true;
-        background = ../backgrounds/the_valley.png;
-        greeters.gtk = let
-          flavor = "Mocha";
-          accent = "Lavender";
-          flavorLower = lib.toLower flavor;
-          accentLower = lib.toLower accent;
-        in {
-          enable = true;
-          theme = {
-            name = "Catppuccin-${flavor}-Compact-${accent}-Dark";
-            package = pkgs.unstable.catppuccin-gtk.override {
-              accents = [ accentLower ];
-              size = "compact";
-              tweaks = [ "rimless" "black" ];
-              variant = flavorLower;
-            };
-          };
-        };
-      };
+      sddm.enable = true;
+      # defaultSession = "none+bspwm";
+      # lightdm = {
+      #   enable = true;
+      #   background = ../backgrounds/the_valley.png;
+      #   greeters.gtk = let
+      #     flavor = "Mocha";
+      #     accent = "Lavender";
+      #     flavorLower = lib.toLower flavor;
+      #     accentLower = lib.toLower accent;
+      #   in {
+      #     enable = true;
+      #     theme = {
+      #       name = "Catppuccin-${flavor}-Compact-${accent}-Dark";
+      #       package = pkgs.unstable.catppuccin-gtk.override {
+      #         accents = [ accentLower ];
+      #         size = "compact";
+      #         tweaks = [ "rimless" "black" ];
+      #         variant = flavorLower;
+      #       };
+      #     };
+      #   };
+      # };
     };
 
     windowManager.bspwm = {
