@@ -73,7 +73,7 @@
 
   i18n.inputMethod.enabled = "fcitx5";
 
-  #programs.hyprland.enable = true;
+  programs.hyprland.enable = true;
 
   environment.systemPackages = with pkgs; [
     # nix-doc
@@ -128,32 +128,6 @@
 
     displayManager = {
       sddm.enable = true;
-      # defaultSession = "none+bspwm";
-      # lightdm = {
-      #   enable = true;
-      #   background = ../backgrounds/the_valley.png;
-      #   greeters.gtk = let
-      #     flavor = "Mocha";
-      #     accent = "Lavender";
-      #     flavorLower = lib.toLower flavor;
-      #     accentLower = lib.toLower accent;
-      #   in {
-      #     enable = true;
-      #     theme = {
-      #       name = "Catppuccin-${flavor}-Compact-${accent}-Dark";
-      #       package = pkgs.unstable.catppuccin-gtk.override {
-      #         accents = [ accentLower ];
-      #         size = "compact";
-      #         tweaks = [ "rimless" "black" ];
-      #         variant = flavorLower;
-      #       };
-      #     };
-      #   };
-      # };
-    };
-
-    windowManager.bspwm = {
-      enable = true;
     };
   };
 
