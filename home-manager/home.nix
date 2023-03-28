@@ -60,11 +60,11 @@
     username = "nathan";
     homeDirectory = "/home/nathan";
 
-    activation = {
-      reloadPolybar = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        $DRY_RUN_CMD ${pkgs.polybarFull}/bin/polybar-msg cmd restart
-      '';
-    };
+    # activation = {
+    #   reloadPolybar = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    #     $DRY_RUN_CMD ${pkgs.polybarFull}/bin/polybar-msg cmd restart
+    #   '';
+    # };
 
     sessionVariables = rec {
       EDITOR = "nvim";
@@ -87,8 +87,8 @@
     shellAliases = import ./aliases.nix;
     packages = with pkgs; [
       # user
-      libsForQt5.kcharselect
-      libsForQt5.pix
+      # libsForQt5.kcharselect
+      # libsForQt5.pix
 
       # xfce.thunar
       wofi
@@ -96,41 +96,41 @@
       wlsunset
       wl-clipboard
 
-      pkgs.unstable.obsidian
-      wtf
-      xplr
+      # pkgs.unstable.obsidian
+      # wtf
+      # xplr
 
       # system-ish
-      coreutils-full
-      cht-sh
-      htop
-      jdk
-      killall
-      ntfy
-      man
-      niv
-      polybarFull
-      pstree
-      starship
-      tldr
-      tree
+      # coreutils-full
+      # cht-sh
+      # htop
+      # jdk
+      # killall
+      # ntfy
+      # man
+      # niv
+      # polybarFull
+      # pstree
+      # starship
+      # tldr
+      # tree
 
       # dev
-      ffmpeg
-      gita
-      hostctl
-      http-prompt
-      httpie
-      jq
-      just
-      lazydocker
-      pre-commit
-      usql
-      vagrant
+      # ffmpeg
+      # gita
+      # hostctl
+      # http-prompt
+      # httpie
+      # jq
+      # just
+      # lazydocker
+      # pre-commit
+      # usql
+      # vagrant
 
       # chats
-      discord
-      slack
+      # discord
+      # slack
     ];
   };
 
@@ -143,131 +143,131 @@
     recursive = true;
   };
 
-  programs = {
-    alacritty = {
-      enable = true;
-      settings = {
-        window = {
-          padding = {
-            x = 8;
-            y = 8;
-          };
-        };
-        shell.program = config.home.sessionVariables.SHELL;
-      };
-    };
+  # programs = {
+  #   alacritty = {
+  #     enable = true;
+  #     settings = {
+  #       window = {
+  #         padding = {
+  #           x = 8;
+  #           y = 8;
+  #         };
+  #       };
+  #       shell.program = config.home.sessionVariables.SHELL;
+  #     };
+  #   };
 
-    broot = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+  #   broot = {
+  #     enable = true;
+  #     enableZshIntegration = true;
+  #   };
 
-    btop.enable = true;
+  #   btop.enable = true;
 
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+  #   direnv = {
+  #     enable = true;
+  #     enableBashIntegration = true;
+  #     enableZshIntegration = true;
 
-      nix-direnv.enable = true;
-    };
+  #     nix-direnv.enable = true;
+  #   };
 
-    firefox = {
-      enable = true;
-    };
+  #   firefox = {
+  #     enable = true;
+  #   };
 
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+  #   fzf = {
+  #     enable = true;
+  #     enableZshIntegration = true;
+  #   };
 
-    git = {
-      enable = true;
+  #   git = {
+  #     enable = true;
 
-      delta = {
-        enable = true;
-      };
+  #     delta = {
+  #       enable = true;
+  #     };
 
-      includes = [
-        { path = "${config.xdg.configHome}/git/default.gitconfig"; }
-        {
-          path = "${config.xdg.configHome}/git/ol.gitconfig";
-          condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
-        }
-      ];
-    };
+  #     includes = [
+  #       { path = "${config.xdg.configHome}/git/default.gitconfig"; }
+  #       {
+  #         path = "${config.xdg.configHome}/git/ol.gitconfig";
+  #         condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
+  #       }
+  #     ];
+  #   };
 
-    go = {
-      enable = true;
-      packages = {
-        "github.com/danielgtaylor/restish" = builtins.fetchGit {
-          url = "https://github.com/danielgtaylor/restish";
-          rev = "ee2e1ae6cbd6ae2f96b7b4ab3e277e926d224701";
-        };
-        "github.com/shihanng/gig" = builtins.fetchGit {
-          url = "https://github.com/shihanng/gig";
-          rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
-        };
-      };
-    };
+  #   go = {
+  #     enable = true;
+  #     packages = {
+  #       "github.com/danielgtaylor/restish" = builtins.fetchGit {
+  #         url = "https://github.com/danielgtaylor/restish";
+  #         rev = "ee2e1ae6cbd6ae2f96b7b4ab3e277e926d224701";
+  #       };
+  #       "github.com/shihanng/gig" = builtins.fetchGit {
+  #         url = "https://github.com/shihanng/gig";
+  #         rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
+  #       };
+  #     };
+  #   };
 
-    # Let Home Manager install and manage itself.
-    home-manager.enable = true;
+  #   # Let Home Manager install and manage itself.
+  #   home-manager.enable = true;
 
-    neovim = {
-      enable = true;
-      vimAlias = true;
-      plugins = with pkgs.vimPlugins; [
-        auto-pairs
-        fzf-vim
-        lightline-vim
-        nerdtree
+  #   neovim = {
+  #     enable = true;
+  #     vimAlias = true;
+  #     plugins = with pkgs.vimPlugins; [
+  #       auto-pairs
+  #       fzf-vim
+  #       lightline-vim
+  #       nerdtree
 
-        vim-polyglot
-        vim-gitgutter
-        vim-nix
-      ];
-    };
+  #       vim-polyglot
+  #       vim-gitgutter
+  #       vim-nix
+  #     ];
+  #   };
 
-    pls = {
-      enable = true;
-      enableAliases = true;
-    };
+  #   pls = {
+  #     enable = true;
+  #     enableAliases = true;
+  #   };
 
-    rofi.enable = true;
+  #   rofi.enable = true;
 
-    vscode = {
-      enable = true;
-      extensions = with pkgs.unstable.vscode-extensions ; [
-        # nix
-        bbenoist.nix
-        jnoortheen.nix-ide
+  #   vscode = {
+  #     enable = true;
+  #     extensions = with pkgs.unstable.vscode-extensions ; [
+  #       # nix
+  #       bbenoist.nix
+  #       jnoortheen.nix-ide
 
-        # configuration languages
-        bungcip.better-toml
-        redhat.vscode-yaml
-      ];
-    };
+  #       # configuration languages
+  #       bungcip.better-toml
+  #       redhat.vscode-yaml
+  #     ];
+  #   };
 
-    zoxide = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-    };
-  };
+  #   zoxide = {
+  #     enable = true;
+  #     enableBashIntegration = true;
+  #     enableZshIntegration = true;
+  #   };
+  # };
   # services
-  services = {
-    flameshot = { 
-      enable = true;
-      settings = {
-        General = {
-          savePath = "${config.home.homeDirectory}/Pictures/Screenshots";
-        };
-      };
-    };
-    keybase.enable = true;
-    mpd.enable = true;
-  };
+  # services = {
+  #   flameshot = { 
+  #     enable = true;
+  #     settings = {
+  #       General = {
+  #         savePath = "${config.home.homeDirectory}/Pictures/Screenshots";
+  #       };
+  #     };
+  #   };
+  #   keybase.enable = true;
+  #   mpd.enable = true;
+  # };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
