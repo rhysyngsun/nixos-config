@@ -75,6 +75,9 @@
 
   programs.hyprland.enable = true;
 
+  environment.variables = {
+    WLR_RENDERER_ALLOW_SOFTWARE = "1";
+  };
   environment.systemPackages = with pkgs; [
     # nix-doc
     # gvfs
