@@ -57,7 +57,7 @@
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
-        gaea = nixpkgs.lib.nixosSystem {
+        morrigan = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
             # > Our main nixos configuration file <
@@ -69,7 +69,7 @@
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
-        "nathan@gaea" = home-manager.lib.homeManagerConfiguration {
+        "nathan@morrigan" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [

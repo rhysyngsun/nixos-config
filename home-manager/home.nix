@@ -13,8 +13,6 @@
     inputs.hyprland.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
-    # ./bspwm.nix
-    ./sxhkd.nix
     ./themes.nix
     ./zsh.nix
   ];
@@ -51,6 +49,26 @@
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
+    extraConfig = ''
+    
+    # See https://wiki.hyprland.org/Configuring/Monitors/
+    monitor=,preferred,auto,auto
+    
+    input {
+      kb_layout = us
+    
+      follow_mouse = 1
+      touchpad = {
+        natural_scroll = false
+      }
+    }
+    
+    exec-once = firefox & alacritty
+
+    bind=SUPER,RETURN,exec,${config.programs.alacritty.package}/bin/alacritty
+    bind=SUPER,F,exec,${config.programs.firefox.package}/bin/firefox
+    bind=SUPER,D,exec,${pkgs.wofi}/bin/wofi --show drun -I
+    '';
     xwayland = {
       enable = true;
     };
@@ -59,12 +77,6 @@
   home = {
     username = "nathan";
     homeDirectory = "/home/nathan";
-
-    # activation = {
-    #   reloadPolybar = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    #     $DRY_RUN_CMD ${pkgs.polybarFull}/bin/polybar-msg cmd restart
-    #   '';
-    # };
 
     sessionVariables = rec {
       EDITOR = "nvim";
@@ -101,18 +113,18 @@
       # xplr
 
       # system-ish
-      # coreutils-full
+      coreutils-full
       # cht-sh
-      # htop
+      htop
       # jdk
-      # killall
+      killall
       # ntfy
       # man
       # niv
       # polybarFull
-      # pstree
-      # starship
-      # tldr
+      pstree
+      starship
+      tldr
       # tree
 
       # dev
@@ -130,7 +142,7 @@
 
       # chats
       # discord
-      # slack
+      slack
     ];
   };
 
@@ -143,131 +155,208 @@
     recursive = true;
   };
 
-  # programs = {
-  #   alacritty = {
-  #     enable = true;
-  #     settings = {
-  #       window = {
-  #         padding = {
-  #           x = 8;
-  #           y = 8;
-  #         };
-  #       };
-  #       shell.program = config.home.sessionVariables.SHELL;
-  #     };
-  #   };
+  programs = {
+    alacritty = {
+      enable = true;
+      settings = {
+        window = {
+          padding = {
+            x = 8;
+            y = 8;
+          };
+        };
+        shell.program = config.home.sessionVariables.SHELL;
+      };
+    };
 
-  #   broot = {
-  #     enable = true;
-  #     enableZshIntegration = true;
-  #   };
+    broot = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
-  #   btop.enable = true;
+    btop.enable = true;
 
-  #   direnv = {
-  #     enable = true;
-  #     enableBashIntegration = true;
-  #     enableZshIntegration = true;
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
 
-  #     nix-direnv.enable = true;
-  #   };
+      nix-direnv.enable = true;
+    };
 
-  #   firefox = {
-  #     enable = true;
-  #   };
+    firefox = {
+      enable = true;
+    };
 
-  #   fzf = {
-  #     enable = true;
-  #     enableZshIntegration = true;
-  #   };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
-  #   git = {
-  #     enable = true;
+    git = {
+      enable = true;
 
-  #     delta = {
-  #       enable = true;
-  #     };
+      delta = {
+        enable = true;
+      };
 
-  #     includes = [
-  #       { path = "${config.xdg.configHome}/git/default.gitconfig"; }
-  #       {
-  #         path = "${config.xdg.configHome}/git/ol.gitconfig";
-  #         condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
-  #       }
-  #     ];
-  #   };
+      includes = [
+        { path = "${config.xdg.configHome}/git/default.gitconfig"; }
+        {
+          path = "${config.xdg.configHome}/git/ol.gitconfig";
+          condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
+        }
+      ];
+    };
 
-  #   go = {
-  #     enable = true;
-  #     packages = {
-  #       "github.com/danielgtaylor/restish" = builtins.fetchGit {
-  #         url = "https://github.com/danielgtaylor/restish";
-  #         rev = "ee2e1ae6cbd6ae2f96b7b4ab3e277e926d224701";
-  #       };
-  #       "github.com/shihanng/gig" = builtins.fetchGit {
-  #         url = "https://github.com/shihanng/gig";
-  #         rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
-  #       };
-  #     };
-  #   };
+    go = {
+      enable = true;
+      packages = {
+        "github.com/danielgtaylor/restish" = builtins.fetchGit {
+          url = "https://github.com/danielgtaylor/restish";
+          rev = "ee2e1ae6cbd6ae2f96b7b4ab3e277e926d224701";
+        };
+        "github.com/shihanng/gig" = builtins.fetchGit {
+          url = "https://github.com/shihanng/gig";
+          rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
+        };
+      };
+    };
 
-  #   # Let Home Manager install and manage itself.
-  #   home-manager.enable = true;
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
 
-  #   neovim = {
-  #     enable = true;
-  #     vimAlias = true;
-  #     plugins = with pkgs.vimPlugins; [
-  #       auto-pairs
-  #       fzf-vim
-  #       lightline-vim
-  #       nerdtree
+    neovim = {
+      enable = true;
+      vimAlias = true;
+      plugins = with pkgs.vimPlugins; [
+        auto-pairs
+        fzf-vim
+        lightline-vim
+        nerdtree
 
-  #       vim-polyglot
-  #       vim-gitgutter
-  #       vim-nix
-  #     ];
-  #   };
+        vim-polyglot
+        vim-gitgutter
+        vim-nix
+      ];
+    };
 
-  #   pls = {
-  #     enable = true;
-  #     enableAliases = true;
-  #   };
+    pls = {
+      enable = true;
+      enableAliases = true;
+    };
 
-  #   rofi.enable = true;
+    rofi.enable = true;
 
-  #   vscode = {
-  #     enable = true;
-  #     extensions = with pkgs.unstable.vscode-extensions ; [
-  #       # nix
-  #       bbenoist.nix
-  #       jnoortheen.nix-ide
+    vscode = {
+      enable = true;
+      extensions = with pkgs.unstable.vscode-extensions ; [
+        # nix
+        bbenoist.nix
+        jnoortheen.nix-ide
 
-  #       # configuration languages
-  #       bungcip.better-toml
-  #       redhat.vscode-yaml
-  #     ];
-  #   };
+        # configuration languages
+        bungcip.better-toml
+        redhat.vscode-yaml
+      ];
+    };
 
-  #   zoxide = {
-  #     enable = true;
-  #     enableBashIntegration = true;
-  #     enableZshIntegration = true;
-  #   };
-  # };
+    waybar = {
+      enable = true;
+      settings = {
+        mainBar = {
+          layer = "top";
+          position = "top";
+          modules-left = [ "clock" "cpu" "memory" "disk" ];
+          modules-center = [ "wlr/workspaces" ];
+          modules-right = [
+            "temperature"
+            "network"
+            "pulseaudio"
+            "battery"
+            "tray"
+          ];
+
+          "wlr/workspaces" = {
+            format = "{icon}";
+            all-outputs = true;
+            format-icons = {
+              "1" = "";
+              "2" = "";
+              "3" = "";
+              "4" = "";
+            };
+          };
+
+          "cpu" = {
+            interval = 10;
+            format = " {usage}%";
+            tooltip = false;
+          };
+          "memory" = {
+            interval = 10;
+            format = " {}%";
+          };
+          "disk" = {
+            interval = 600;
+            format = " {percentage_used}%";
+            path = "/";
+          };
+          "clock" = {
+            interval = 60;
+            format = "{: %a %b %e %H:%M}";
+          };
+          "temperature" = {
+            interval = 5;
+            critical-threshold = 60;
+            format = " {temperatureC}°C";
+          };
+          "network" = {
+            format-wifi = " {signalStrength}%";
+            format-ethernet = "";
+            tooltip-format = "{ifname} via {gwaddr}";
+            format-linked = "{ifname} (No IP)";
+            format-disconnected = "";
+          };
+          "pulseaudio" = {
+            format = "{icon} {volume}% {format_source}";
+            format-muted = " {format_source}";
+            format-source = "";
+            format-source-muted = "";
+            format-icons = { "default" = [ "" "" "" ]; };
+            scroll-step = 1;
+            tooltip-format = "{desc}; {volume}%";
+            on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+            on-click-right = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+            on-click-middle = "pavucontrol";
+          };
+          "battery" = {
+            interval = 60;
+            states = {
+              warning = 20;
+              critical = 10;
+            };
+            format = "{capacity}% {icon}";
+            format-charging = "{capacity}% ";
+            format-icons = [ "" "" "" "" ];
+            format-alt = "{time} {icon}";
+          };
+          "tray" = { spacing = 10; };
+        };
+      };
+    };
+
+    zoxide = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
+  };
   # services
-  # services = {
-  #   flameshot = { 
-  #     enable = true;
-  #     settings = {
-  #       General = {
-  #         savePath = "${config.home.homeDirectory}/Pictures/Screenshots";
-  #       };
-  #     };
-  #   };
-  #   keybase.enable = true;
-  #   mpd.enable = true;
-  # };
+  services = {
+    keybase.enable = true;
+    mpd.enable = true;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
@@ -275,13 +364,6 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
-    extraConfig = {
-      XDG_SCREENSHOTS_DIR = "$XDG_PICTURES_DIR/Screenshots";
-    };
-  };
-
-  xsession = {
-    enable = true;
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

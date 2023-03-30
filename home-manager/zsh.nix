@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -9,8 +9,8 @@
     };
 
     initExtra = ''
-      eval "$(starship init zsh)"
-      eval "$(zoxide init zsh)"
+      eval "$(${pkgs.starship}/bin/starship init zsh)"
+      eval "$(${config.programs.zoxide.package}/bin/zoxide init zsh)"
     '';
 
     plugins = [

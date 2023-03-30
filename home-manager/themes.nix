@@ -75,13 +75,13 @@ in
   };
 
   # background theming
-  xdg.dataFile."backgrounds" = {
-    source = ../backgrounds;
-    recursive = true;
-  };
-  services.random-background = {
-    enable = true;
-    imageDirectory = "${config.xdg.dataHome}/backgrounds/";
-    interval = "1h";
-  };
+  # xdg.dataFile."backgrounds" = {
+  #   source = ../backgrounds;
+  #   recursive = true;
+  # };
+  # services.random-background = {
+  #   enable = true;
+  #   imageDirectory = "${config.xdg.dataHome}/backgrounds/";
+  #   interval = "1h";
+  # };
 }
