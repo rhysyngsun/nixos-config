@@ -4,9 +4,7 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
   # You can import other NixOS modules here
   imports = [
-    # If you want to use modules your own flake exports (from modules/nixos):
-    # outputs.nixosModules.themes.catppuccin
-
+    outputs.nixosModules
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
@@ -14,9 +12,6 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
-
-    # Import your generated (nixos-generate-config) hardware configuration
-    ./hardware-configuration.nix
   ];
 
   nixpkgs = {
@@ -33,7 +28,7 @@
       # Or define it inline, for example:
       # (final: prev: {
       #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
+      #     patches = ./change-hello-to-hi.patch ];
       #   });
       # })
     ];
@@ -66,9 +61,9 @@
       options = "--delete-older-than 7d";
     };
 
-    extraOptions = ''
-      plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
-    '';
+    # extraOptions = ''
+    #   plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
+    # '';
   };
 
   i18n.inputMethod.enabled = "fcitx5";
@@ -86,13 +81,6 @@
   networking.hostName = "morrigan";
   networking.networkmanager.enable = true;
 
-  
-  #boot.loader.grub = {
-  #  enable = true;
-  #  version = 2;
-  #  device = "/dev/sda";
-    # useOSProber = true;
-  #};
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -121,23 +109,6 @@
       };
     };
   };
-
-  
-  # display
-  # services.xserver = {
-  #   enable = true;
-  #   layout = "us";
-  #   xkbVariant = "";
-  #   screenSection = ''
-  #     Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-  #     Option       "AllowIndirectGLXProtocol" "off"
-  #     Option       "TripleBuffer" "on"
-  #   '';
-
-  #   displayManager = {
-  #     sddm.enable = true;
-  #   };
-  # };
 
   fonts = {
     fontconfig.enable = true;
@@ -172,9 +143,6 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.driSupport = true;
   hardware.nvidia.modesetting.enable = true;
-
-  #virtualisation.virtualbox.guest.enable = true;
-  #virtualisation.virtualbox.guest.x11 = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "22.11";
