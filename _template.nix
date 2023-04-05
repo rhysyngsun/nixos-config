@@ -1,8 +1,9 @@
-{ config, lib, ... }: 
+{ config, lib, ... }:
 with lib;
 let
   cfg = config.NAME;
-in {
+in
+{
   options.NAME = {
     enable = mkEnableOption "NAME";
   };
@@ -10,15 +11,12 @@ in {
   config.NAME = mkIf cfg.enable {
     hm = {
       packages = with pkgs; [
-        
+
       ];
 
-      programs = {
+      programs = { };
 
-      };
-
-      user = {
-      };
+      user = { };
     };
   };
 }

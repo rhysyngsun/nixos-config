@@ -26,6 +26,7 @@ let
       }
     ];
   };
-in {
+in
+{
   morrigan = mkSystem "morrigan";
 }

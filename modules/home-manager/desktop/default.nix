@@ -21,15 +21,17 @@
       playerctl
     ];
 
-    sessionVariables = let
-      editor = "nvim";
-    in {
-      EDITOR = editor;
-      VISUAL = editor;
-      GIT_EDITOR = editor;
+    sessionVariables =
+      let
+        editor = "nvim";
+      in
+      {
+        EDITOR = editor;
+        VISUAL = editor;
+        GIT_EDITOR = editor;
 
-      SHELL = "${pkgs.zsh}/bin/zsh";
-    };
+        SHELL = "${pkgs.zsh}/bin/zsh";
+      };
   };
 
   programs = {

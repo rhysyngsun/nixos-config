@@ -1,7 +1,7 @@
 { inputs, lib, ... }:
 
 let
-# This will add each flake input as a registry
+  # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake
   registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
 in
@@ -17,7 +17,7 @@ in
     experimental-features = "nix-command flakes";
     # Deduplicate and optimize nix store
     auto-optimise-store = true;
-    allowed-users = ["root" "nathan"];
+    allowed-users = [ "root" "nathan" ];
   };
 
   gc = {

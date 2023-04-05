@@ -7,10 +7,10 @@
       "wlr/workspaces"
       "wlr/taskbar"
     ];
-    modules-center = [ 
-      "cpu" 
-      "memory" 
-      "disk" 
+    modules-center = [
+      "cpu"
+      "memory"
+      "disk"
       "temperature"
       "battery"
     ];
@@ -60,17 +60,17 @@
       format = "{:<span font='18' rise='-4000'></span> %a %b %d, %H:%M:%S}";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
       calendar = {
-        "mode"       =   "year";
-        "mode-mon-col"  =3;
-        "weeks-pos"     = "right";
-        "on-scroll"     = 1;
-        "on-click-right"= "mode";
-        "format"= {
-          "months"=     "<span color='#ffead3'><b>{}</b></span>";
-          "days"=       "<span color='#ecc6d9'><b>{}</b></span>";
-          "weeks"=      "<span color='#99ffdd'><b>W{}</b></span>";
-          "weekdays"=   "<span color='#ffcc66'><b>{}</b></span>";
-          "today"=      "<span color='#ff6699'><b><u>{}</u></b></span>";
+        "mode" = "year";
+        "mode-mon-col" = 3;
+        "weeks-pos" = "right";
+        "on-scroll" = 1;
+        "on-click-right" = "mode";
+        "format" = {
+          "months" = "<span color='#ffead3'><b>{}</b></span>";
+          "days" = "<span color='#ecc6d9'><b>{}</b></span>";
+          "weeks" = "<span color='#99ffdd'><b>W{}</b></span>";
+          "weekdays" = "<span color='#ffcc66'><b>{}</b></span>";
+          "today" = "<span color='#ff6699'><b><u>{}</u></b></span>";
         };
       };
     };
@@ -126,7 +126,7 @@
       icon-theme = "Catppuccin-Mocha-Lavender-Icons";
     };
 
-    "custom/notification" =  {
+    "custom/notification" = {
       "tooltip" = false;
       "format" = "<span font='16' rise='-2000'>{icon}</span> {}";
       "format-icons" = {

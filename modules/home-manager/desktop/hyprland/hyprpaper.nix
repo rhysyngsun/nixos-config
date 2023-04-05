@@ -10,8 +10,8 @@
   };
 
   xdg.configFile."hypr/hyprpaper.conf".text = ''
-  preload=${config.xdg.dataHome}/backgrounds/the_valley.png
+    preload=${config.xdg.dataHome}/backgrounds/the_valley.png
 
-  wallpaper=,contain:${config.xdg.dataHome}/backgrounds/the_valley.png
+    wallpaper=,contain:${config.xdg.dataHome}/backgrounds/the_valley.png
   '';
 }

@@ -2,9 +2,10 @@
 with lib;
 let
   addons = inputs.firefox-addons.packages.${pkgs.system};
-in {
+in
+{
   programs.firefox = {
-    enable = true; 
+    enable = true;
 
     profiles = {
       Default = {

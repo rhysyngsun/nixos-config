@@ -11,7 +11,7 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  
+
   i18n.inputMethod.enabled = "fcitx5";
 
   # Nicely reload system units when changing configs

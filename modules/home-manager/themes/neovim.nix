@@ -5,7 +5,7 @@ in
 {
   programs.neovim = with colors; {
     extraConfig = ''
-    colorscheme catppuccin-${flavor.lower}
+      colorscheme catppuccin-${flavor.lower}
     '';
 
     plugins = with pkgs.vimPlugins; [

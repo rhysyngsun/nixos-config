@@ -12,7 +12,7 @@ in
       hash = "sha256-w9XVtEe7TqzxxGUCDUR9BFkzLZjG8XrplXJ3lX6f+x0=";
     };
   };
-  
+
   programs.alacritty.settings = with colors; {
     import = [
       "${config.xdg.configHome}/alacritty/catppuccin/catppuccin-${flavor.lower}.yml"

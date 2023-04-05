@@ -5,7 +5,7 @@
     # Nixpkgs
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
- 
+
     hyprland.url = "github:hyprwm/Hyprland";
     hyprpaper.url = "github:hyprwm/hyprpaper";
 
@@ -60,18 +60,20 @@
 
       forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
       forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
-    in 
+    in
     rec {
       nixosModules = import ./modules/nixos;
-      homeManagerModules = import ./modules/home-manager ;
+      homeManagerModules = import ./modules/home-manager;
 
       # Devshell for bootstrapping
       # Acessible through 'nix develop'
       devShells = forEachPkgs (pkgs: import ./shell.nix { inherit pkgs; });
 
+      formatter = forEachPkgs (pkgs: pkgs.nixpkgs-fmt);
+
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
-      
+
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {

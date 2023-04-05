@@ -1,10 +1,12 @@
-{
-  inputs,
-  outputs,
-  nix-defaults,
-}: let
+{ inputs
+, outputs
+, nix-defaults
+,
+}:
+let
   system = "x86_64-linux";
-in {
+in
+{
   modules = [
     inputs.hyprland.homeManagerModules.default
     ./home.nix
@@ -15,5 +17,5 @@ in {
     inherit (nix-defaults.nixpkgs) config overlays;
   };
 
-  extraSpecialArgs = {inherit system inputs;};
+  extraSpecialArgs = { inherit system inputs; };
 }
