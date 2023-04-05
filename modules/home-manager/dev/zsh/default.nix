@@ -1,23 +1,16 @@
-{ pkgs, config, lib, ... }:
-with lib;
-let
-  cfg = config.dev.zsh;
-in {
-  options.dev.zsh = {
-    enable = mkEnableOption "zsh";
-  };
-
-  config.home = mkIf cfg.enable {
+{ config, pkgs, ... }:
+{
+  home = {
     packages = with pkgs; [ 
       starship
     ];
   };
 
-  config.xdg.configFile = mkIf cfg.enable {
-    "starship.toml".source = ../../../config/starship.toml;
+  xdg.configFile = {
+    "starship.toml".source = ../../../../config/starship.toml;
   };
 
-  config.programs.zsh = mkIf cfg.enable {
+  programs.zsh = {
     enable = true;
     enableCompletion = true;
     enableAutosuggestions = true;

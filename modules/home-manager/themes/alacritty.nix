@@ -1,17 +1,10 @@
-{ config, lib, pkgs, ... }: 
-with lib;
+{ config, pkgs, lib, ... }:
 let
-  colors = config.themes.colors;
-  cfg = config.themes.alacritty;
-in {
-  imports = [
-    ./colors.nix
-  ];
-  options.themes.alacritty = {
-    enable = mkEnableOption "theme-alacritty";
-  };
+  colors = import ./colors.nix { inherit lib; };
+in
+{
 
-  config.xdg.configFile = mkIf cfg.enable {
+  xdg.configFile = {
     "alacritty/catppuccin".source = pkgs.fetchFromGitHub {
       owner = "catppuccin";
       repo = "alacritty";
@@ -20,9 +13,12 @@ in {
     };
   };
   
-  config.programs.alacritty.settings = with colors; mkIf cfg.enable {
+  programs.alacritty.settings = with colors; {
     import = [
-      "$XDG_CONFIG_DIR/alacritty/catppuccin/catppuccin-${flavor.lower}.yml"
+      "${config.xdg.configHome}/alacritty/catppuccin/catppuccin-${flavor.lower}.yml"
     ];
+    window = {
+      opacity = 0.8;
+    };
   };
 }

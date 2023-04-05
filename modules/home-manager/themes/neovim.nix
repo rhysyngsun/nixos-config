@@ -1,17 +1,9 @@
-{ config, lib, pkgs, ... }: 
-with lib;
+{ pkgs, lib, ... }:
 let
-  colors = config.themes.colors;
-  cfg = config.themes.neovim;
-in {
-  imports = [
-    ./colors.nix
-  ];
-  options.themes.neovim = {
-    enable = mkEnableOption "theme-neovim";
-  };
-
-  config.programs.neovim = with colors; mkIf cfg.enable {
+  colors = import ./colors.nix { inherit lib; };
+in
+{
+  programs.neovim = with colors; {
     extraConfig = ''
     colorscheme catppuccin-${flavor.lower}
     '';

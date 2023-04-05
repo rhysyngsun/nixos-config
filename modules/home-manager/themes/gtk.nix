@@ -1,18 +1,9 @@
-{ config, lib, pkgs, ... }:
-with lib;
+{ pkgs, lib, ... }:
 let
-  colors = config.themes.colors;
-  cfg = config.themes.gtk;
+  colors = import ./colors.nix { inherit lib; };
 in
 {
-  imports = [
-    ./colors.nix
-  ];
-  options.themes.gtk = {
-    enable = mkEnableOption "theme-gtk";
-  };
-
-  config.gtk = mkIf cfg.enable {
+  gtk = {
     enable = true;
     theme = with colors; {
       name = "Catppuccin-${flavor.name}-Compact-${accent.name}-Dark";
@@ -22,6 +13,10 @@ in
         tweaks = [ "rimless" "black" ];
         variant = flavor.lower;
       };
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
     };
   };
 }

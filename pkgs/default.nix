@@ -3,6 +3,4 @@
 
 { pkgs ? (import ../nixpkgs.nix) { } }: {
   # theme-catppuccin = pkgs.callPackage ./theme-catppuccin.nix {};
-
-  # video-wallpapers = pkgs.callPackage ./video-wallpapers.nix {};
 }

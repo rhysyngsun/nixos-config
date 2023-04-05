@@ -9,12 +9,18 @@ let
     modules = [
       # > Our main nixos configuration file <
       ../nixos/configuration.nix
-      ../home
       ./${hostName}
+      inputs.hyprland.homeManagerModules.default
       inputs.home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.sharedModules = [
+          outputs.homeManagerModules
+        ];
+        home-manager.users = {
+          "nathan" = import ../users/nathan;
+        };
 
         networking.hostName = "${hostName}";
       }

@@ -1,4 +1,4 @@
 { ... }:
 {
-  # abc = callPackage ./package {};
+  # example = callPackage ./example {};
 }

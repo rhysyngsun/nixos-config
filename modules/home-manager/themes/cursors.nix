@@ -1,20 +1,13 @@
-{ config, lib, pkgs, ... }:
-with lib;
+{ pkgs, lib, ... }:
 let
-  colors = config.themes.colors;
-  cfg = config.themes.cursors;
+  colors = import ./colors.nix { inherit lib; };
 in
 {
-  imports = [
-    ./colors.nix
-  ];
-  options.themes.cursors = {
-    enable = mkEnableOption "theme-cursors";
-  };
-
-  config.home.pointerCursor = mkIf cfg.enable {
+  home.pointerCursor = with colors; {
     enable = true;
     gtk.enable = true;
+    # x11.enable = true;
+    size = 14;
 
     name = "Catppuccin-${flavor.name}-${accent.name}-Cursors";
     package = pkgs.catppuccin-cursors."${flavor.lower}${accent.name}";

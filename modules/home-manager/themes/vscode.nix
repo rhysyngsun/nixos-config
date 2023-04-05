@@ -1,18 +1,9 @@
-{ config, lib, ... }: 
-with lib;
+{ pkgs, lib, ... }:
 let
-  colors = config.themes.colors;
-  cfg = config.themes.vscode;
-in {
-  imports = [
-    ./colors.nix
-  ];
-
-  options.themes.vscode = {
-    enable = mkEnableOption "theme-vscode";
-  };
-
-  config.programs.vscode = with colors; mkIf cfg.enable {
+  colors = import ./colors.nix { inherit lib; };
+in
+{
+  programs.vscode = with colors; {
     extensions = with pkgs.vscode-extensions; [
       catppuccin.catppuccin-vsc
     ];

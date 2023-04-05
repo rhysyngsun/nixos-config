@@ -1,11 +1,19 @@
-{ ... }:
 {
-  desktop = {
-    browsers.enable = true;
-    hyprland.enable = true;
+  inputs,
+  outputs,
+  nix-defaults,
+}: let
+  system = "x86_64-linux";
+in {
+  modules = [
+    inputs.hyprland.homeManagerModules.default
+    ./home.nix
+    outputs.homeManagerModules
+  ];
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    inherit (nix-defaults.nixpkgs) config overlays;
   };
 
-  dev = {
-    enable = true;
-  };
+  extraSpecialArgs = {inherit system inputs;};
 }

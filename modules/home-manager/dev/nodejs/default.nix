@@ -1,26 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.dev.nodejs;
+  npmBin = ".npm-packages/bin";
+  npmModules = ".npm-packages/lib/node_modules/";
   npmDirs = [
-    cfg.npmBin
-    cfg.npmModules
+    npmBin
+    npmModules
   ];
 in
 {
-  options.dev.nodejs = {
-    enable = mkEnableOption "nodejs";
-    npmBin = mkOption {
-      type = types.str;
-      default = ".npm-packages/bin";
-    };
-    npmModules = mkOption {
-      type = types.str;
-      default = ".npm-packages/lib/node_modules/";
-    };
-  };
 
-  config.home = mkIf cfg.enable {
+  home = {
     file = {
       ".npmrc".source = ./npmrc;
     } // lib.genAttrs
@@ -28,10 +18,10 @@ in
       (_: { text = ""; });
 
     sessionPath = [
-      "$HOME/${cfg.npmBin}"
+      "$HOME/${npmBin}"
     ];
     sessionVariables = {
-      NODE_PATH = "$HOME/${cfg.npmModules}";
+      NODE_PATH = "$HOME/${npmModules}";
     };
 
     packages = with pkgs; [ nodejs ];

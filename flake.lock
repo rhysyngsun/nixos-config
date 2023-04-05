@@ -1,5 +1,53 @@
 {
   "nodes": {
+    "catppcuccin-rofi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1672491652,
+        "narHash": "sha256-DNorfyl3C4RBclF2KDgwvQQwixpTwSRu7fIvihPN8JY=",
+        "owner": "catppuccin",
+        "repo": "rofi",
+        "rev": "5350da41a11814f950c3354f090b90d4674a95ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "rofi",
+        "type": "github"
+      }
+    },
+    "catppuccin-hyprland": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1679989586,
+        "narHash": "sha256-V0366bzM/Wh0UafJZoaOvTFd+UEWsv+cIHF3kKiFNac=",
+        "owner": "catppuccin",
+        "repo": "hyprland",
+        "rev": "ce07c2ff667d51722479164f6bfc8aaf6c9eda69",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "hyprland",
+        "type": "github"
+      }
+    },
+    "catppuccin-waybar": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678438606,
+        "narHash": "sha256-WLJMA2X20E5PCPg0ZPtSop0bfmu+pLImP9t8A8V4QK8=",
+        "owner": "catppuccin",
+        "repo": "waybar",
+        "rev": "f74ab1eecf2dcaf22569b396eed53b2b2fbe8aff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "waybar",
+        "type": "github"
+      }
+    },
     "firefox-addons": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -99,6 +147,24 @@
         "type": "github"
       }
     },
+    "hyprpaper": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1680428635,
+        "narHash": "sha256-/Kz4Qy+jx1+bfSq6e2W3MbyODkhs6GqKiiybNtqzvbc=",
+        "owner": "hyprwm",
+        "repo": "hyprpaper",
+        "rev": "db56f164dd4d6bba8f606fd49885cdbe9803fe9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hyprwm",
+        "repo": "hyprpaper",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1627814220,
@@ -149,6 +215,22 @@
     },
     "nixpkgs_3": {
       "locked": {
+        "lastModified": 1674641431,
+        "narHash": "sha256-qfo19qVZBP4qn5M5gXc/h1MDgAtPA5VxJm9s8RUAkVk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9b97ad7b4330aacda9b2343396eb3df8a853b4fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1679865578,
         "narHash": "sha256-sYQmxxqIYL3QFsRYjW0AufhGur8qWfwoOGPGHRJZlGc=",
         "owner": "nixos",
@@ -165,10 +247,14 @@
     },
     "root": {
       "inputs": {
+        "catppcuccin-rofi": "catppcuccin-rofi",
+        "catppuccin-hyprland": "catppuccin-hyprland",
+        "catppuccin-waybar": "catppuccin-waybar",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "nixpkgs": "nixpkgs_3",
+        "hyprpaper": "hyprpaper",
+        "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
     },

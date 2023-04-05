@@ -1,20 +1,17 @@
-{ config, lib, ... }:
-
-with lib;
-let 
-  cfg = config.dev.git;
-in {
-  options.dev.git = {
-    enable = mkEnableOption "git";
-  };
-
-  config.home = mkIf cfg.enable {
-    shellAliases = ./aliases.nix;
+{ config, pkgs, ... }:
+{
+  home = {
+    shellAliases = import ./aliases.nix;
 
     packages = with pkgs; [ pre-commit ];
   };
 
-  config.programs.git = mkIf cfg.enable{
+  xdg.configFile."git" = {
+    source = ../../../../config/git;
+    recursive = true;
+  };
+
+  programs.git = {
     enable = true;
 
     delta = {

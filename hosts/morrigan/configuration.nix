@@ -4,67 +4,16 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
   # You can import other NixOS modules here
   imports = [
-    outputs.nixosModules
+    # outputs.nixosModules
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
     inputs.hyprland.nixosModules.default
 
-    # You can also split up your configuration and import pieces of it here:
-    # ./users.nix
+    ./hardware-configuration.nix
   ];
 
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
-  };
-
-  nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
-    settings = {
-      # Enable flakes and new 'nix' command
-      experimental-features = "nix-command flakes";
-      # Deduplicate and optimize nix store
-      auto-optimise-store = true;
-    };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-
-    # extraOptions = ''
-    #   plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
-    # '';
-  };
+  nixpkgs.config.allowUnfree = true;
 
   i18n.inputMethod.enabled = "fcitx5";
 
@@ -73,6 +22,7 @@
   environment.variables = {
     WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
+  
   environment.systemPackages = with pkgs; [
     # nix-doc
     # gvfs
@@ -104,7 +54,8 @@
         extraGroups = [
           "docker"
           "wheel"
-          "vboxsf"
+          "input"
+          "pulse"
         ];
       };
     };
@@ -124,6 +75,17 @@
     ];
   };
 
+  services.xserver = {
+    enable = true;
+    displayManager.sddm.enable = true;
+  };
+
+  virtualisation.docker = {
+    enable = true;
+  };
+
+  security.pam.services.swaylock.text = "auth include login";
+
   programs.dconf.enable = true;
 
   # Shells
@@ -132,11 +94,18 @@
 
   # Enable CUPS to print documents
   services.printing.enable = true;
-  services.printing.drivers = [ pkgs.brlaser ];
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+  services.avahi.openFirewall = true;
 
   # Enable sound
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+
+  # timezone
+  services.localtimed.enable = true;
+  services.automatic-timezoned.enable = true;
+  location.provider = "geoclue2";
 
   # Video support
   hardware.opengl.enable = true;
