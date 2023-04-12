@@ -10,6 +10,7 @@ in
   modules = [
     inputs.hyprland.homeManagerModules.default
     ./home.nix
+    ../common
     outputs.homeManagerModules
   ];
   pkgs = import inputs.nixpkgs {

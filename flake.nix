@@ -20,6 +20,13 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-rice = { url = "github:bertof/nix-rice"; };
+
+    networkmanager-dmenu = {
+      url = "github:firecat53/networkmanager-dmenu";
+      flake = false;
+    };
+
     catppuccin-hyprland = {
       url = "github:catppuccin/hyprland";
       flake = false;
@@ -34,9 +41,15 @@
       url = "github:catppuccin/waybar";
       flake = false;
     };
+    
+
+    nvchad = {
+      url = "github:nvchad/nvchad";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, hyprland, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, hyprland, home-manager, nix-rice, ... }@inputs:
     let
       inherit (self) outputs;
 
@@ -50,7 +63,9 @@
             outputs.overlays.additions
             outputs.overlays.modifications
             outputs.overlays.unstable-packages
+            # overlays from inputs
             hyprland.overlays.default
+            nix-rice.overlays.default
           ];
           config = {
             allowUnfree = true;
@@ -58,7 +73,7 @@
         };
       };
 
-      forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
+      forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
       forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
     in
     rec {

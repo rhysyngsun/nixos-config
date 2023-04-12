@@ -1,6 +1,14 @@
-# Custom packages, that can be defined similarly to ones from nixpkgs
-# You can build them using 'nix build .#example' or (legacy) 'nix-build -A example'
 
-{ pkgs ? (import ../nixpkgs.nix) { } }: {
-  # theme-catppuccin = pkgs.callPackage ./theme-catppuccin.nix {};
+final: prev:
+{
+  pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+    (finalPy: prevPy: {
+      tutor = finalPy.callPackage ./python/tutor.nix {};
+      tutor-discovery = finalPy.callPackage ./python/tutor-discovery.nix {};
+      tutor-license = finalPy.callPackage ./python/tutor-license.nix {};
+      tutor-mfe = finalPy.callPackage ./python/tutor-mfe.nix {};
+    })
+  ];
+  
+  rice = prev.callPackage ./rice.nix {};
 }

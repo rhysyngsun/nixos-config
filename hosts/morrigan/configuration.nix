@@ -10,6 +10,8 @@
     # inputs.hardware.nixosModules.common-ssd
     inputs.hyprland.nixosModules.default
 
+    ./services
+    ./open-learning
     ./hardware-configuration.nix
   ];
 
@@ -18,10 +20,6 @@
   i18n.inputMethod.enabled = "fcitx5";
 
   programs.hyprland.enable = true;
-
-  environment.variables = {
-    WLR_RENDERER_ALLOW_SOFTWARE = "1";
-  };
 
   environment.systemPackages = with pkgs; [
     # nix-doc
@@ -75,16 +73,13 @@
     ];
   };
 
-  services.xserver = {
-    enable = true;
-    displayManager.sddm.enable = true;
-  };
+  programs.sway.enable = true;
+
+  security.pam.services.swaylock.text = "auth include login";
 
   virtualisation.docker = {
     enable = true;
   };
-
-  security.pam.services.swaylock.text = "auth include login";
 
   programs.dconf.enable = true;
 
@@ -112,6 +107,15 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.driSupport = true;
   hardware.nvidia.modesetting.enable = true;
+
+  services.gnome.at-spi2-core.enable = true;
+
+  services.journald = {
+    extraConfig = ''
+    # 3 days
+    MaxRetentionSec=259200
+    '';
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "22.11";

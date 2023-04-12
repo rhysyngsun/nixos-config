@@ -16,10 +16,10 @@ let
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.sharedModules = [
-          outputs.homeManagerModules
+          ../home/common
         ];
         home-manager.users = {
-          "nathan" = import ../users/nathan;
+          "nathan" = import ../home/nathan;
         };
 
         networking.hostName = "${hostName}";
