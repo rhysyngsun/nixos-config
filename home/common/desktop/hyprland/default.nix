@@ -102,6 +102,7 @@ in
       bind=$mainMod,F,fullscreen,1
       bind=$mainMod SHIFT,F,fullscreen,0
       bind=$mainMod, V, togglefloating
+      bind=$mainMod, P, pin
 
       bind=$mainMod,1,workspace,1
       bind=$mainMod,2,workspace,2
