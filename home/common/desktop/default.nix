@@ -31,6 +31,8 @@
       vlc
 
       keybase-gui
+
+      gimp
     ];
 
     sessionVariables =

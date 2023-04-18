@@ -19,6 +19,8 @@
       just
       usql
 
+      nnn
+
       # virtualization
       lazydocker
       vagrant
