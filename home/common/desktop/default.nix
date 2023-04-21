@@ -33,6 +33,10 @@
       keybase-gui
 
       gimp
+
+      libreoffice-qt
+      hunspell
+      hunspellDicts.en_US
     ];
 
     sessionVariables =
