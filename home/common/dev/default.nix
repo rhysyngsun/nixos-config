@@ -4,7 +4,9 @@
     ./git
     ./neovim.nix
     ./nodejs
+    # ./ol-local
     ./python
+    ./tmux.nix
     ./zsh
   ];
 
@@ -25,5 +27,9 @@
       lazydocker
       vagrant
     ];
+  };
+
+  programs.vscode.userSettings = {
+    "editor.formatOnType" = true;
   };
 }

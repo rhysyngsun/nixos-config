@@ -62,15 +62,7 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    fonts = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "FiraMono"
-          "Iosevka"
-        ];
-      })
-    ];
+    fonts = map (f: f.package) (builtins.attrValues pkgs.rice.fonts);
   };
 
   programs.sway.enable = true;

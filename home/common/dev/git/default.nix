@@ -18,6 +18,11 @@
       enable = true;
     };
 
+    ignores = [
+      ".direnv/"
+      ".envrc"
+    ];
+
     includes = [
       { path = "${config.xdg.configHome}/git/default.gitconfig"; }
       {

@@ -64,7 +64,13 @@ in
     };
     monospace = {
       name = "FiraCode Nerd Font Mono";
-      package = pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; };
+      package = pkgs.nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "FiraMono"
+          "Iosevka"
+        ];
+      };
       size = 10;
     };
   };

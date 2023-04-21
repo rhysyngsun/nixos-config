@@ -34,7 +34,7 @@ in
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
 
-      exec-once=${./scripts/launch_waybar.sh}
+      # exec-once=${./scripts/launch_waybar.sh}
       exec-once=${pkgs.hyprpaper}/bin/hyprpaper
       exec-once=xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
       exec-once=export GDK_SCALE=2; export XCURSOR_SIZE=32; export GTK_THEME="Catppuccin-Mocha-Compact-Lavender-Dark"
@@ -77,10 +77,10 @@ in
       }
     
       windowrulev2 = tile, class:^(Spotify)$
-      windowrulev2 = workspace 1, class:^(Alacritty)$
-      windowrulev2 = workspace 2, class:^(Slack|discord)$
-      windowrulev2 = workspace 3, class:^(Code)$
-      windowrulev2 = workspace 4, class:^(firefox)$
+      # windowrulev2 = workspace 1, class:^(Alacritty)$
+      # windowrulev2 = workspace 2, class:^(Slack|discord)$
+      # windowrulev2 = workspace 3, class:^(Code)$
+      # windowrulev2 = workspace 4, class:^(firefox)$
       windowrulev2 = opacity 0.9 0.9,class:^(firefox|Code|Slack|discord|Spotify)$
     
       exec-once = firefox & alacritty & slack
@@ -94,7 +94,7 @@ in
       bindl=,switch:Lid Switch,exec,${cmds.swaylock}
       bind=$mainMod,L,exec,${cmds.swaylock}
 
-      bind=$mainMod,RETURN,exec,${config.programs.alacritty.package}/bin/alacritty
+      bind=$mainMod,RETURN,exec,${config.programs.alacritty.package}/bin/alacritty -e tmux
       bind=$mainMod,B,exec,${config.programs.firefox.package}/bin/firefox
       bind=$mainMod,D,exec,${config.programs.rofi.package}/bin/rofi -show drun -show-icons
       # bind=$mainMod,N,exec,${pkgs.swaynotificationcenter}/bin/swaync-client -t

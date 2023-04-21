@@ -10,7 +10,7 @@ with lib;
         command = let
           background = ../../../backgrounds/the_valley.png;
           style = pkgs.writeText "greetd-gtkgreet.css" ''
-            @import url("${pkgs.rice.gtk.css-path}");
+            @import url("${pkgs.rice.gtk.theme.css}");
             window {
               background-image: url("${background}");
               background-position: center;
