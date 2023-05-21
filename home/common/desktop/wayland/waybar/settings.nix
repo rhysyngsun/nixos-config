@@ -6,7 +6,6 @@ with lib;
     position = "top";
     modules-left = [
       "wlr/workspaces"
-      "wlr/taskbar"
     ];
     modules-center = [
       "cpu"
@@ -19,7 +18,6 @@ with lib;
       "clock"
       "network"
       "pulseaudio"
-      # "custom/notification"
       "tray"
       "custom/powermenu"
     ];
@@ -37,66 +35,47 @@ with lib;
         "6" = "6";
         "7" = "7";
         "8" = "8";
+        "9" = "9";
+        "10" = "10";
       };
-    };
-
-    "wlr/taskbar" = {
-      on-click = "activate";
-      ignore-list = [
-        "Alacritty"
-      ];
     };
 
     "cpu" = {
       interval = 10;
-      format = "<span font='20' rise='-4000'>󰍛</span> {usage}%";
+      format = "<span font='11'>󰍛</span>  {usage}%";
       tooltip = false;
     };
     "memory" = {
       interval = 10;
-      format = "<span font='20' rise='-4000'>󰍛</span> {}%";
+      format = "<span font='11'>󰍛</span>  {}%";
     };
     "disk" = {
       interval = 60;
-      format = "<span font='20' rise='-4500'>󰋊</span> {percentage_used}%";
+      format = "<span font='11'>󰋊</span>  {percentage_used}%";
       path = "/";
     };
     "clock" = {
       interval = 1;
-      format = "{:<span font='18' rise='-4000'></span> %a %b %d, %H:%M:%S}";
-      tooltip-format = "<tt><small>{calendar}</small></tt>";
-      calendar = {
-        "mode" = "year";
-        "mode-mon-col" = 3;
-        "weeks-pos" = "right";
-        "on-scroll" = 1;
-        "on-click-right" = "mode";
-        "format" = {
-          "months" = "<span color='#ffead3'><b>{}</b></span>";
-          "days" = "<span color='#ecc6d9'><b>{}</b></span>";
-          "weeks" = "<span color='#99ffdd'><b>W{}</b></span>";
-          "weekdays" = "<span color='#ffcc66'><b>{}</b></span>";
-          "today" = "<span color='#ff6699'><b><u>{}</u></b></span>";
-        };
-      };
+      format = "{:<span font='11'></span>  %a %b %d, %H:%M:%S}";
     };
     "temperature" = {
-      interval = 5;
+      interval = 1;
       critical-threshold = 60;
-      format = "<span font='12'></span> {temperatureC}°C";
+      thermal_zone = 1;
+      format = "<span font='11'></span> {temperatureC}°C";
     };
     "network" = {
-      format-wifi = "<span font='20' rise='-4000'></span> {signalStrength}%";
-      format-ethernet = "<span font='18' rise='-4000'></span>";
+      format-wifi = "<span font='11'></span>   {signalStrength}%";
+      format-ethernet = "<span font='11'></span> ";
       tooltip-format = "{ifname} via {gwaddr}";
       format-linked = "{ifname} (No IP)";
-      format-disconnected = "<span font='16' rise='-2000'></span>";
+      format-disconnected = "<span font='11'></span> ";
     };
     "pulseaudio" = {
-      format = "<span font='18' rise='-3000'>{icon}</span> {volume}%   {format_source}";
-      format-muted = "<span font='18' rise='-3000'></span>   {format_source}";
-      format-source = "<span font='16' rise='-2000'></span>";
-      format-source-muted = "<span font='16' rise='-2000'></span>";
+      format = "<span font='11'>{icon}</span>  {volume}%   {format_source}";
+      format-muted = "<span font='11'></span>   {format_source}";
+      format-source = "<span font='11'></span>";
+      format-source-muted = "<span font='11'></span>";
       format-icons = {
         default = [ "" ]; 
         headset = "󰋎";
@@ -138,8 +117,8 @@ with lib;
 
     "custom/powermenu" = {
       tooltip = false;
-      format = "<span font='16'>⏻</span>";
-      on-click = "${getExe config.programs.rofi.package} -show power-menu -modi power-menu:rofi-power-menu";
+      format = "<span font='11'>⏻</span>";
+      on-click = "${pkgs.wlogout}/bin/wlogout -p layer-shell";
     };
 
     # "custom/notification" = {

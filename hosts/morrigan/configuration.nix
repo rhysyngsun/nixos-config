@@ -15,8 +15,6 @@
     ./hardware-configuration.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
   i18n.inputMethod.enabled = "fcitx5";
 
   programs.hyprland.enable = true;
@@ -24,21 +22,35 @@
   environment.systemPackages = with pkgs; [
     # nix-doc
     # gvfs
+    libxcrypt
+    v4l-utils
+    wireplumber
   ];
 
-  networking.hostName = "morrigan";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "morrigan";
+    networkmanager = {
+      enable = true;
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # enable loopback webcam in kernel
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
+
   # enable audio
+  security.rtkit.enable = true;
   services.pipewire = {
-    enable = false;
+    enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   users = {
@@ -53,7 +65,8 @@
           "docker"
           "wheel"
           "input"
-          "pulse"
+          "audio"
+          "networkmanager"
         ];
       };
     };
@@ -62,15 +75,16 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    fonts = map (f: f.package) (builtins.attrValues pkgs.rice.fonts);
+    fonts = map (f: f.package) (builtins.attrValues pkgs.rice.font);
   };
 
   programs.sway.enable = true;
 
   security.pam.services.swaylock.text = "auth include login";
 
-  virtualisation.docker = {
-    enable = true;
+  virtualisation = {
+    docker.enable = true;
+    virtualbox.host.enable = true;
   };
 
   programs.dconf.enable = true;
@@ -86,8 +100,8 @@
   services.avahi.openFirewall = true;
 
   # Enable sound
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  sound.enable = false;
+  hardware.pulseaudio.enable = false;
 
   # timezone
   services.localtimed.enable = true;
@@ -101,6 +115,8 @@
   hardware.nvidia.modesetting.enable = true;
 
   services.gnome.at-spi2-core.enable = true;
+
+  services.devmon.enable = true;
 
   services.journald = {
     extraConfig = ''

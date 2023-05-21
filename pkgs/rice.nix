@@ -63,7 +63,8 @@ in
       size = 10;
     };
     monospace = {
-      name = "FiraCode Nerd Font Mono";
+      name = "Iosevka Nerd Font Mono";
+      family = "FiraCode, FiraMono, Iosevka, mono";
       package = pkgs.nerdfonts.override {
         fonts = [
           "FiraCode"
@@ -117,5 +118,5 @@ in
     }) + "/basic/.local/share/rofi/themes";
   };
 
-  opacity = 0.8;
+  opacity = 1.0;
 }

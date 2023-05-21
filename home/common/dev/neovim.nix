@@ -20,7 +20,6 @@
 
     extraPackages = with pkgs; [
       gcc
-      unzip
       tree-sitter
       nodejs
       nixpkgs-fmt
@@ -48,6 +47,11 @@
 
   xdg.configFile."nvim/lua/plugins" = {
     source = inputs.nvchad + "/lua/plugins";
+    recursive = true;
+  };
+  
+  xdg.configFile."nvim/" = {
+    source = ./nvim;
     recursive = true;
   };
 }

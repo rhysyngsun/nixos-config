@@ -11,32 +11,49 @@
       xfce.thunar
       unstable.obsidian
       libsForQt5.kcharselect
+      networkmanagerapplet
       pavucontrol
       wtf
       # xplr
       discord
       slack
       zoom-us
+      element-desktop
+      fractal-next
       file
       exiftool
       xdg-utils
+      unzip
+      zlib
+
+      copier
 
       thunderbird
 
       baobab
 
       playerctl
+      pamixer
       nuclear
       dropbox
       vlc
+      coreutils-full
+      less
+      pulseaudio
 
       keybase-gui
 
       gimp
+      shotwell
 
       libreoffice-qt
       hunspell
       hunspellDicts.en_US
+
+      transmission-gtk
+
+      # blender-launcher
+      blender
     ];
 
     sessionVariables =
@@ -56,9 +73,7 @@
     alacritty = {
       enable = true;
       settings = {
-        font = {
-          family = pkgs.rice.font.monospace.name;
-        };
+        font.normal.family = pkgs.rice.font.monospace.name;
         window = {
           padding = {
             x = 8;
@@ -111,6 +126,14 @@
 
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
+
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        obs-pipewire-audio-capture
+      ];
+    };
 
     pls = {
       enable = true;

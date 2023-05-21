@@ -66,6 +66,9 @@ in
       # utils
       tutor-ip
       tutor-ip-watch
+
+      pkgs.python311Packages.pkginfo
+      pkgs.python311Packages.wheel-inspect
     ];
   };
 

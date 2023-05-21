@@ -9,6 +9,5 @@ final: prev:
       tutor-mfe = finalPy.callPackage ./python/tutor-mfe.nix {};
     })
   ];
-  
   rice = prev.callPackage ./rice.nix {};
 }

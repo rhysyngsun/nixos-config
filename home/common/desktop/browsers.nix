@@ -15,6 +15,10 @@ in
         extensions = with addons; [
           # lastpass-password-manager
         ];
+
+        settings = {
+          "network.protocol-handler.expose.magnet" = true;
+        };
       };
     };
   };

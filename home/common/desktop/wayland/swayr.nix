@@ -38,9 +38,9 @@ in
       Service = {
         Type = "simple";
         ExecStart = "${swayrd}";
-        # Environment = [
-        #   "SWAYSOCK=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
-        # ];
+        Environment = [
+          "SWAYSOCK=/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+        ];
       };
     };
   };

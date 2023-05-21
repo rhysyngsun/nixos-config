@@ -32,9 +32,9 @@ with lib;
 
   environment = {
     systemPackages = with pkgs; [
-      rice.gtk.theme
-      rice.cursors
-      rice.icons
+      rice.gtk.theme.package
+      rice.cursors.package
+      rice.icons.package
       cage
       greetd.gtkgreet
     ];

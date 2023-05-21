@@ -3,16 +3,33 @@
 
   inputs = {
     # Nixpkgs
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
     hyprpaper.url = "github:hyprwm/hyprpaper";
+
+    # hy3 = {
+    #   url = "github:outfoxxed/hy3";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
 
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+
+    # only needed if you use as a package set:
+    nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixpak = {
+      url = "github:nixpak/nixpak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
@@ -20,7 +37,12 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    anyrun.url = "github:Kirottu/anyrun";
+    anyrun.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-rice = { url = "github:bertof/nix-rice"; };
+
+    copier.url = "github:copier-org/copier";
 
     networkmanager-dmenu = {
       url = "github:firecat53/networkmanager-dmenu";
@@ -42,14 +64,13 @@
       flake = false;
     };
     
-
     nvchad = {
       url = "github:nvchad/nvchad";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, hyprland, home-manager, nix-rice, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
 
@@ -60,12 +81,16 @@
         };
         nixpkgs = {
           overlays = [
+            # overlays from inputs
+            inputs.hyprland.overlays.default
+            inputs.nix-rice.overlays.default
+            inputs.anyrun.overlay
+            inputs.copier.overlays.default
+            inputs.nixpkgs-wayland.overlay
+            # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
             outputs.overlays.unstable-packages
-            # overlays from inputs
-            hyprland.overlays.default
-            nix-rice.overlays.default
           ];
           config = {
             allowUnfree = true;
@@ -107,7 +132,9 @@
           import ./home/nathan {
             inherit inputs outputs nix-defaults;
           }
-        );
+        ) // {
+          nixpkgs.config = nix-defaults.nixpkgs.config;
+        };
       };
     };
 }
