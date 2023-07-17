@@ -10,6 +10,7 @@
   modifications = final: prev: let
     hyprctl = "${prev.hyprland}/bin/hyprctl";
   in {
+    devenv = inputs.devenv.packages.${final.system}.devenv;
     # hy3 = inputs.hy3.packages.${final.system}.hy3;
     hyprpaper = inputs.hyprpaper.packages.${final.system}.default;
     # waybar with Hyprland IPC support, allow workspace switching

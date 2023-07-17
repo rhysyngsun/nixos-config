@@ -34,7 +34,7 @@
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     anyrun.url = "github:Kirottu/anyrun";
@@ -63,10 +63,15 @@
       url = "github:catppuccin/waybar";
       flake = false;
     };
-    
+
     nvchad = {
       url = "github:nvchad/nvchad";
       flake = false;
+    };
+
+    devenv = {
+      url = "github:cachix/devenv/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

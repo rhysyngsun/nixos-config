@@ -35,8 +35,6 @@ in
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
 
-      # exec-once=${./scripts/launch_waybar.sh}
-      # exec-once=${pkgs.hyprpaper}/bin/hyprpaper
       exec-once=xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
       exec-once=export GDK_SCALE=2; export XCURSOR_SIZE=32; export GTK_THEME="Catppuccin-Mocha-Compact-Lavender-Dark"
       exec-once=hyprctl setcursor "Catppuccin-Mocha-Lavender" 32
@@ -82,12 +80,6 @@ in
 
       dwindle {
         preserve_split = on
-      }
-
-      animations = {
-        # bezier = wlogoutFadeInCurve, 0.72, 0.01, 0.43, 0.59
-
-        # animation = wlogoutFadeIn, 1, 12, wlogoutFadeInCurve, fade
       }
 
       misc {
@@ -171,7 +163,6 @@ in
       bind=$mainMod,RETURN,exec,${config.programs.alacritty.package}/bin/alacritty -e tmux
       bind=$mainMod,B,exec,${config.programs.firefox.package}/bin/firefox
       bind=$mainMod,D,exec,${pkgs.anyrun}/bin/anyrun
-      # bind=$mainMod,N,exec,${pkgs.swaynotificationcenter}/bin/swaync-client -t
 
       bind=$mainMod,F,fullscreen,1
       bind=$mainMod SHIFT,F,fullscreen,0
@@ -218,7 +209,7 @@ in
 
       bind=,Print, exec, flameshot gui
 
-      bind = $CONTROL_SHIFT, P, pass, ^(com\.obsproject\.Studio)$ # start/stop obs screen recording
+      bind=$CONTROL_SHIFT,P,pass,^(com\.obsproject\.Studio)$ # start/stop obs screen recording
     '';
 
     plugins = [

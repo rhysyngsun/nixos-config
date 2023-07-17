@@ -97,7 +97,11 @@ in
 
   alacritty = {
     package = catppuccin-alacritty;
-    config = catppuccin-alacritty + "/alacritty/catppuccin/catppuccin-${flavor.lower}.yml";
+    config = {
+      imports = [
+        (catppuccin-alacritty + "/catppuccin-${flavor.lower}.yml")
+      ];
+    };
   };
 
   btop = {

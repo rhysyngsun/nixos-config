@@ -3,10 +3,7 @@ let
   rice = pkgs.rice;
 in
 {
-  programs.alacritty.settings = {
-    import = [
-      "${rice.alacritty.config}"
-    ];
+  programs.alacritty.settings = rice.alacritty.config // {
     window = {
       inherit (rice) opacity;
     };

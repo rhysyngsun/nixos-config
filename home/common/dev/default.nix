@@ -30,6 +30,8 @@
       vagrant
 
       doggo
+
+      devenv
     ];
     sessionPath = [ "$HOME/bin" ];
   };

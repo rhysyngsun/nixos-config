@@ -54,6 +54,8 @@
 
       # blender-launcher
       blender
+
+      glade
     ];
 
     sessionVariables =
