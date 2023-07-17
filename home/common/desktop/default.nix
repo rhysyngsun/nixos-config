@@ -56,6 +56,7 @@
       blender
 
       glade
+      cambalache
     ];
 
     sessionVariables =
