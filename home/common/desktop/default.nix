@@ -8,7 +8,6 @@
   ];
   home = {
     packages = with pkgs; [
-      xfce.thunar
       unstable.obsidian
       libsForQt5.kcharselect
       networkmanagerapplet
