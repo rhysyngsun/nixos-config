@@ -21,7 +21,7 @@
 
   environment.systemPackages = with pkgs; [
     # nix-doc
-    # gvfs
+    gvfs
     libxcrypt
     v4l-utils
     wireplumber
