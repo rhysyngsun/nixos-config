@@ -198,7 +198,7 @@ in
       bindm=ALT,mouse:272,movewindow
 
       # Bind volume controls
-      bind=,XF86AudioRaiseVolume,exec,pamixer -i 5
+      bind=,XF86AudioRaiseVolume,exec,pamixer -i 5 --allow-boost --set-limit 150
       bind=,XF86AudioLowerVolume,exec,pamixer -d 5
       bind=,XF86AudioMute,exec,pamixer -t
       bind=SHIFT,XF86AudioMute,exec,pamixer --default-source -t

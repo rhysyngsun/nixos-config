@@ -13,6 +13,8 @@
       libsForQt5.kcharselect
       networkmanagerapplet
       pavucontrol
+      helvum
+      qpwgraph
       wtf
       # xplr
       discord
