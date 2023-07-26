@@ -53,7 +53,7 @@
 
       transmission-gtk
 
-      # blender-launcher
+      blender-launcher
       blender
 
       glade

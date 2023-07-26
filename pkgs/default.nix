@@ -10,4 +10,6 @@ final: prev:
     })
   ];
   rice = prev.callPackage ./rice.nix {};
+  blender-launcher = prev.callPackage ./blender-launcher {};
+  mit = prev.callPackage ./mit {};
 }

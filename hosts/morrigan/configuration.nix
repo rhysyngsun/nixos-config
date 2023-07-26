@@ -35,6 +35,7 @@
   environment.systemPackages = with pkgs; [
     # nix-doc
     libxcrypt
+    openssl
     v4l-utils
     wireplumber
   ];
