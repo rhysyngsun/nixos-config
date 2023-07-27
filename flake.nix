@@ -37,6 +37,12 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -75,7 +81,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, sops-nix, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
 
@@ -127,6 +133,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/morrigan/configuration.nix
+            sops-nix.nixosModules.sops
             nix-defaults
           ];
         };

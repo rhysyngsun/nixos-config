@@ -1,0 +1,11 @@
+keys:
+  - &nathan age17htyy5xcu7v9muxy8hpkf6azac7v4vy88d8wnc38fd2myrc70ymqmxzs5c
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *nathan
+  - path_regex: /dev/stdin$
+    key_groups:
+    - age:
+      - *nathan
