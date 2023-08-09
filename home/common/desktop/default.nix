@@ -26,6 +26,7 @@
       xdg-utils
       unzip
       zlib
+      gnome.gnome-calendar
 
       copier
 

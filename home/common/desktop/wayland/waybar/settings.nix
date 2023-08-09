@@ -16,7 +16,6 @@ with lib;
     ];
     modules-right = [
       "clock"
-      "network"
       "pulseaudio"
       "tray"
       "custom/powermenu"
@@ -56,7 +55,7 @@ with lib;
     };
     "clock" = {
       interval = 1;
-      format = "{:<span font='11'></span>  %a %b %d, %H:%M:%S}";
+      format = "{:<span font='11'></span>   %a %b %d, %H:%M:%S}";
     };
     "temperature" = {
       interval = 1;
@@ -94,18 +93,18 @@ with lib;
         critical = 10;
       };
       format = "<span font='11'>{icon}</span> {capacity}%";
-      format-charging = "<span font='11'></span> {capacity}%";
+      format-charging = "<span font='11'>󰂄</span> {capacity}%";
       format-icons = [
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
+        "󰂃"
+        "󰁺"
+        "󰁻"
+        "󰁼"
+        "󰁽"
+        "󰁾"
+        "󰁿"
+        "󰂀"
+        "󰂁"
+        "󰂂"
         "󰁹"
       ];
       format-alt = "{icon} {time}";

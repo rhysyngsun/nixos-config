@@ -22,6 +22,16 @@ in
     transition-duration: .5s;
   }
 
+  window#waybar > .horizontal {   
+    margin: 8px 8px 0 8px;
+    color: @lavender;
+    background-color: @base; 
+    font-weight: normal;
+    border: 0;
+    border-radius: ${border-radius};
+    padding: 0;
+  }
+
   button {
     /* Use box-shadow instead of border so the text isn't offset */
     box-shadow: inset 0 -3px @crust;
@@ -31,18 +41,6 @@ in
   }
 
   /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-
-  #workspaces button {
-    padding: 0 8px;
-    background-color: @base;
-    color: @lavender;
-    margin: 0;
-    -gtk-icon-transform: scale(1.5);
-  }
-
-  #workspaces button.active {
-    background-color: @crust;
-  }
 
   #clock,
   #battery,
@@ -54,42 +52,30 @@ in
   #keyboard-state,
   #mpd,
   #disk,
-  #workspaces,
   #tray,
   #window,
-  #custom-notification,
   #taskbar,
   #custom-powermenu {
     padding: 5px 10px;
-    margin: 8px 0 0 0;
-    color: @lavender;
-    background-color: @base; 
-    font-weight: normal;
-    border: 0;
-    /*border-top: 1px solid @surface2;
-    border-bottom: 1px solid @surface2;*/
   }
 
   #workspaces {
-    background-color: @base;
-    margin-left: 8px;
-    margin-top: 8px;
-    margin-right: 0;
-    padding: 0 10px;
-    border-radius: 0;
-    border-right: 0; 
+    padding: 0;
+    margin-left: ${border-radius};
   }
 
-  #battery, #custom-powermenu, #workspaces, #tray {
-    border-top-right-radius: ${border-radius}; 
-    border-bottom-right-radius: ${border-radius};
-    /*border-right: 1px solid @surface2;*/
+  #workspaces button {
+    padding: 0 8px;
+    color: @surface2;
+    margin: 0;
+    -gtk-icon-transform: scale(1.5);
   }
 
-  #clock, #cpu, #workspaces, #custom-powermenu {
-    border-top-left-radius: ${border-radius}; 
-    border-bottom-left-radius: ${border-radius};
-    /* border-left: 1px solid @surface2; */
+  #workspaces button.active {
+    color: @lavender;
+
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px @lavender;
   }
 
   #custom-powermenu {

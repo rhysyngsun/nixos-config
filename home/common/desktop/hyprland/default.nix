@@ -208,8 +208,6 @@ in
       bind=,XF86AudioPrev,exec,playerctl previous
 
       bind=,Print, exec, flameshot gui
-
-      bind=$CONTROL_SHIFT,P,pass,^(com\.obsproject\.Studio)$ # start/stop obs screen recording
     '';
 
     plugins = [
