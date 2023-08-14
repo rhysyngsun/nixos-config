@@ -3,7 +3,7 @@
   home = {
     shellAliases = import ./aliases.nix;
 
-    packages = with pkgs; [ pre-commit ];
+    packages = with pkgs; [pre-commit ];
   };
 
   xdg.configFile."git" = {
@@ -11,24 +11,35 @@
     recursive = true;
   };
 
-  programs.git = {
-    enable = true;
-
-    delta = {
+  programs = {
+    gh = {
+      # github CLI
       enable = true;
+      # gitCredentialHelper.enable = true;
+      settings = {
+        git_protocol = "ssh";
+      };
     };
 
-    ignores = [
-      ".direnv/"
-      ".envrc"
-    ];
+    git = {
+      enable = true;
 
-    includes = [
-      { path = "${config.xdg.configHome}/git/default.gitconfig"; }
-      {
-        path = "${config.xdg.configHome}/git/ol.gitconfig";
-        condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
-      }
-    ];
+      delta = {
+        enable = true;
+      };
+
+      ignores = [
+        ".direnv/"
+        ".envrc"
+      ];
+
+      includes = [
+        { path = "${config.xdg.configHome}/git/default.gitconfig"; }
+        {
+          path = "${config.xdg.configHome}/git/ol.gitconfig";
+          condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
+        }
+      ];
+    };
   };
 }
