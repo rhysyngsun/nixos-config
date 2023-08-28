@@ -16,7 +16,9 @@ with pkgs.rice.colors;
       "workbench.colorTheme" = "Catppuccin ${flavor.name}";
       "catppuccin.accentColor" = accent.lower;
       # use your accent on the statusBar as well
-      "catppuccin.customUIColors"."${flavor.lower}"."statusBar.foreground" = "accent";
+      "catppuccin.customUIColors"."${flavor.lower}" = {
+        "statusBar.foreground" = "accent";
+      };
 
       "editor.fontFamily" = "'Iosevka Nerd Font Mono', 'monospace', monospace";
     };

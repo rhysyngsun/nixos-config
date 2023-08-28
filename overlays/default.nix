@@ -10,6 +10,29 @@
   modifications = final: prev: let
     hyprctl = "${prev.hyprland}/bin/hyprctl";
   in {
+
+    alacritty = prev.alacritty.overrideAttrs (oldAttrs: let
+        version = "0.13-dev";
+        src = prev.fetchFromGitHub {
+          owner = "alacritty";
+          repo = prev.alacritty.pname;
+          rev = "33306142195b354ef3485ca2b1d8a85dfc6605ca";
+          hash = "sha256-6pul2gpYnT9FCYWt7gwA60QESpHJ2Re2FTeLzcPGnYY=";
+        };
+      in {
+        inherit version src;
+        cargoDeps = oldAttrs.cargoDeps.overrideAttrs (_: {
+          inherit src;
+          outputHash = "sha256-qMQWlDTGWTqg+GSpW95y4Z0PkK4Nz+WygviOxmdvvSs=";
+          # outputHash = "sha256-Tf2gRTy3bq8KW3YodNGwgszSa8f3N4DxV6s9KkvOjmc=";
+        });
+        postInstall =
+          builtins.replaceStrings
+            [ "extra/alacritty.man" "extra/alacritty-msg.man" "install -Dm 644 alacritty.yml $out/share/doc/alacritty.yml" ]
+            [ "extra/alacritty.*" "extra/alacritty-msg.*" "" ]
+            oldAttrs.postInstall;
+      });
+    
     devenv = inputs.devenv.packages.${final.system}.devenv;
     # hy3 = inputs.hy3.packages.${final.system}.hy3;
     hyprpaper = inputs.hyprpaper.packages.${final.system}.default;

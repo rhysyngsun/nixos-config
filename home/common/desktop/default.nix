@@ -75,19 +75,6 @@
   };
 
   programs = {
-    alacritty = {
-      enable = true;
-      settings = {
-        font.normal.family = pkgs.rice.font.monospace.name;
-        window = {
-          padding = {
-            x = 8;
-            y = 8;
-          };
-        };
-        shell.program = config.home.sessionVariables.SHELL;
-      };
-    };
 
     broot = {
       enable = true;
@@ -127,6 +114,18 @@
           rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
         };
       };
+    };
+
+    krita = {
+      enable = true;
+      plugins = with pkgs.krita-plugins; [
+        buli-brush-switch
+        compact-brush-toggler
+        shapes-and-layers
+        shortcut-composer
+        subwindow-organizer
+        ui-redesign
+      ];
     };
 
     # Let Home Manager install and manage itself.

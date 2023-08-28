@@ -135,6 +135,8 @@ in
       windowrulev2 = nodim, class:^(firefox)$, title:^(Picture-in-Picture)$
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(firefox)$, title:^(Picture-in-Picture)$
 
+      windowrulev2 = opacity 1.0 override 1.0 override, class:^(krita)$
+
       windowrulev2 = forcergbx, class:^(blender)$
 
       layerrule = blur, ^(gtk-layer-shell|wlogout)$

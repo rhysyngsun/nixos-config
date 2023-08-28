@@ -2,5 +2,6 @@
 {
   imports = [
     ./eww
+    ./krita
   ];
 }

@@ -12,4 +12,5 @@ final: prev:
   rice = prev.callPackage ./rice.nix {};
   blender-launcher = prev.callPackage ./blender-launcher {};
   mit = prev.callPackage ./mit {};
+  krita-plugins = prev.callPackage ./krita-plugins {};
 }

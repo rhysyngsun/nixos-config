@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 let 
   dependencies = [
-  ]
+  ];
   cfg = config.programs.eww;
 in
 {
