@@ -9,7 +9,7 @@ in stdenv.mkDerivation {
     owner = "DotBow";
     repo = "Blender-Launcher";
     rev = "v${version}";
-    hash = "sha256-0BY8VcbFhvkM+9pyHq7OhYOmLi0aWDUf3FJ1XkNtygo=";
+    hash = "sha256-HnQK/hq3iwY0vrYdwNobxGzaswPexZe86YLJdK1078w=";
   };
 
   patches = [];

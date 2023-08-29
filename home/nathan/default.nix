@@ -9,9 +9,10 @@ in
 {
   modules = [
     inputs.hyprland.homeManagerModules.default
+    inputs.anyrun.homeManagerModules.default
+    outputs.homeManagerModules
     ./home.nix
     ../common
-    outputs.homeManagerModules
   ];
   pkgs = import inputs.nixpkgs {
     inherit system;

@@ -22,8 +22,8 @@ let
   catppuccin-alacritty = pkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "alacritty";
-    rev = "3c808cbb4f9c87be43ba5241bc57373c793d2f17";
-    hash = "sha256-w9XVtEe7TqzxxGUCDUR9BFkzLZjG8XrplXJ3lX6f+x0=";
+    rev = "a8579d0f4c16652b0bf705062f4f03b950f7096f";
+    hash = "sha256-1iFDzLBRpbOE3teWvK4BdKXXhB/xR1zqfigo34Xe1ow=";
   };
 in
 {
@@ -98,8 +98,8 @@ in
   alacritty = {
     package = catppuccin-alacritty;
     config = {
-      imports = [
-        (catppuccin-alacritty + "/catppuccin-${flavor.lower}.yml")
+      import = [
+        (catppuccin-alacritty + "/catppuccin-${flavor.lower}.toml")
       ];
     };
   };

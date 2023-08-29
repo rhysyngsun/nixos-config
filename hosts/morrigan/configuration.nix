@@ -17,7 +17,10 @@
 
   i18n.inputMethod.enabled = "fcitx5";
 
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
 
   # file manager
   programs.thunar = {

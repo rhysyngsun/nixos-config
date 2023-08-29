@@ -31,6 +31,10 @@ in
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor=,preferred,auto,auto
 
+      xwayland {
+        force_zero_scaling = true
+      }
+
       exec-once=${./scripts/xdg-portals-fix.sh}
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
@@ -65,10 +69,11 @@ in
       decoration {
         rounding = 5px
 
-        blur = yes
-        blur_size = 2
-        blur_passes = 1
-        blur_new_optimizations = on
+        blur {
+          size = 2
+          passes = 1
+          new_optimizations = yes
+        }
 
         active_opacity = 1.0
         inactive_opacity = 0.6
@@ -162,9 +167,9 @@ in
       bindl=,switch:Lid Switch,exec,${cmds.swaylock}
       bind=$mainMod,L,exec,${cmds.swaylock}
 
-      bind=$mainMod,RETURN,exec,${config.programs.alacritty.package}/bin/alacritty -e tmux
-      bind=$mainMod,B,exec,${config.programs.firefox.package}/bin/firefox
-      bind=$mainMod,D,exec,${pkgs.anyrun}/bin/anyrun
+      bind=$mainMod,RETURN,exec,alacritty -e tmux
+      bind=$mainMod,B,exec,firefox
+      bind=$mainMod,D,exec,anyrun
 
       bind=$mainMod,F,fullscreen,1
       bind=$mainMod SHIFT,F,fullscreen,0
@@ -218,7 +223,6 @@ in
 
     xwayland = {
       enable = true;
-      hidpi = true;
     };
   };
 }

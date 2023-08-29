@@ -35,23 +35,13 @@
     withRuby = true;
   };
 
-  xdg.configFile."nvim/init.lua" = {
-    source = inputs.nvchad + "/init.lua";
-    recursive = true;
-  };
+  # xdg.configFile."nvim" = {
+  #   source = inputs.nvchad;
+  #   recursive = true;
+  # };
 
-  xdg.configFile."nvim/lua/core" = {
-    source = inputs.nvchad + "/lua/core";
-    recursive = true;
-  };
-
-  xdg.configFile."nvim/lua/plugins" = {
-    source = inputs.nvchad + "/lua/plugins";
-    recursive = true;
-  };
-  
-  xdg.configFile."nvim/" = {
-    source = ./nvim;
-    recursive = true;
-  };
+  # xdg.configFile."nvim/" = {
+  #   source = ./nvim;
+  #   recursive = true;
+  # };
 }

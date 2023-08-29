@@ -29,5 +29,5 @@ in
   };
   
   xdg.configFile."alacritty/alacritty.yml".enable = false;
-  xdg.configFile."alacritty/alacritty.toml".text = tomlFormat.generate "alacritty.toml" cfg.settings;
+  xdg.configFile."alacritty/alacritty.toml".source = tomlFormat.generate "alacritty.toml" cfg.settings;
 }

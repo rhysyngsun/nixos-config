@@ -3,8 +3,14 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "nixpkgs-unstable";
+
+    nixpkgs-wayland = {
+      url = "github:nix-community/nixpkgs-wayland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,16 +21,6 @@
     #   url = "github:outfoxxed/hy3";
     #   inputs.hyprland.follows = "hyprland";
     # };
-
-    # You can access packages and modules from different nixpkgs revs
-    # at the same time. Here's an working example:
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
-
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-
-    # only needed if you use as a package set:
-    nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpak = {
       url = "github:nixpak/nixpak";
@@ -93,9 +89,7 @@
         nixpkgs = {
           overlays = [
             # overlays from inputs
-            inputs.hyprland.overlays.default
             inputs.nix-rice.overlays.default
-            inputs.anyrun.overlay
             inputs.copier.overlays.default
             inputs.nixpkgs-wayland.overlay
             # from flake outputs

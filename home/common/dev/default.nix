@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./alacritty
     ./git
     ./neovim.nix
     ./nodejs

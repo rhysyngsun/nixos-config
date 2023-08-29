@@ -23,7 +23,7 @@
         inherit version src;
         cargoDeps = oldAttrs.cargoDeps.overrideAttrs (_: {
           inherit src;
-          outputHash = "sha256-qMQWlDTGWTqg+GSpW95y4Z0PkK4Nz+WygviOxmdvvSs=";
+          outputHash = "sha256-Tf2gRTy3bq8KW3YodNGwgszSa8f3N4DxV6s9KkvOjmc=";
           # outputHash = "sha256-Tf2gRTy3bq8KW3YodNGwgszSa8f3N4DxV6s9KkvOjmc=";
         });
         postInstall =
@@ -51,7 +51,7 @@
         inherit version;
         src = prev.pkgs.fetchurl {
           url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
-          hash = "sha256-ccuTzvsbygifFVCp5LJkMmKBZK2amMbAesXDlNXxoco=";
+          hash = "sha256-R6M180Gcqu4yZC+CtWnixSkjPe8CvgoTPWSz7B6ZAlE=";
         };
       });
 
