@@ -17,11 +17,6 @@
 
     hyprpaper.url = "github:hyprwm/hyprpaper";
 
-    # hy3 = {
-    #   url = "github:outfoxxed/hy3";
-    #   inputs.hyprland.follows = "hyprland";
-    # };
-
     nixpak = {
       url = "github:nixpak/nixpak";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,7 +27,6 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
 
     sops-nix = {
       url = "github:Mic92/sops-nix";

@@ -57,6 +57,8 @@
       # blender-launcher
       blender
 
+      prismlauncher
+
       glade
       cambalache
     ];

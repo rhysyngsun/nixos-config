@@ -5,7 +5,7 @@ with lib;
     layer = "top";
     position = "top";
     modules-left = [
-      "wlr/workspaces"
+      "hyprland/workspaces"
     ];
     modules-center = [
       "cpu"
@@ -21,7 +21,7 @@ with lib;
       "custom/powermenu"
     ];
 
-    "wlr/workspaces" = {
+    "hyprland/workspaces" = {
       format = "{icon}";
       on-click = "activate";
       sort-by-number = true;

@@ -38,8 +38,10 @@
   environment.systemPackages = with pkgs; [
     # nix-doc
     libxcrypt
+    mesa.drivers
     openssl
     v4l-utils
+    vulkan-tools
     wireplumber
   ];
 
@@ -110,7 +112,7 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    fonts = map (f: f.package) (builtins.attrValues pkgs.rice.font);
+    packages = map (f: f.package) (builtins.attrValues pkgs.rice.font);
   };
 
   programs.sway.enable = true;
