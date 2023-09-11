@@ -80,11 +80,12 @@ with lib;
         headset = "󰋎";
         headphone = "󰋋";
       };
-      scroll-step = 1;
       tooltip-format = "{desc}; {volume}%";
       on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
       on-click-right = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
       on-click-middle = "pavucontrol";
+      on-scroll-up = "pamixer -d 1 --allow-boost --set-limit 200";
+      on-scroll-down = "pamixer -d 1 --allow-boost --set-limit 200";
     };
     "battery" = {
       interval = 15;

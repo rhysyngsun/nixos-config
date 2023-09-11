@@ -17,6 +17,10 @@
 
   i18n.inputMethod.enabled = "fcitx5";
 
+  services.dbus = {
+    packages = with pkgs; [ blueman ];
+  };
+
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;

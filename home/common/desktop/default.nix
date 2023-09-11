@@ -1,4 +1,5 @@
-{ pkgs, config, ... }:
+{ lib, pkgs, config, ... }:
+with lib;
 {
   imports = [
     # ./bin.nix
@@ -77,7 +78,6 @@
   };
 
   programs = {
-
     broot = {
       enable = true;
       enableZshIntegration = true;
@@ -173,8 +173,18 @@
 
   # services
   services = {
+    blueman-applet.enable = true;
     kbfs.enable = true;
     keybase.enable = true;
     mpd.enable = true;
+    network-manager-applet.enable = true;
+  };
+
+  # patch for wayland because it's not x11
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
   };
 }
