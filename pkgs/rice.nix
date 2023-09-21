@@ -121,6 +121,15 @@ in
       hash = "sha256-DNorfyl3C4RBclF2KDgwvQQwixpTwSRu7fIvihPN8JY=";
     }) + "/basic/.local/share/rofi/themes";
   };
+  
+  godot = {
+    package = (pkgs.fetchFromGitHub {
+      owner = "boranroni";
+      repo = "godot-engine";
+      rev = "62f50af79b40f36e00b27ce9d9baaccdf220d8e6";
+      hash = "sha256-ZnF7QefFV6mtpuVpMKNgNG0AyiUbk5439ZBvibJmQas=";
+    });
+  };
 
   opacity = 1.0;
 }

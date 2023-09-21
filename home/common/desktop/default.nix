@@ -19,7 +19,7 @@ with lib;
       # xplr
       discord
       slack
-      zoom-us
+      unstable.zoom-us
       element-desktop
       fractal-next
       file

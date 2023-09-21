@@ -3,6 +3,7 @@
   imports = [
     ./alacritty
     ./git
+    ./godot
     ./neovim.nix
     ./nodejs
     # ./ol-local

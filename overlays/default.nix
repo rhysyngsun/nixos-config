@@ -45,16 +45,6 @@
       '';
     });
 
-    zoom-us = prev.zoom-us.overrideAttrs (_: let
-        version = "5.15.12.7665";
-      in {
-        inherit version;
-        src = prev.pkgs.fetchurl {
-          url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
-          hash = "sha256-DMFMLwxPt1LV4Qhhrw6gdToe0z9743hGcxVWeR4O1YU=";
-        };
-      });
-
     lib = prev.lib // inputs.nixpak.lib;
   };
 
