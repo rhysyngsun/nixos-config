@@ -176,6 +176,8 @@ in
       bind=$mainMod, V, togglefloating
       bind=$mainMod, P, pin
 
+      bind=$mainMod, O, toggleopaque
+
       bind=$mainMod,G,togglegroup
       bind=$mainMod,apostrophe,changegroupactive,f
       bind=$mainMod SHIFT,apostrophe,changegroupactive,b
