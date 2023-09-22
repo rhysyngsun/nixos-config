@@ -109,11 +109,6 @@ in
       workspace = 10, monitor:HDMI-A-1
     
       windowrulev2 = tile, class:^(Spotify)$
-      # windowrulev2 = workspace 1, class:^(Alacritty)$
-      # windowrulev2 = workspace 2, class:^(Slack|discord)$
-      # windowrulev2 = workspace 3, class:^(Code)$
-      # windowrulev2 = workspace 4, class:^(firefox)$
-      # windowrulev2 = opacity 0.9 0.9,class:^(Code|Slack|discord|Spotify)$
 
       windowrulev2 = noanim, title: ^(wlogout)$
       windowrulev2 = animation fadeIn, title: ^(wlogout)$
@@ -124,12 +119,9 @@ in
       windowrulev2 = float,class:^(flameshot)$
       windowrulev2 = move 0 0,class:^(flameshot)$
 
-      windowrulev2 = tile,class:title:^(Zoom - Licensed Account)$
-      windowrulev2 = tile,class:title:^(Zoom Meeting)$
-      windowrulev2 = opacity 1.0 override 1.0 override,title:^(Zoom - Licensed Account)$
-      windowrulev2 = opacity 1.0 override 1.0 override,title:^(Zoom Meeting)$
-      windowrulev2 = nodim,class:title:^(Zoom - Licensed Account)$
-      windowrulev2 = nodim,class:title:^(Zoom Meeting)$
+      windowrulev2 = tile,class:title:^(Zoom.*)$
+      windowrulev2 = opacity 1.0 override 1.0 override,title:^(Zoom.*)$
+      windowrulev2 = nodim,class:title:^(Zoom.*)$
 
       windowrulev2 = float,class:^(com.obsproject.Studio)$
       windowrulev2 = bordercolor $float_border_color,class:^(com.obsproject.Studio)$
@@ -137,6 +129,7 @@ in
       windowrulev2 = center,class:^(com.obsproject.Studio)$
 
       windowrulev2 = nofullscreenrequest, class:^(firefox)$, title:^(Picture-in-Picture)$
+      windowrulev2 = nomaximizerequest, class:^(firefox)$, title:^(Picture-in-Picture)$
       windowrulev2 = nodim, class:^(firefox)$, title:^(Picture-in-Picture)$
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(firefox)$, title:^(Picture-in-Picture)$
 

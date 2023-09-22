@@ -36,6 +36,7 @@ in
         outline: none; 
         border: none;
         box-shadow: none;
+        color: #cdd6f4;
       }
       
 
