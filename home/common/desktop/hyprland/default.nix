@@ -201,7 +201,7 @@ in
 
       # Bind volume controls
       bind=,XF86AudioRaiseVolume,exec,pamixer -i 5 --allow-boost --set-limit 200
-      bind=,XF86AudioLowerVolume,exec,pamixer -d 5
+      bind=,XF86AudioLowerVolume,exec,pamixer -d 5 --allow-boost --set-limit 200
       bind=,XF86AudioMute,exec,pamixer -t
       bind=SHIFT,XF86AudioMute,exec,pamixer --default-source -t
       bind=,XF86AudioPlay,exec,playerctl play-pause
