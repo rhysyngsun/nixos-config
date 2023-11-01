@@ -16,15 +16,14 @@
         src = prev.fetchFromGitHub {
           owner = "alacritty";
           repo = prev.alacritty.pname;
-          rev = "33306142195b354ef3485ca2b1d8a85dfc6605ca";
-          hash = "sha256-6pul2gpYnT9FCYWt7gwA60QESpHJ2Re2FTeLzcPGnYY=";
+          rev = "d65357b213fb450c6ef4fa9d4fc09307cfe5f6fb";
+          hash = "sha256-JuGLlZkfpmNpuGyvjZImEopdwQJ2789qzyI5FeVNBx4=";
         };
       in {
         inherit version src;
         cargoDeps = oldAttrs.cargoDeps.overrideAttrs (_: {
           inherit src;
-          outputHash = "sha256-Tf2gRTy3bq8KW3YodNGwgszSa8f3N4DxV6s9KkvOjmc=";
-          # outputHash = "sha256-Tf2gRTy3bq8KW3YodNGwgszSa8f3N4DxV6s9KkvOjmc=";
+          outputHash = "sha256-L5w82ajfbDkHNX9VEq9eev71SbftULjXYYHbYZiZmJE=";
         });
         postInstall =
           builtins.replaceStrings

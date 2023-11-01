@@ -33,6 +33,8 @@
         ".envrc"
       ];
 
+      lfs.enable = true;
+
       includes = [
         { path = "${config.xdg.configHome}/git/default.gitconfig"; }
         {

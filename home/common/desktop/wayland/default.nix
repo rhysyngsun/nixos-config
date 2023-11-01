@@ -5,8 +5,10 @@
     ./anyrun.nix
     ./flameshot.nix
     ./mako.nix
+    # ./mpvpaper.nix
     ./swaylock.nix
     ./swayr.nix
+    ./swww.nix
     ./wlogout.nix
   ];
 

@@ -9,7 +9,6 @@ in
 {
   imports = [
     ./services.nix
-    ./swww.nix
   ];
 
   home.packages = with pkgs; [
@@ -18,15 +17,13 @@ in
     swaylock-effects
     inotify-tools
     swayr
-
-    # swaynotificationcenter
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
     extraConfig = ''
-      $mainMod = SUPER
+      $mod = SUPER
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor=,preferred,auto,auto
@@ -72,10 +69,10 @@ in
         blur {
           size = 2
           passes = 1
-          new_optimizations = yes
+          new_optimizations = true
         }
 
-        active_opacity = 1.0
+        active_opacity = 0.85
         inactive_opacity = 0.6
 
         drop_shadow = off
@@ -83,30 +80,50 @@ in
         col.shadow = 0x00000000
       }
 
+      group {
+        groupbar {
+          gradients = no
+          font_size = 10
+          text_color = rgba(1e1e2eff)
+          col.active = rgba(b4befeff) rgba(b4befeff)
+          col.inactive = rgba(1e1e2eff) rgba(1e1e2eff)
+        }
+      }
+
       dwindle {
         preserve_split = on
       }
 
-      misc {
-        key_press_enables_dpms = true
-        mouse_move_enables_dpms = true
-        vrr = 1
-
-        groupbar_gradients = no
-        groupbar_text_color = 0x111111bff
+      plugin {
+        hy3 {
+          no_gaps_when_only = true
+          tabs = {
+            rounding = 6
+            col.active = rgba(b4befeff)
+            col.inactive = rgba(1e1e2eff)
+          }
+        }
       }
 
-      workspace = 1, monitor:eDP-1
-      workspace = 3, monitor:eDP-1
-      workspace = 5, monitor:eDP-1
-      workspace = 7, monitor:eDP-1
-      workspace = 9, monitor:eDP-1
+      misc {
+        disable_hyprland_logo = true
+        disable_splash_rendering = true
 
-      workspace = 2, monitor:HDMI-A-1
-      workspace = 4, monitor:HDMI-A-1
-      workspace = 6, monitor:HDMI-A-1
-      workspace = 8, monitor:HDMI-A-1
-      workspace = 10, monitor:HDMI-A-1
+        key_press_enables_dpms = true
+        mouse_move_enables_dpms = true
+
+        vrr = 1
+      }
+
+      ${builtins.concatStringsSep "\n" (builtins.genList (
+        x: let
+          ws = x + 1;
+          monitor = if (lib.trivial.mod ws 2) == 1 then "eDP-1" else "HDMI-A-1";
+        in ''
+          workspace = ${toString ws}, workspace, monitor:${monitor}
+        ''
+      )
+      10)}
     
       windowrulev2 = tile, class:^(Spotify)$
 
@@ -128,12 +145,16 @@ in
       windowrulev2 = size $float_default_width $float_default_height,class:^(com.obsproject.Studio)$
       windowrulev2 = center,class:^(com.obsproject.Studio)$
 
-      windowrulev2 = nofullscreenrequest, class:^(firefox)$, title:^(Picture-in-Picture)$
-      windowrulev2 = nomaximizerequest, class:^(firefox)$, title:^(Picture-in-Picture)$
+      windowrulev2 = nofullscreenrequest, class:(firefox), title:(Picture-in-Picture)
+      windowrulev2 = nomaximizerequest, class:(firefox), title:(Picture-in-Picture)
       windowrulev2 = nodim, class:^(firefox)$, title:^(Picture-in-Picture)$
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(firefox)$, title:^(Picture-in-Picture)$
 
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(krita)$
+
+      # make flameshot behave
+      windowrulev2=move 0 0,title:^(flameshot)
+      windowrulev2=nofullscreenrequest,title:^(flameshot)
 
       windowrulev2 = forcergbx, class:^(blender)$
 
@@ -151,51 +172,42 @@ in
     
       exec-once = firefox & alacritty & slack
 
-      bind=$mainMod, Q, killactive
+      bind=$mod, Q, killactive
 
-      bind=$mainMod,TAB,exec,${cmds.swayr} switch-window
-      bind=$mainMod,W,exec,${cmds.swayr} steal-window
+      bind=$mod,TAB,exec,${cmds.swayr} switch-window
+      bind=$mod,W,exec,${cmds.swayr} steal-window
 
       # screen lock on close or SUPER+L
       bindl=,switch:Lid Switch,exec,${cmds.swaylock}
-      bind=$mainMod,L,exec,${cmds.swaylock}
+      bind=$mod,L,exec,${cmds.swaylock}
 
-      bind=$mainMod,RETURN,exec,alacritty -e tmux
-      bind=$mainMod,B,exec,firefox
-      bind=$mainMod,D,exec,anyrun
+      bind=$mod,RETURN,exec,alacritty -e tmux
+      bind=$mod,B,exec,firefox
+      bind=$mod,D,exec,anyrun
 
-      bind=$mainMod,F,fullscreen,1
-      bind=$mainMod SHIFT,F,fullscreen,0
-      bind=$mainMod, V, togglefloating
-      bind=$mainMod, P, pin
+      bind=$mod,F,fullscreen,1
+      bind=$mod SHIFT,F,fullscreen,0
+      bind=$mod, V, togglefloating
+      bind=$mod, P, pin
 
-      bind=$mainMod, O, toggleopaque
+      bind=$mod, O, toggleopaque
 
-      bind=$mainMod,G,togglegroup
-      bind=$mainMod,apostrophe,changegroupactive,f
-      bind=$mainMod SHIFT,apostrophe,changegroupactive,b
+      bind=$mod,G,hy3:makegroup,tab
+      bind=$mod,apostrophe,changegroupactive,f
+      bind=$mod SHIFT,apostrophe,changegroupactive,b
 
-      bind=$mainMod,1,workspace,1
-      bind=$mainMod,2,workspace,2
-      bind=$mainMod,3,workspace,3
-      bind=$mainMod,4,workspace,4
-      bind=$mainMod,5,workspace,5
-      bind=$mainMod,6,workspace,6
-      bind=$mainMod,7,workspace,7
-      bind=$mainMod,8,workspace,8
-      bind=$mainMod,9,workspace,9
-      bind=$mainMod,0,workspace,10
-
-      bind = $mainMod SHIFT, 1, movetoworkspace, 1
-      bind = $mainMod SHIFT, 2, movetoworkspace, 2
-      bind = $mainMod SHIFT, 3, movetoworkspace, 3
-      bind = $mainMod SHIFT, 4, movetoworkspace, 4
-      bind = $mainMod SHIFT, 5, movetoworkspace, 5
-      bind = $mainMod SHIFT, 6, movetoworkspace, 6
-      bind = $mainMod SHIFT, 7, movetoworkspace, 7
-      bind = $mainMod SHIFT, 8, movetoworkspace, 8
-      bind = $mainMod SHIFT, 9, movetoworkspace, 9
-      bind = $mainMod SHIFT, 0, movetoworkspace, 10
+      ${builtins.concatStringsSep "\n" (builtins.genList (
+        x: let
+          ws = let
+            c = (x + 1) / 10;
+          in
+            builtins.toString (x + 1 - (c * 10));
+        in ''
+          bind = $mod, ${ws}, workspace, ${toString (x + 1)}
+          bind = $mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}
+        ''
+      )
+      10)}
 
       bindm=ALT,mouse:272,movewindow
 
@@ -210,10 +222,11 @@ in
       bind=,XF86AudioPrev,exec,playerctl previous
 
       bind=,Print, exec, flameshot gui
+      
     '';
 
     plugins = [
-      # pkgs.hy3
+      inputs.hy3.packages.${pkgs.system}.hy3
     ];
 
     xwayland = {

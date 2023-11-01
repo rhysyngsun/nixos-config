@@ -7,4 +7,6 @@
     ./open-learning
     ./themes
   ];
+
+  news.display = "silent";
 }

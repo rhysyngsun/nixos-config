@@ -8,6 +8,7 @@
 
     extraConfig = ''
       # Colors
+      ignore-timeout=1
 
       background-color=#1e1e2e
       text-color=#cdd6f4

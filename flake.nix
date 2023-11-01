@@ -13,9 +13,14 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprpaper.url = "github:hyprwm/hyprpaper";
+
+    hy3 = {
+      url = "github:outfoxxed/hy3";
+      # or "github:outfoxxed/hy3?ref=hl{version}" for a release version of hyprland
+      inputs.hyprland.follows = "hyprland";
+    };
 
     nixpak = {
       url = "github:nixpak/nixpak";

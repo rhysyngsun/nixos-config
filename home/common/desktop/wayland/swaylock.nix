@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  command = lib.getExe pkgs.swaylock-effects;
+  swaylock = "${lib.getExe pkgs.swaylock-effects} -f";
 in
 {
   xdg.configFile."swaylock/config".text = ''
@@ -39,21 +39,27 @@ in
     enable = true;
     events = [
       {
-        inherit command;
+        command = swaylock;
         event = "before-sleep";
       }
       {
-        inherit command;
+        command = "lock";
         event = "lock";
       }
     ];
-    timeouts = [{
-      timeout = 300;
-      command =
-        "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch dpms off";
-      resumeCommand =
-        "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch dpms on";
-    }];
+    timeouts = [
+      {
+        timeout = 60 * 10;
+        command = swaylock;
+      }
+      {
+        timeout = 60 * 15;
+        command =
+          "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch dpms off";
+        resumeCommand =
+          "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch dpms on";
+      }
+    ];
   };
   systemd.user.services.swayidle.Install.WantedBy =
     mkForce [ "hyprland-session.target" ];

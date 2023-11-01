@@ -30,6 +30,7 @@ in
     border: 0;
     border-radius: ${border-radius};
     padding: 0;
+    opacity: 0.8;
   }
 
   button {

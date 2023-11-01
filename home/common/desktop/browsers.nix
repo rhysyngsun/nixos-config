@@ -4,6 +4,7 @@ let
   addons = inputs.firefox-addons.packages.${pkgs.system};
 in
 {
+  programs.chromium.enable = true;
   programs.firefox = {
     enable = true;
 

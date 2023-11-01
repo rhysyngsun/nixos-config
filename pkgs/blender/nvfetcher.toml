@@ -1,0 +1,5 @@
+[blender-unstable-daily]
+src.webpage = "https://builder.blender.org/download/daily/"
+src.regex = "https://builder.blender.org/download/daily/blender-(\\d+\\.\\d+\\.\\d+-[a-z]+)\\+main\\.[0-9]+-linux\\.x86_64-release\\.tar\\.xz"
+
+# stable: https://download.blender.org/release/
