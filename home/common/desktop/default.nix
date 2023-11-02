@@ -63,6 +63,8 @@ with lib;
 
       prismlauncher
 
+      pants
+
       glade
       cambalache
     ];

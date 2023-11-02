@@ -12,6 +12,7 @@ final: prev:
   rice = prev.callPackage ./rice.nix {};
   blender-launcher = prev.callPackage ./blender-launcher {};
   mit = prev.callPackage ./mit {};
+  pants = prev.callPackage ./pants.nix {};
   krita-plugins = prev.callPackage ./krita-plugins {};
   easyeffects-presets = prev.callPackage ./easyeffects-presets {};
 }
