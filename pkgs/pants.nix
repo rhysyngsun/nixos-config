@@ -1,14 +1,12 @@
-{ pkgs, lib, fetchurl }:
-pkgs.mkDerivation {
+{ pkgs, stdenv, lib, fetchurl }:
+stdenv.mkDerivation rec {
 
   pname = "pants";
   version = "0.10.4";
 
   src = fetchurl {
-    url = "https://github.com/pantsbuild/scie-pants/releases/download/v${version}/scie-pants-linux-${pkgs.system}";
-    repo = "scie-pants";
-    rev = "v${version}";
-    hash = "";
+    url = "https://github.com/pantsbuild/scie-pants/releases/download/v${version}/scie-pants-linux-${stdenv.hostPlatform.linuxArch}";
+    hash = "sha256-CHP9hhMT/WLkeB7lNwvlmtihz21Dho6T7PQhtzqZP38=";
   };
 
 
