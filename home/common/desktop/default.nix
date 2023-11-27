@@ -25,6 +25,7 @@ with lib;
       element-desktop
       fractal-next
       file
+      nnn
       exiftool
       xdg-utils
       unzip

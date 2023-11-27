@@ -4,7 +4,7 @@
     ./alacritty
     ./git
     ./godot
-    ./neovim.nix
+    ./neovim
     ./nodejs
     # ./ol-local
     ./python

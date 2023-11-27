@@ -74,6 +74,11 @@
       url = "github:cachix/devenv/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, sops-nix, home-manager, ... }@inputs:

@@ -10,6 +10,7 @@ in
   modules = [
     inputs.hyprland.homeManagerModules.default
     inputs.anyrun.homeManagerModules.default
+    inputs.nixvim.homeManagerModules.nixvim
     outputs.homeManagerModules
     ./home.nix
     ../common
