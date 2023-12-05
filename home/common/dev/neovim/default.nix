@@ -1,4 +1,3 @@
-{pkgs, inputs, ...}:
 {
   imports = [
     ./colorschemes.nix
@@ -23,10 +22,31 @@
         mode = "n";
         key = "<leader>pv";
         action = "vim.cmd.Ex";
+        lua = true;
+      }
+      {
+        mode = "n";
+        key = "<C-u>";
+        action = "<C-u>zz";
+      }
+      {
+        mode = "n";
+        key = "<C-d>";
+        action = "<C-d>zz";
+      }
+      {
+        mode = "n";
+        key = "<C-k>";
+        action = "<cmd>cnext<CR>zz";
+      }
+      {
+        mode = "n";
+        key = "<C-j>";
+        action = "<cmd>cprev<CR>zz";
       }
     ];
 
-    globals.mapleader = "<Space>";
+    globals.mapleader = ",";
 
     options = {
       number = true;         # Show line numbers

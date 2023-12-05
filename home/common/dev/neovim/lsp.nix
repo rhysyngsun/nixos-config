@@ -10,7 +10,11 @@
         jsonls.enable = true;
         nil_ls.enable = true;
         ruff-lsp.enable = true;
-        rust-analyzer.enable = true;
+        rust-analyzer = {
+          enable = true;
+          installCargo = true;
+          installRustc = true;
+        };
         tsserver.enable = true;
         yamlls.enable = true;
       };

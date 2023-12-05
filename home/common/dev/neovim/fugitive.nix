@@ -7,6 +7,7 @@
         mode = "n";
         key = "<leader>gs";
         action = "vim.cmd.Git";
+        lua = true;
       }
     ];
   };

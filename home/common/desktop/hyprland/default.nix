@@ -64,7 +64,7 @@ in
       }
 
       decoration {
-        rounding = 5px
+        rounding = 5
 
         blur {
           size = 2
@@ -192,7 +192,7 @@ in
 
       bind=$mod, O, toggleopaque
 
-      bind=$mod,G,hy3:makegroup,tab
+      # bind=$mod,G,hy3:makegroup,tab
       bind=$mod,apostrophe,changegroupactive,f
       bind=$mod SHIFT,apostrophe,changegroupactive,b
 
@@ -226,7 +226,7 @@ in
     '';
 
     plugins = [
-      inputs.hy3.packages.${pkgs.system}.hy3
+      # inputs.hy3.packages.${pkgs.system}.hy3
     ];
 
     xwayland = {
