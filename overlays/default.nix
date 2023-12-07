@@ -36,7 +36,16 @@
     # hy3 = inputs.hy3.packages.${final.system}.hy3;
     hyprpaper = inputs.hyprpaper.packages.${final.system}.default;
     # waybar with Hyprland IPC support, allow workspace switching
-    waybar = prev.waybar.overrideAttrs (oldAttrs: rec {
+    swaylock-effects = prev.swaylock-effects.overrideAttrs (oldAttrs: rec {
+      version = "1.7.0.0";
+      src = prev.fetchFromGitHub {
+        owner = "jirutka";
+        repo = "swaylock-effects";
+        rev = "v${version}";
+        hash = "sha256-cuFM+cbUmGfI1EZu7zOsQUj4rA4Uc4nUXcvIfttf9zE=";
+      };
+    });
+    waybar = prev.waybar.overrideAttrs (oldAttrs: {
       mesonFlags = (oldAttrs.mesonFlags or [ ]) ++ [ "-Dexperimental=true" ];
       preConfigurePhases = (oldAttrs.preConfigurePhase or [ ]) ++ [ "hyprPhase" ];
       hyprPhase = ''

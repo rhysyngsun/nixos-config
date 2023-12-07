@@ -1,9 +1,11 @@
 {
   imports = [
     ./colorschemes.nix
+    ./completion.nix
     ./fugitive.nix
     ./harpoon.nix
     ./lsp.nix
+    ./project-nvim.nix
     ./telescope.nix
     ./treesitter.nix
     ./undotree.nix
@@ -51,6 +53,13 @@
     options = {
       number = true;         # Show line numbers
       relativenumber = true; # Show relative line numbers
+      tabstop = 2;
+      shiftwidth = 2;
+      expandtab = true;
+    };
+
+    plugins = {
+      tmux-navigator.enable = true;
     };
   };
 }

@@ -151,6 +151,7 @@ in
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(firefox)$, title:^(Picture-in-Picture)$
 
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(krita)$
+      windowrulev2 = opacity 1.0 override 1.0 override, class:^(blender)$
 
       # make flameshot behave
       windowrulev2=move 0 0,title:^(flameshot)

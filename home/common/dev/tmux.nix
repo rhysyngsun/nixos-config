@@ -4,11 +4,15 @@
     tmux = {
       enable = true;
       mouse = true;
-      prefix = "C-a";
+      baseIndex = 1;
+      keyMode = "vi";
+
+      shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
-        set -g default-terminal "xterm-256color"
-        set-option -ga terminal-overrides ",xterm-256color:Tc"
+	bind '"' split-window -c "#{pane_current_path}"
+	bind % split-window -h -c "#{pane_current_path}"
+	bind c new-window -c "#{pane_current_path}"
       '';
 
       plugins = with pkgs; [
@@ -33,6 +37,7 @@
         tmuxPlugins.sensible
         tmuxPlugins.logging
         tmuxPlugins.better-mouse-mode
+        tmuxPlugins.vim-tmux-navigator
       ];
     };
   };
