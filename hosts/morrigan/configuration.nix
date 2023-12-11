@@ -47,6 +47,18 @@
     v4l-utils
     vulkan-tools
     wireplumber
+    
+    # Theme
+    (catppuccin-kde.override {
+      flavour = ["mocha"];
+      accents = ["lavender"];
+    })
+
+    # Cursor
+    catppuccin-cursors
+
+    # SDDM theme
+    catppuccin-sddm-corners
   ];
 
   networking = {
@@ -90,6 +102,26 @@
       ["bluez5.default.channels"] = 2
     }
 	'';
+
+  services.xserver = {
+    enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
+    desktopManager.plasma5.enable = true;
+  };
+
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    elisa
+    gwenview
+    okular
+    oxygen
+    khelpcenter
+    konsole
+    plasma-browser-integration
+    print-manager
+  ];
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

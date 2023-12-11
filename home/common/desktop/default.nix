@@ -65,7 +65,8 @@ with lib;
 
       prismlauncher
 
-      # pants
+      pants
+      libxcrypt
 
       glade
       cambalache

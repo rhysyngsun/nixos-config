@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, fetchurl }:
+{ stdenv, lib, fetchurl, libxcrypt, openssl, autoPatchelfHook }:
 stdenv.mkDerivation rec {
 
   pname = "pants";
@@ -9,6 +9,21 @@ stdenv.mkDerivation rec {
     hash = "sha256-CHP9hhMT/WLkeB7lNwvlmtihz21Dho6T7PQhtzqZP38=";
   };
 
+  buildInputs = [
+    libxcrypt
+    openssl
+  ];
+  nativeBuildInputs = [
+    autoPatchelfHook
+  ];
+
+  dontUnpack = true;
+  installPhase = ''
+    runHook preInstall
+    install -D $src $out/bin/pants
+    chmod +x $out/bin/pants
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "A a fast, scalable, user-friendly build system for codebases of all sizes";

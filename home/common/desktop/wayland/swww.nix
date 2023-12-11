@@ -1,8 +1,4 @@
-{ pkgs, ... }:
-let
-  swww = "${pkgs.swww}/bin/swww";
-  background = "${../../../../backgrounds/the_valley.png}";
-in
+{ config, pkgs, ... }:
 {
   home.packages = [ pkgs.swww ];
 
@@ -15,7 +11,7 @@ in
     Service = {
       Type = "forking";
       ExecStart = "${pkgs.swww}/bin/swww init";
-      ExecStartPost = "${pkgs.swww}/bin/swww img '${background}'";
+      ExecStartPost = "${pkgs.swww}/bin/swww img '${config.stylix.image}'";
       Restart = "on-failure";
       ExecSearchPath = "${pkgs.swww}/bin";
     };

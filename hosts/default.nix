@@ -9,7 +9,9 @@ let
     modules = [
       # > Our main nixos configuration file <
       ../nixos/configuration.nix
+      ../stylix
       ./${hostName}
+      inputs.stylix.nixosModules.stylix
       inputs.home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;

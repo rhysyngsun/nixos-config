@@ -41,6 +41,8 @@
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
 
+    stylix.url = "github:danth/stylix";
+
     nix-rice = { url = "github:bertof/nix-rice"; };
 
     copier.url = "github:copier-org/copier";

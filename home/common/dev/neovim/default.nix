@@ -5,6 +5,7 @@
     ./fugitive.nix
     ./harpoon.nix
     ./lsp.nix
+    ./oil.nix
     ./project-nvim.nix
     ./telescope.nix
     ./treesitter.nix

@@ -8,11 +8,12 @@ let
 in
 {
   modules = [
-    inputs.hyprland.homeManagerModules.default
     inputs.anyrun.homeManagerModules.default
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.stylix.homeManagerModules.stylix
     outputs.homeManagerModules
     ./home.nix
+    ../../stylix
     ../common
   ];
   pkgs = import inputs.nixpkgs {

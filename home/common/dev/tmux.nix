@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     tmux = {
@@ -6,13 +6,14 @@
       mouse = true;
       baseIndex = 1;
       keyMode = "vi";
+      prefix = "C-a";
 
       shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
-	bind '"' split-window -c "#{pane_current_path}"
-	bind % split-window -h -c "#{pane_current_path}"
-	bind c new-window -c "#{pane_current_path}"
+        bind '"' split-window -c "#{pane_current_path}"
+        bind % split-window -h -c "#{pane_current_path}"
+        bind c new-window -c "#{pane_current_path}"
       '';
 
       plugins = with pkgs; [
@@ -32,6 +33,19 @@
           extraConfig = ''
             set -g @catppuccin_flavour 'mocha'
             set -g @catppuccin_window_tabs_enabled on
+            set -g @catppuccin_window_left_separator ""
+            set -g @catppuccin_window_right_separator " "
+            set -g @catppuccin_window_middle_separator " █"
+            set -g @catppuccin_window_number_position "right"
+
+            set -g @catppuccin_status_modules_right "directory session application"
+            set -g @catppuccin_status_left_separator  " "
+            set -g @catppuccin_status_right_separator ""
+            set -g @catppuccin_status_right_separator_inverse "no"
+            set -g @catppuccin_status_fill "icon"
+            set -g @catppuccin_status_connect_separator "no"
+            
+            set -g @catppuccin_directory_text "#{pane_current_path}"
           '';
         }
         tmuxPlugins.sensible
@@ -41,4 +55,9 @@
       ];
     };
   };
+
+  xdg.configFile."tmux/tmux.conf".text = lib.mkBefore ''
+    set -g status-bg default
+    set -g status-style bg=default
+  '';
 }

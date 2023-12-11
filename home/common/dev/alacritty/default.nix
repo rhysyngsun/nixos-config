@@ -16,7 +16,6 @@ in
         TERM = "xterm-256color";
       };
 
-      font.normal.family = pkgs.rice.font.monospace.name;
       window = {
         inherit (rice) opacity;
         padding = {
