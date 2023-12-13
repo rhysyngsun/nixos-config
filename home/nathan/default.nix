@@ -13,7 +13,7 @@ in
     inputs.stylix.homeManagerModules.stylix
     outputs.homeManagerModules
     ./home.nix
-    ../../stylix
+    ../../themes/stylix.nix
     ../common
   ];
   pkgs = import inputs.nixpkgs {

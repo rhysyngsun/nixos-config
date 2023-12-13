@@ -15,6 +15,7 @@
       keymaps = {
         "<leader>pf" = "find_files";
 	      "<leader>ps" = "live_grep";
+	      "<leader>pS" = "grep_string";
         "<leader>pg" = "git_files";
         "<leader>pb" = "buffers";
       };

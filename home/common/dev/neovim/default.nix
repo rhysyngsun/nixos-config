@@ -1,3 +1,4 @@
+{ pkgs, ... }: 
 {
   imports = [
     ./colorschemes.nix
@@ -62,5 +63,13 @@
     plugins = {
       tmux-navigator.enable = true;
     };
+
+    extraPlugins = with pkgs.vimPlugins; [
+      overseer-nvim
+    ];
+
+    extraConfigLua = ''
+      require('overseer').setup()
+    '';
   };
 }

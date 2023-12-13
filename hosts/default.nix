@@ -9,7 +9,7 @@ let
     modules = [
       # > Our main nixos configuration file <
       ../nixos/configuration.nix
-      ../stylix
+      ../themes/stylix.nix
       ./${hostName}
       inputs.stylix.nixosModules.stylix
       inputs.home-manager.nixosModules.home-manager

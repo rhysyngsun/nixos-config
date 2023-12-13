@@ -28,10 +28,26 @@
             set -g @continuum-save-interval '60' # minutes
           '';
         }
-        {
-          plugin = tmuxPlugins.catppuccin;
+        (let 
+          flavor = "mocha";
+        in {
+          plugin = tmuxPlugins.catppuccin.overrideAttrs (oldAttrs: {
+            postInstall = let
+              palette = pkgs.catppuccin-palette.${flavor};
+              colorOverrides = {
+                thm_bg = "#${palette.mantle.hex}";
+              };
+              replaceColors = builtins.concatStringsSep "\n" 
+                  (lib.attrsets.mapAttrsToList
+                    (name: value: ''
+                      sed -i -e 's/${name}=.*/${name}="${value}"/g' $target/catppuccin-${flavor}.tmuxtheme
+                    '')
+                    colorOverrides
+                  );
+            in oldAttrs.postInstall + replaceColors;
+          });
           extraConfig = ''
-            set -g @catppuccin_flavour 'mocha'
+            set -g @catppuccin_flavour '${flavor}'
             set -g @catppuccin_window_tabs_enabled on
             set -g @catppuccin_window_left_separator ""
             set -g @catppuccin_window_right_separator " "
@@ -47,7 +63,7 @@
             
             set -g @catppuccin_directory_text "#{pane_current_path}"
           '';
-        }
+        })
         tmuxPlugins.sensible
         tmuxPlugins.logging
         tmuxPlugins.better-mouse-mode
@@ -56,8 +72,8 @@
     };
   };
 
-  xdg.configFile."tmux/tmux.conf".text = lib.mkBefore ''
-    set -g status-bg default
-    set -g status-style bg=default
-  '';
+  # xdg.configFile."tmux/tmux.conf".text = ''
+  #   set -g status-bg default
+  #   set -g status-style bg=default
+  # '';
 }

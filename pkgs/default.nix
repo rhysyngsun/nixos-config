@@ -9,6 +9,7 @@ final: prev:
       tutor-mfe = finalPy.callPackage ./python/tutor-mfe.nix {};
     })
   ];
+  catppuccin-palette = prev.callPackage ./catppuccin-palette.nix {};
   rice = prev.callPackage ./rice.nix {};
   blender-launcher = prev.callPackage ./blender-launcher {};
   mit = prev.callPackage ./mit {};
