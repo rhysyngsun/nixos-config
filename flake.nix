@@ -14,19 +14,6 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
 
-    hyprpaper.url = "github:hyprwm/hyprpaper";
-
-    hy3 = {
-      url = "github:outfoxxed/hy3";
-      # or "github:outfoxxed/hy3?ref=hl{version}" for a release version of hyprland
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    nixpak = {
-      url = "github:nixpak/nixpak";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
     # Home manager
@@ -64,11 +51,6 @@
 
     catppuccin-waybar = {
       url = "github:catppuccin/waybar";
-      flake = false;
-    };
-
-    nvchad = {
-      url = "github:nvchad/nvchad";
       flake = false;
     };
 

@@ -33,8 +33,7 @@
       });
     
     devenv = inputs.devenv.packages.${final.system}.devenv;
-    # hy3 = inputs.hy3.packages.${final.system}.hy3;
-    hyprpaper = inputs.hyprpaper.packages.${final.system}.default;
+
     # waybar with Hyprland IPC support, allow workspace switching
     swaylock-effects = prev.swaylock-effects.overrideAttrs (oldAttrs: rec {
       version = "1.7.0.0";
@@ -52,8 +51,6 @@
         sed -i 's|zext_workspace_handle_v1_activate(workspace_handle_);|const std::string command = "${hyprctl} dispatch workspace " + name_;\n\tsystem(command.c_str());|g' src/modules/wlr/workspace_manager.cpp
       '';
     });
-
-    lib = prev.lib // inputs.nixpak.lib;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

@@ -191,6 +191,14 @@
 
   services.devmon.enable = true;
 
+
+  services.dnsmasq = {
+    enable = true;
+    extraConfig = ''
+      address=/odl.local/172.28.0.1
+    '';
+  };
+
   services.journald = {
     extraConfig = ''
     # 3 days

@@ -8,6 +8,12 @@
         action = "require'telescope'.extensions.projects.projects";
         lua = true;
       }
+      {
+        mode = "n";
+        key = "<leader><leader>";
+        action = "<Cmd>Telescope frecency<CR>";
+        expr = true;
+      }
     ];
 
     plugins.telescope = {
@@ -22,7 +28,7 @@
 
       extensions = {
         project-nvim.enable = true;
-        
+        frecency.enable = true; 
       };
     };
 
