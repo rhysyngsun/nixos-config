@@ -4,20 +4,20 @@
   system,
   ...
 }:
-let
-  anyrunPkgs = inputs.anyrun.packages.${system};
-in
+
 {
   programs.anyrun = {
     enable = true;
     config = {
-      plugins = [
-        anyrunPkgs.applications
-        anyrunPkgs.rink
-        anyrunPkgs.shell
+      plugins = with inputs.anyrun.packages.${system}; [
+        applications
+        kidex
+        rink
+        shell
+        websearch
       ];
 
-      y = { absolute = 10; };
+      y = { absolute = 50; };
       width = { fraction = 0.35; };
       hideIcons = false;
       ignoreExclusiveZones = true;

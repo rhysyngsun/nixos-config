@@ -12,7 +12,6 @@
         mode = "n";
         key = "<leader><leader>";
         action = "<Cmd>Telescope frecency<CR>";
-        expr = true;
       }
     ];
 

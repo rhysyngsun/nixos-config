@@ -25,8 +25,7 @@
       {
         mode = "n";
         key = "<leader>pv";
-        action = "vim.cmd.Ex";
-        lua = true;
+        action = "<CMD>Oil<CR>";
       }
       {
         mode = "n";

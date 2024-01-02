@@ -9,8 +9,6 @@ with lib;
   ];
   home = {
     packages = with pkgs; [
-      unstable.obsidian
-      logseq
       libsForQt5.kcharselect
       networkmanagerapplet
       pavucontrol

@@ -7,11 +7,6 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.follows = "nixpkgs-stable";
 
-    nixpkgs-wayland = {
-      url = "github:nix-community/nixpkgs-wayland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hyprland.url = "github:hyprwm/Hyprland";
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -59,10 +54,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs = { self, nixpkgs, sops-nix, home-manager, ... }@inputs:
@@ -79,7 +71,6 @@
             # overlays from inputs
             inputs.nix-rice.overlays.default
             inputs.copier.overlays.default
-            inputs.nixpkgs-wayland.overlay
             # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
