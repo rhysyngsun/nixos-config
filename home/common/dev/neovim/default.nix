@@ -60,6 +60,7 @@
     };
 
     plugins = {
+      nvim-autopairs.enable = true;
       tmux-navigator.enable = true;
     };
 

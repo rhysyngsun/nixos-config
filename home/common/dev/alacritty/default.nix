@@ -26,7 +26,4 @@ in
       shell.program = config.home.sessionVariables.SHELL;
     };
   };
-  
-  xdg.configFile."alacritty/alacritty.yml".enable = false;
-  xdg.configFile."alacritty/alacritty.toml".source = tomlFormat.generate "alacritty.toml" cfg.settings;
 }

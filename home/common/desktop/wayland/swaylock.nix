@@ -49,11 +49,11 @@ in
     ];
     timeouts = [
       {
-        timeout = 60 * 10;
+        timeout = 60 * 60;
         command = swaylock;
       }
       {
-        timeout = 60 * 15;
+        timeout = 60 * 65;
         command =
           "${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch dpms off";
         resumeCommand =

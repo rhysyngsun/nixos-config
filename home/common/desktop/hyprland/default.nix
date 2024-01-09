@@ -171,7 +171,7 @@ in
       windowrule = float,title:^(Confirm to replace files)$
       windowrule = float,title:^(File Operation Progress)$
     
-      exec-once = firefox & alacritty & slack
+      exec-once = firefox & alacritty -e tmux & slack
 
       bind=$mod, Q, killactive
 

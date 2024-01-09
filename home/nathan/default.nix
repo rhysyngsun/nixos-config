@@ -16,7 +16,7 @@ in
     ../../themes/stylix.nix
     ../common
   ];
-  pkgs = import inputs.nixpkgs {
+  pkgs = import inputs.nixpkgs-unstable {
     inherit system;
     inherit (nix-defaults.nixpkgs) config overlays;
   };

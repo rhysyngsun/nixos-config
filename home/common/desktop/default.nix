@@ -152,19 +152,6 @@ with lib;
       enableAliases = true;
     };
 
-    vscode = {
-      enable = true;
-      extensions = with pkgs.unstable.vscode-extensions ; [
-        # nix
-        bbenoist.nix
-        jnoortheen.nix-ide
-
-        # configuration languages
-        bungcip.better-toml
-        redhat.vscode-yaml
-      ];
-    };
-
     zoxide = {
       enable = true;
       enableBashIntegration = true;

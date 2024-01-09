@@ -3,7 +3,7 @@
     plugins.lsp = {
       enable = true;
       servers = {
-        bashls.enable = true;
+#        bashls.enable = true;
         gopls.enable = true;
         lua-ls.enable = true;
         html.enable = true;
@@ -15,6 +15,7 @@
           installCargo = true;
           installRustc = true;
         };
+        tailwindcss.enable = true;
         tsserver.enable = true;
         yamlls.enable = true;
       };

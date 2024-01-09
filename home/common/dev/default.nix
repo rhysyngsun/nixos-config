@@ -77,8 +77,4 @@
       profiles = {};
     };
   };
-
-  programs.vscode.userSettings = {
-    "editor.formatOnType" = true;
-  };
 }
