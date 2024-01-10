@@ -65,10 +65,13 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; [
+      nvim-web-devicons
+      octo-nvim
       overseer-nvim
     ];
 
     extraConfigLua = ''
+      require('octo').setup()
       require('overseer').setup()
     '';
   };
