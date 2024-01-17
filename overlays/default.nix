@@ -9,6 +9,18 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     devenv = inputs.devenv.packages.${final.system}.devenv;
+    pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+      (finalPy: prevPy: {
+        wheel-inspect = prevPy.wheel-inspect.overridePythonAttrs (oldAttrs: {
+          postPatch = ''
+            ${oldAttrs.postPatch}
+            substituteInPlace setup.cfg \
+              --replace "headerparser     ~= 0.4.0" "headerparser     >= 0.4.0,< 0.6"
+          '';
+        });
+      })
+
+    ];
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

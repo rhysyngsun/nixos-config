@@ -14,8 +14,6 @@
 
   home = {
     packages = with pkgs; [
-      gaphor
-
       heroku
       http-prompt
       httpie
