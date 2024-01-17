@@ -209,7 +209,7 @@ in
       )
       10)}
 
-      bindm=ALT,mouse:272,movewindow
+      bindm=$mod,mouse:272,movewindow
 
       # Bind volume controls
       bind=,XF86AudioRaiseVolume,exec,pamixer -i 5 --allow-boost --set-limit 200
