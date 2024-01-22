@@ -5,6 +5,7 @@ with lib;
     # ./bin.nix
     ./browsers.nix
     ./hyprland
+    ./pls.nix
     ./wayland
   ];
   home = {
@@ -145,11 +146,6 @@ with lib;
         wlrobs
         obs-pipewire-audio-capture
       ];
-    };
-
-    pls = {
-      enable = true;
-      enableAliases = true;
     };
 
     zoxide = {
