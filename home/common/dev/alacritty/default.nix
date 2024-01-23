@@ -1,8 +1,6 @@
 { pkgs, config, ... }:
 let 
-  cfg = config.programs.alacritty;
   rice = pkgs.rice;
-  tomlFormat = pkgs.formats.toml {};
 in
 {
   programs.alacritty = {
@@ -23,7 +21,7 @@ in
           y = 8;
         };
       };
-      shell.program = config.home.sessionVariables.SHELL;
+      # shell.program = config.home.sessionVariables.SHELL;
     };
   };
 }

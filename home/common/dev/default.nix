@@ -5,6 +5,7 @@
     ./git
     ./godot
     ./neovim
+    #./nvimalaya
     ./nodejs
     # ./ol-local
     ./python

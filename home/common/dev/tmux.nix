@@ -8,7 +8,7 @@
       keyMode = "vi";
       prefix = "C-a";
 
-      shell = "${pkgs.zsh}/bin/zsh";
+      # shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
         bind '-' split-window -c "#{pane_current_path}"

@@ -4,6 +4,16 @@
     packages = with pkgs; [
       starship
     ];
+    file.".profile".text = ''
+      case $- in
+        *i* )
+          if command -v zsh > /dev/null; then
+              zsh --version > /dev/null && exec zsh
+              echo "Couldn't run 'zsh'" > /dev/stderr
+          fi
+          ;;
+      esac
+    '';
   };
 
   xdg.configFile = {

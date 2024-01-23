@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, ... }:
 with lib;
 {
   imports = [
@@ -6,6 +6,7 @@ with lib;
     ./browsers.nix
     ./hyprland
     ./pls.nix
+    ./productivity.nix
     ./wayland
   ];
   home = {
@@ -80,7 +81,7 @@ with lib;
         VISUAL = editor;
         GIT_EDITOR = editor;
 
-        SHELL = "${pkgs.zsh}/bin/zsh";
+        # SHELL = "${pkgs.zsh}/bin/zsh";
       };
   };
 
