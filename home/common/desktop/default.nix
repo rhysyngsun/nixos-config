@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, stdenv, ... }:
 with lib;
 {
   imports = [
@@ -60,8 +60,8 @@ with lib;
 
       transmission-gtk
 
-      # blender-launcher
       blender
+      # blender-alpha
 
       prismlauncher
 
