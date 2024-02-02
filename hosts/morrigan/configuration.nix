@@ -1,7 +1,7 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ inputs, config, pkgs, ... }: {
   # You can import other NixOS modules here
   imports = [
     # outputs.nixosModules
@@ -38,6 +38,8 @@
   };
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
+
+  programs.wireshark.enable = true;
 
   environment.systemPackages = with pkgs; [
     # nix-doc

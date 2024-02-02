@@ -153,6 +153,11 @@ in
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(krita)$
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(blender)$
 
+      windowrulev2 = opacity 1.0 override 1.0 override, class:^(ueberzugpp.*)$
+      # move it offscreen so there is no flash before it gets positioned
+      windowrulev2 = move 200% 0, class:^(ueberzugpp.*)$
+      windowrulev2 = noanim, class:^(ueberzugpp.*)$
+
       # make flameshot behave
       windowrulev2=move 0 0,title:^(flameshot)
       windowrulev2=nofullscreenrequest,title:^(flameshot)

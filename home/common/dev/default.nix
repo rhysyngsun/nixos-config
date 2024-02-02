@@ -10,6 +10,7 @@
     # ./ol-local
     ./python
     ./tmux.nix
+    ./yazi.nix
     ./zsh
   ];
 
@@ -17,14 +18,13 @@
     packages = with pkgs; [
       heroku
       http-prompt
-      httpie
       jq
+      xh
       just
       usql
       gnumake
-      sphinx
 
-      nnn
+      sphinx
 
       # virtualization
       lazydocker
