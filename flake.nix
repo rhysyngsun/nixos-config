@@ -126,5 +126,7 @@
     };
 
     nixvim.url = "github:nix-community/nixvim";
+
+    mach-nix.url = "github:DavHau/mach-nix";
   };
 }

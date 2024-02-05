@@ -4,14 +4,14 @@
 
 let
   pname = "tutor-discovery";
-  version = "15.0.0";
+  version = "17.0.0";
 in
 buildPythonPackage {
   inherit pname version;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-OTl4C2oYquXf+pIYQl2L9uwXSQKMa3ceYZReIfKbHQM=";
+    hash = "sha256-Z7s3ScWr2O95PDgOo+j6zOPiPRe6ZDlkkufK5zfknew=";
   };
 
   doCheck = false;

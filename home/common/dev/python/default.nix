@@ -10,9 +10,9 @@ let
   tutor-python = pkgs.buildFHSUserEnv {
     name = "tutor-python";
     targetPkgs = pkgs: (with pkgs; [
-      (python310.withPackages python-packages)
-      python310Packages.pip
-      python310Packages.virtualenv
+      (python3.withPackages python-packages)
+      python3Packages.pip
+      python3Packages.virtualenv
     ]);
     profile = ''
     export TUTOR_USE_COMPOSE_SUBCOMMAND=1
@@ -67,8 +67,8 @@ in
       tutor-ip
       tutor-ip-watch
 
-      pkgs.python311Packages.pkginfo
-      pkgs.python311Packages.wheel-inspect
+      pkgs.python3Packages.pkginfo
+      pkgs.python3Packages.wheel-inspect
     ];
   };
 

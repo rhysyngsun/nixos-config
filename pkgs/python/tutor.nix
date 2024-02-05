@@ -12,13 +12,13 @@
 
 buildPythonPackage rec {
   pname = "tutor";
-  version = "15.3.3";
+  version = "17.0.1";
 
   disabled = isPyPy;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-xVQTVbLKKowVKtqjtInGBqJFXRd5V9QyTx98COEc0Ng=";
+    hash = "sha256-UihFONeMwW9FxE6Oc0DJgsbMWuAue1L2B4LbG61sFgM=";
   };
 
   doCheck = false;
