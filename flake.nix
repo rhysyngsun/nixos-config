@@ -1,61 +1,5 @@
 {
-  description = "Your new nix config";
-
-  inputs = {
-    # Nixpkgs
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "nixpkgs-unstable";
-
-    # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    anyrun.url = "github:Kirottu/anyrun";
-    anyrun.inputs.nixpkgs.follows = "nixpkgs";
-
-    stylix.url = "github:danth/stylix";
-
-    nix-rice = { url = "github:bertof/nix-rice"; };
-
-    copier.url = "github:copier-org/copier";
-
-    networkmanager-dmenu = {
-      url = "github:firecat53/networkmanager-dmenu";
-      flake = false;
-    };
-
-    catppuccin-hyprland = {
-      url = "github:catppuccin/hyprland";
-      flake = false;
-    };
-
-    catppcuccin-rofi = {
-      url = "github:catppuccin/rofi";
-      flake = false;
-    };
-
-    catppuccin-waybar = {
-      url = "github:catppuccin/waybar";
-      flake = false;
-    };
-
-    devenv = {
-      url = "github:cachix/devenv/latest";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixvim.url = "github:nix-community/nixvim";
-  };
+  description = "Rhysyngsun's nixos configs";
 
   outputs = { self, nixpkgs, sops-nix, home-manager, ... }@inputs:
     let
@@ -122,4 +66,65 @@
         };
       };
     };
+
+  inputs = {
+    # Nixpkgs
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "nixpkgs-unstable";
+
+    # Home manager
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  inputs = {
+    hyprland.url = "github:hyprwm/Hyprland";
+
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+
+    anyrun.url = "github:Kirottu/anyrun";
+    anyrun.inputs.nixpkgs.follows = "nixpkgs";
+
+    copier.url = "github:copier-org/copier";
+
+    networkmanager-dmenu = {
+      url = "github:firecat53/networkmanager-dmenu";
+      flake = false;
+    };
+  };
+
+  # rice
+  inputs = {
+    stylix.url = "github:danth/stylix";
+
+    nix-rice.url = "github:bertof/nix-rice";
+
+    catppuccin-hyprland = {
+      url = "github:catppuccin/hyprland";
+      flake = false;
+    };
+
+    catppcuccin-rofi = {
+      url = "github:catppuccin/rofi";
+      flake = false;
+    };
+
+    catppuccin-waybar = {
+      url = "github:catppuccin/waybar";
+      flake = false;
+    };
+
+    devenv = {
+      url = "github:cachix/devenv/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixvim.url = "github:nix-community/nixvim";
+  };
 }
