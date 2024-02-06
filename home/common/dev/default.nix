@@ -33,6 +33,9 @@
       doggo
 
       devenv
+
+      # concourse cli
+      fly
     ];
     sessionPath = [ "$HOME/bin" ];
   };
