@@ -11,6 +11,7 @@ in
     inputs.anyrun.homeManagerModules.default
     inputs.nixvim.homeManagerModules.nixvim
     inputs.stylix.homeManagerModules.stylix
+    inputs.ags.homeManagerModules.default
     outputs.homeManagerModules
     ./home.nix
     ../../themes/stylix.nix

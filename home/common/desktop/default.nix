@@ -3,8 +3,9 @@ with lib;
 {
   imports = [
     # ./bin.nix
+    ./ags
     ./browsers.nix
-    ./eww
+    # ./eww
     ./hyprland
     ./pls.nix
     ./productivity.nix
