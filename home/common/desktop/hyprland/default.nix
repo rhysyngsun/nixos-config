@@ -32,6 +32,7 @@ in
         force_zero_scaling = true
       }
 
+      exec-once=pkill eww && eww daemon
       exec-once=${./scripts/xdg-portals-fix.sh}
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK

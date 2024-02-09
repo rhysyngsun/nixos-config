@@ -1,7 +1,13 @@
-(defwidget bar []
+(defwidget bar0 []
   (centerbox :orientation "h"
     (workspaces)
-    (stats)
+    (music)
+    (sidestuff)))
+
+(defwidget bar1 []
+  (centerbox :orientation "h"
+    (workspaces)
+    (music)
     (sidestuff)))
 
 (defwidget sidestuff []
@@ -10,6 +16,16 @@
     (metric :label ""
       :value volume
     :onchange "amixer -D pulse sset Master {}%")))
+
+(defwidget music []
+  (box :class "music"
+       :orientation "h"
+       :space-evenly false
+       :halign "center"
+    {music != "" ? "🎵${music}" : ""}))
+
+(deflisten music :initial ""
+  "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
 
 (defwidget workspaces []
   (box :class "workspaces"
@@ -53,18 +69,31 @@
 
 
 (defpoll volume :interval "1s"
-"scripts/getvol")
+  "scripts/getvol")
 
 (defpoll time :interval "1s"
-"date '+%H:%M %b %d, %Y'")
+  "date '+%H:%M %b %d, %Y'")
 
-(defwindow bar
+(defwindow bar0
   :monitor 0
+  :windowtype "dock"
   :exclusive true
   :geometry (geometry :x "0%"
-    :y "0%"
-    :width "90%"
+    :y "10px"
+    :width "100%"
     :height "10px"
   :anchor "top center")
   :reserve (struts :side "top" :distance "4%")
-  (bar))
+  (bar0))
+
+(defwindow bar1
+  :monitor 1
+  :windowtype "dock"
+  :exclusive true
+  :geometry (geometry :x "0%"
+    :y "10px"
+    :width "100%"
+    :height "10px"
+  :anchor "top center")
+  :reserve (struts :side "top" :distance "4%")
+  (bar1))

@@ -1,9 +1,10 @@
-{ lib, pkgs, stdenv, ... }:
+{ lib, pkgs, ... }:
 with lib;
 {
   imports = [
     # ./bin.nix
     ./browsers.nix
+    ./eww
     ./hyprland
     ./pls.nix
     ./productivity.nix
@@ -18,7 +19,6 @@ with lib;
       qpwgraph
       unetbootin
       wtf
-      # xplr
       discord
       slack
       unstable.zoom-us
