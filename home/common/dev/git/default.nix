@@ -31,6 +31,9 @@
       ignores = [
         ".direnv/"
         ".envrc"
+        ".devenv/"
+        "flake.nix"
+        "flake.lock"
       ];
 
       lfs.enable = true;

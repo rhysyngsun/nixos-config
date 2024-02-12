@@ -21,6 +21,18 @@
     packages = with pkgs; [ blueman ];
   };
 
+  boot.plymouth = {
+    enable = true;
+    themePackages = [
+      (pkgs.catppuccin-plymouth.override {
+        variant = "mocha";
+      })
+    ];
+    theme = "catppuccin-mocha";
+  };
+
+  programs.nix-ld.enable = true;
+
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
