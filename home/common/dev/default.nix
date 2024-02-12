@@ -23,6 +23,7 @@
       just
       usql
       gnumake
+      git-ignore
 
       sphinx
 

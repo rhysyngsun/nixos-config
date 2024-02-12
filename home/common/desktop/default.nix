@@ -34,9 +34,11 @@ with lib;
       gnome.gnome-calendar
       google-chrome
 
+      qownnotes
+
       copier
 
-      thunderbird
+      # thunderbird
 
       baobab
 
@@ -66,11 +68,11 @@ with lib;
 
       prismlauncher
 
-      pants
+      # pants
       libxcrypt
 
       glade
-      cambalache
+      # cambalache
     ];
 
     sessionVariables =

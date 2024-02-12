@@ -14,7 +14,7 @@ final: prev:
   blender-launcher = prev.callPackage ./blender-launcher {};
   blender-alpha = prev.callPackage ./blender-alpha {};
   mit = prev.callPackage ./mit {};
-  pants = prev.callPackage ./pants {};
+  # pants = prev.callPackage ./tools/pants {};
   krita-plugins = prev.callPackage ./krita-plugins {};
   easyeffects-presets = prev.callPackage ./easyeffects-presets {};
 }
