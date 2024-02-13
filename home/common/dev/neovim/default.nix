@@ -10,6 +10,7 @@
     ./project-nvim.nix
     ./telescope.nix
     ./treesitter.nix
+    ./ufo.nix
     ./undotree.nix
   ];
 
@@ -68,11 +69,17 @@
       nvim-web-devicons
       octo-nvim
       overseer-nvim
+      {
+        plugin = statuscol-nvim;
+      }
     ];
 
     extraConfigLua = ''
       require('octo').setup()
       require('overseer').setup()
     '';
+
+
+
   };
 }
