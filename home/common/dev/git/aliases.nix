@@ -71,4 +71,7 @@
   vr = "vagrant reload";
   vh = "vagrant halt -f";
   vs = "vagrant ssh";
+
+  # nvim
+  v = "nvim .";
 }

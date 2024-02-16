@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   programs = {
     tmux = {
@@ -14,6 +14,8 @@
         bind '-' split-window -c "#{pane_current_path}"
         bind | split-window -h -c "#{pane_current_path}"
         bind c new-window -c "#{pane_current_path}"
+
+        set -g status-style bg=default
       '';
 
       plugins = with pkgs; [
@@ -28,42 +30,21 @@
             set -g @continuum-save-interval '60' # minutes
           '';
         }
-        (let 
-          flavor = "mocha";
-        in {
-          plugin = tmuxPlugins.catppuccin.overrideAttrs (oldAttrs: {
-            postInstall = let
-              palette = pkgs.catppuccin-palette.${flavor};
-              colorOverrides = {
-                thm_bg = "#${palette.mantle.hex}";
-              };
-              replaceColors = builtins.concatStringsSep "\n" 
-                  (lib.attrsets.mapAttrsToList
-                    (name: value: ''
-                      sed -i -e 's/${name}=.*/${name}="${value}"/g' $target/catppuccin-${flavor}.tmuxtheme
-                    '')
-                    colorOverrides
-                  );
-            in oldAttrs.postInstall + replaceColors;
-          });
+        {
+          plugin = tmuxPlugins.mkTmuxPlugin rec {
+            pluginName = "tmux-powerline";
+            version = "3.0.0";
+            src = fetchFromGitHub {
+              owner = "erikw";
+              repo = "tmux-powerline";
+              rev = "v${version}";
+              sha256 = "sha256-25uG7OI8OHkdZ3GrTxG1ETNeDtW1K+sHu2DfJtVHVbk=";
+            };
+          };
           extraConfig = ''
-            set -g @catppuccin_flavour '${flavor}'
-            set -g @catppuccin_window_tabs_enabled on
-            set -g @catppuccin_window_left_separator ""
-            set -g @catppuccin_window_right_separator " "
-            set -g @catppuccin_window_middle_separator " █"
-            set -g @catppuccin_window_number_position "right"
-
-            set -g @catppuccin_status_modules_right "directory session application"
-            set -g @catppuccin_status_left_separator  " "
-            set -g @catppuccin_status_right_separator ""
-            set -g @catppuccin_status_right_separator_inverse "no"
-            set -g @catppuccin_status_fill "icon"
-            set -g @catppuccin_status_connect_separator "no"
-            
-            set -g @catppuccin_directory_text "#{pane_current_path}"
+            set -g @tmux_power_theme '#${pkgs.catppuccin-palette.mocha.lavender.hex}'
           '';
-        })
+        }
         tmuxPlugins.sensible
         tmuxPlugins.logging
         tmuxPlugins.better-mouse-mode
@@ -71,9 +52,4 @@
       ];
     };
   };
-
-  # xdg.configFile."tmux/tmux.conf".text = ''
-  #   set -g status-bg default
-  #   set -g status-style bg=default
-  # '';
 }

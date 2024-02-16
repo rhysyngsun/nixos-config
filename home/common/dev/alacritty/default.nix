@@ -22,6 +22,9 @@ in
         };
       };
       # shell.program = config.home.sessionVariables.SHELL;
+      font = {
+        builtin_box_drawing = false;
+      };
     };
   };
 }

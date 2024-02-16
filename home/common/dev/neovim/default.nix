@@ -3,6 +3,7 @@
   imports = [
     ./colorschemes.nix
     ./completion.nix
+    ./folding.nix
     ./fugitive.nix
     ./harpoon.nix
     ./lsp.nix
@@ -10,7 +11,6 @@
     ./project-nvim.nix
     ./telescope.nix
     ./treesitter.nix
-    ./ufo.nix
     ./undotree.nix
   ];
 
@@ -61,25 +61,48 @@
     };
 
     plugins = {
+      lualine.enable = true;
       nvim-autopairs.enable = true;
       tmux-navigator.enable = true;
+      trouble.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [
       nvim-web-devicons
-      octo-nvim
       overseer-nvim
-      {
-        plugin = statuscol-nvim;
-      }
     ];
 
     extraConfigLua = ''
-      require('octo').setup()
+      vim.opt.termguicolors = true
+
       require('overseer').setup()
+
+      require('lualine').setup({
+        options = {
+          component_separators = '|',
+          section_separators = { left = '', right = '' },
+        },
+        sections = {
+          lualine_a = {
+            { 'mode', separator = { left = '' }, right_padding = 2 },
+          },
+          lualine_b = { 'filename', 'branch' },
+          lualine_c = { 'fileformat' },
+          lualine_x = {},
+          lualine_y = { 'filetype', 'progress' },
+          lualine_z = {
+            { 'location', separator = { right = '' }, left_padding = 2 },
+          },
+        },
+        inactive_sections = {
+          lualine_a = { 'filename' },
+          lualine_b = {},
+          lualine_c = {},
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = { 'location' },
+        },
+      })
     '';
-
-
-
   };
 }
