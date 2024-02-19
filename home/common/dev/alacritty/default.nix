@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let 
   rice = pkgs.rice;
 in
@@ -22,9 +22,6 @@ in
         };
       };
       # shell.program = config.home.sessionVariables.SHELL;
-      font = {
-        builtin_box_drawing = false;
-      };
     };
   };
 }

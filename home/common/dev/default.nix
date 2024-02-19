@@ -10,6 +10,7 @@
     # ./ol-local
     ./python
     ./tmux.nix
+    ./wezterm
     ./yazi.nix
     ./zsh
   ];

@@ -1,9 +1,10 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 with lib;
 let
   cmds = {
     swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
     swayr = "${pkgs.swayr}/bin/swayr";
+    terminal = "${config.programs.wezterm.package}/bin/wezterm start --always-new-process";
   };
 in
 {
@@ -177,7 +178,7 @@ in
       windowrule = float,title:^(Confirm to replace files)$
       windowrule = float,title:^(File Operation Progress)$
     
-      exec-once = firefox & alacritty -e tmux & slack
+      exec-once = firefox
 
       bind=$mod, Q, killactive
 
@@ -188,7 +189,7 @@ in
       bindl=,switch:Lid Switch,exec,${cmds.swaylock}
       bind=$mod,L,exec,${cmds.swaylock}
 
-      bind=$mod,RETURN,exec,alacritty -e tmux
+      bind=$mod,RETURN,exec,${cmds.terminal}
       bind=$mod,B,exec,firefox
       bind=$mod,D,exec,anyrun
 

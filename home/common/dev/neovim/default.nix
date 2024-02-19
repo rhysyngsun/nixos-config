@@ -7,6 +7,7 @@
     ./fugitive.nix
     ./harpoon.nix
     ./lsp.nix
+    ./navigator.nix
     ./oil.nix
     ./project-nvim.nix
     ./telescope.nix
@@ -63,7 +64,6 @@
     plugins = {
       lualine.enable = true;
       nvim-autopairs.enable = true;
-      tmux-navigator.enable = true;
       trouble.enable = true;
     };
 
