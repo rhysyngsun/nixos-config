@@ -108,7 +108,12 @@
   navigate = true 
 
 [diff]
+  algorithm = histogram
   colorMoved = default
+
+[fetch]
+  prune = true
+  prunetags = true
 
 [format]
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
@@ -122,16 +127,23 @@
 [interactive]
   diffFilter = delta --color-only
 
+[log]
+  date = iso
+
 [merge]
-  conflictstyle = diff3
+  conflictstyle = vdiff3
 
 [push]
   default = upstream
+  autosetupremote = true
 
 [rerere]
   # Remember my merges
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
   enabled = true
+
+[url "git@github.com:"]
+	insteadOf = "https://github.com/"
 
 [user]
 	name = Nathan Levesque

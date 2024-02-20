@@ -24,9 +24,9 @@
     git = {
       enable = true;
 
-      delta = {
-        enable = true;
-      };
+      delta.enable = true;
+      difftastic.enable = true;
+      lfs.enable = true;
 
       ignores = [
         ".direnv/"
@@ -34,13 +34,11 @@
         ".devenv/"
       ];
 
-      lfs.enable = true;
-
       includes = [
         { path = "${config.xdg.configHome}/git/default.gitconfig"; }
         {
           path = "${config.xdg.configHome}/git/ol.gitconfig";
-          condition = "hasconfig:remote.*.url:https://github.com/mitodl/**";
+          condition = "hasconfig:remote.*.url:git@github.com:mitodl/**";
         }
       ];
     };
