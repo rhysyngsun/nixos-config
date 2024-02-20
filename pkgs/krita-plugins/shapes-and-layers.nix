@@ -2,7 +2,8 @@
 let
   pname = "shapes-and-layers";
   version = "0.10.0";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {

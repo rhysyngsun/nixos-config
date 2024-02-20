@@ -30,16 +30,19 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
-    xdg.dataFile = mkIf (cfg.plugins != []) (let
-      plugins = (pkgs.symlinkJoin {
-        name = "krita-plugins";
-        paths = cfg.plugins;
-      });
-    in {
-      "krita/" = {
-        source = plugins + "/share/krita/";
-        recursive = true;
-      };
-    });
+    xdg.dataFile = mkIf (cfg.plugins != [ ]) (
+      let
+        plugins = (pkgs.symlinkJoin {
+          name = "krita-plugins";
+          paths = cfg.plugins;
+        });
+      in
+      {
+        "krita/" = {
+          source = plugins + "/share/krita/";
+          recursive = true;
+        };
+      }
+    );
   };
 }

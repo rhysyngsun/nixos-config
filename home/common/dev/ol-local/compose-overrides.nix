@@ -2,20 +2,26 @@
 with lib;
 let
   cfg = config.programs.ol-local;
-  yamlFormat = pkgs.formats.yaml {};
-  makeComposeOverrideFile = project: let
-    filename = project.composeFilename;
-    config = {
-      services = map (subdomain: let
-        host = concatStringsSep "." hostParts;
-      in {
-        labels = [
-          "traefik.http.routers.whoami.rule=Host(`${host}`)"
-        ];
-      }) project.services;
-    };
-    configSource = yamlFormat.generate filename config;
-    in pkg.writeText filename;
+  yamlFormat = pkgs.formats.yaml { };
+  makeComposeOverrideFile = project:
+    let
+      filename = project.composeFilename;
+      config = {
+        services = map
+          (subdomain:
+            let
+              host = concatStringsSep "." hostParts;
+            in
+            {
+              labels = [
+                "traefik.http.routers.whoami.rule=Host(`${host}`)"
+              ];
+            })
+          project.services;
+      };
+      configSource = yamlFormat.generate filename config;
+    in
+    pkg.writeText filename;
 
   projectOptions = {
     name = mkOption {
@@ -26,23 +32,24 @@ let
       type = path;
     };
 
-    composeFilename = mkOption {
-      type = str;
-    }
+    composeFilename = mkOption
+      {
+        type = str;
+      }
 
-    services = mkOption {
-      type = listOf str;
-    };
+      services = mkOption {
+    type = listOf str;
+  };
 
-    direnv.enable = mkEnableOption "direnv support";
+  direnv.enable = mkEnableOption "direnv support";
   };
 
   makeConfig = project: {
     file.${project.composeFilename}.source = makeComposeOverrideFile project;
   }
 
-  projectsWithFilenames = map (project: {
-    composeFilename = "docker-compose.${project.name}.yml";
+    projectsWithFilenames = map (project: {
+  composeFilename = "docker-compose.${project.name}.yml";
   } // project) cfg.projects;
 
   finalConfig = map makeConfig projectsWithFilenames;

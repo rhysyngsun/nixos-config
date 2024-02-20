@@ -2,7 +2,8 @@
 let
   pname = "p-chan5";
   version = "0.0.0-unstable";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {

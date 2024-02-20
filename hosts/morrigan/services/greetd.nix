@@ -7,22 +7,24 @@ with lib;
     vt = 2;
     settings = {
       default_session = {
-        command = let
-          background = ../../../backgrounds/the_valley.png;
-          style = pkgs.writeText "greetd-gtkgreet.css" ''
-            @import url("${pkgs.rice.gtk.theme.css}");
-            window {
-              background-image: url("${background}");
-              background-position: center;
-              background-repeat: no-repeat;
-              background-size: cover;
-              background-color: black;
-            }
-          '';
-        in ''
-          ${pkgs.dbus}/bin/dbus-run-session \
-            ${pkgs.cage}/bin/cage -s \
-            -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet -s ${style}
+        command =
+          let
+            background = ../../../backgrounds/the_valley.png;
+            style = pkgs.writeText "greetd-gtkgreet.css" ''
+              @import url("${pkgs.rice.gtk.theme.css}");
+              window {
+                background-image: url("${background}");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-color: black;
+              }
+            '';
+          in
+          ''
+            ${pkgs.dbus}/bin/dbus-run-session \
+              ${pkgs.cage}/bin/cage -s \
+              -- ${pkgs.greetd.gtkgreet}/bin/gtkgreet -s ${style}
           '';
         user = "greeter";
       };
@@ -43,7 +45,7 @@ with lib;
 
       "gtk-3.0/settings.ini".text = ''
         [Settings]
-        gtk-cursor-theme-name=Catppuccin-Mocha-Dark-Cursors
+        gtk-cursor-theme-name=Catppuccin-Mocha-Lavender-Cursors
         gtk-cursor-theme-size=24
         gtk-font-name=Roboto
         gtk-icon-theme-name=Papirus-Dark

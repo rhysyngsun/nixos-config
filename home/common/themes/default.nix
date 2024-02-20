@@ -1,8 +1,8 @@
 { ... }:
 {
   imports = [
-    #./cursors.nix
-    #./gtk.nix
+    # ./cursors.nix
+    # ./gtk.nix
     ./rofi.nix
     ./vscode.nix
   ];

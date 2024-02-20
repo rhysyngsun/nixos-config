@@ -15,7 +15,7 @@ let
       python3Packages.virtualenv
     ]);
     profile = ''
-    export TUTOR_USE_COMPOSE_SUBCOMMAND=1
+      export TUTOR_USE_COMPOSE_SUBCOMMAND=1
     '';
     runScript = "bash";
   };
@@ -59,7 +59,7 @@ let
 in
 {
   home = {
-    packages =  [
+    packages = [
       tutor-python
       tutor-env
       tutor
@@ -78,7 +78,7 @@ in
         ExecStart = "${tutor-ip-watch}/bin/tutor-ip-watch";
         Type = "simple";
       };
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
   };
 }

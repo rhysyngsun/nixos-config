@@ -7,7 +7,7 @@ let
       let g:himalaya_folder_picker = 'telescope'
       let g:himalaya_folder_picker_telescope_preview = 1
     '';
-    
+
     plugins.telescope = {
       enable = true;
     };
@@ -21,6 +21,7 @@ let
     ];
   };
   nvimalaya = pkgs.writeShellScriptBin "nvimalaya" "NVIM_APPNAME=nvimalaya ${nixvim}/bin/nvim";
-in {
-  home.packages = [nvimalaya];
+in
+{
+  home.packages = [ nvimalaya ];
 }

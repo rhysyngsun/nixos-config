@@ -1,12 +1,12 @@
 { pkgs, ... }:
-let 
+let
   rice = pkgs.rice;
 in
 {
   programs.alacritty = {
     enable = true;
     package = pkgs.alacritty;
-    settings =  rice.alacritty.config // {
+    settings = rice.alacritty.config // {
       colors = {
         primary.background = "#1E1E2E";
       };

@@ -2,7 +2,7 @@
 {
   home.packages = [ pkgs.swww ];
 
-  systemd.user.services."swww" =  {
+  systemd.user.services."swww" = {
     Unit = {
       After = "graphical-session.target";
       PartOf = "graphical-session.target";
@@ -15,6 +15,6 @@
       Restart = "on-failure";
       ExecSearchPath = "${pkgs.swww}/bin";
     };
-    Install.WantedBy = ["hyprland-session.target"];
+    Install.WantedBy = [ "hyprland-session.target" ];
   };
 }

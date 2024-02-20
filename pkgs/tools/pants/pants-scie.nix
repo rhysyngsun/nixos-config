@@ -29,6 +29,6 @@ stdenv.mkDerivation rec {
     description = "A a fast, scalable, user-friendly build system for codebases of all sizes";
     homepage = "https://github.com/pantsbuild/scie-pants";
     license = licenses.asl20;
-    maintainers = [];
+    maintainers = [ ];
   };
 }

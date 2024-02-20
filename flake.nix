@@ -57,11 +57,12 @@
       };
 
       homeConfigurations = {
-        nathan = home-manager.lib.homeManagerConfiguration (
-          import ./home/nathan {
-            inherit inputs outputs nix-defaults;
-          }
-        ) // {
+        nathan = home-manager.lib.homeManagerConfiguration
+          (
+            import ./home/nathan {
+              inherit inputs outputs nix-defaults;
+            }
+          ) // {
           nixpkgs.config = nix-defaults.nixpkgs.config;
         };
       };
@@ -71,16 +72,14 @@
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "nixpkgs-unstable";
+    nixpkgs.follows = "nixpkgs-stable";
+    # nixpkgs.follows = "nixpkgs-unstable";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   inputs = {

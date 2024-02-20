@@ -1,12 +1,12 @@
 { pkgs, lib, ... }:
 
 {
-  imports = [./compose-overrides.nix];
+  imports = [ ./compose-overrides.nix ];
 
   systemd.user.services = {
     traefik-local = {
       Unit = {
-        After = ["docker.socket"];
+        After = [ "docker.socket" ];
       };
 
       Service = {
@@ -18,7 +18,7 @@
       };
 
       Install = {
-        WantedBy = ["multi-user.target"];
+        WantedBy = [ "multi-user.target" ];
       };
     };
   };
@@ -27,9 +27,7 @@
     enable = true;
     projects = {
       micromasters = {
-        services = {
-
-        };
+        services = { };
       };
     };
   };

@@ -1,10 +1,26 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  flavor = rec {
+    name = "Mocha";
+    lower = lib.toLower name;
+  };
+  accent = rec {
+    name = "Lavender";
+    lower = lib.toLower name;
+  };
+in
 {
   stylix = {
     autoEnable = false;
     image = ./backgrounds/the_valley.png;
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+
+    cursor = {
+      name = "Catppuccin-${flavor.name}-${accent.name}-Cursors";
+      package = pkgs.catppuccin-cursors."${flavor.lower}${accent.name}";
+      size = 14;
+    };
 
     fonts = rec {
       serif = {
@@ -24,7 +40,10 @@
         name = "Noto Color Emoji";
       };
     };
-    targets.wezterm.enable = true;
+
+    targets = {
+      wezterm.enable = true;
+    };
   };
 }
 

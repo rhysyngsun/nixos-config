@@ -78,7 +78,7 @@
         daemon_key = null;
         shared_secret_path = null;
       };
-      profiles = {};
+      profiles = { };
     };
   };
 }

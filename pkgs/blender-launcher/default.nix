@@ -2,7 +2,8 @@
 let
   pname = "blender-launcher";
   version = "1.15.1";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {
@@ -12,7 +13,7 @@ in stdenv.mkDerivation {
     hash = "sha256-HnQK/hq3iwY0vrYdwNobxGzaswPexZe86YLJdK1078w=";
   };
 
-  patches = [];
+  patches = [ ];
 
   buildInputs = [
     zlib

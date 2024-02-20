@@ -1,21 +1,75 @@
-{ config, stdenv, lib, fetchgit, fetchzip, boost, cmake, ffmpeg, gettext, glew, git
-, libepoxy, libXi, libX11, libXext, libXrender
-, libjpeg, libpng, libsamplerate, libsndfile
-, libtiff, libwebp, libGLU, libGL, openal, opencolorio, openexr, openimagedenoise, openimageio, openjpeg, python311Packages
-, openvdb, libXxf86vm, tbb, alembic
-, vulkan-loader, shaderc
-, zlib, zstd, fftw, fftwFloat, opensubdiv, freetype, jemalloc, ocl-icd, addOpenGLRunpath
-, jackaudioSupport ? false, libjack2
-, cudaSupport ? config.cudaSupport, cudaPackages ? { }
-, hipSupport ? false, rocmPackages # comes with a significantly larger closure size
-, colladaSupport ? true, opencollada
-, spaceNavSupport ? stdenv.isLinux, libspnav
+{ config
+, stdenv
+, lib
+, fetchgit
+, fetchzip
+, boost
+, cmake
+, ffmpeg
+, gettext
+, glew
+, git
+, libepoxy
+, libXi
+, libX11
+, libXext
+, libXrender
+, libjpeg
+, libpng
+, libsamplerate
+, libsndfile
+, libtiff
+, libwebp
+, libGLU
+, libGL
+, openal
+, opencolorio
+, openexr
+, openimagedenoise
+, openimageio
+, openjpeg
+, python311Packages
+, openvdb
+, libXxf86vm
+, tbb
+, alembic
+, vulkan-loader
+, shaderc
+, zlib
+, zstd
+, fftw
+, fftwFloat
+, opensubdiv
+, freetype
+, jemalloc
+, ocl-icd
+, addOpenGLRunpath
+, jackaudioSupport ? false
+, libjack2
+, cudaSupport ? config.cudaSupport
+, cudaPackages ? { }
+, hipSupport ? false
+, rocmPackages # comes with a significantly larger closure size
+, colladaSupport ? true
+, opencollada
+, spaceNavSupport ? stdenv.isLinux
+, libspnav
 , makeWrapper
-, pugixml, llvmPackages
-, waylandSupport ? stdenv.isLinux, pkg-config, wayland, wayland-protocols, libffi, libdecor, libxkbcommon, dbus
+, pugixml
+, llvmPackages
+, waylandSupport ? stdenv.isLinux
+, pkg-config
+, wayland
+, wayland-protocols
+, libffi
+, libdecor
+, libxkbcommon
+, dbus
 , potrace
 , openxr-loader
-, embree, gmp, libharu
+, embree
+, gmp
+, libharu
 , openpgl
 , mesa
 , runCommand
@@ -25,7 +79,7 @@
 let
   pythonPackages = python311Packages;
   inherit (pythonPackages) python;
-  buildEnv = callPackage ./wrapper.nix {};
+  buildEnv = callPackage ./wrapper.nix { };
   optix = fetchzip {
     # url taken from the archlinux blender PKGBUILD
     url = "https://developer.download.nvidia.com/redist/optix/v7.3/OptiX-7.3.0-Include.zip";
@@ -52,7 +106,12 @@ stdenv.mkDerivation (finalAttrs: rec {
   ] ++ lib.optional stdenv.isDarwin ./darwin.patch;
 
   nativeBuildInputs =
-    [ cmake makeWrapper python311Packages.wrapPython llvmPackages.llvm.dev git
+    [
+      cmake
+      makeWrapper
+      python311Packages.wrapPython
+      llvmPackages.llvm.dev
+      git
     ]
     ++ lib.optionals cudaSupport [
       addOpenGLRunpath
@@ -60,9 +119,28 @@ stdenv.mkDerivation (finalAttrs: rec {
     ]
     ++ lib.optionals waylandSupport [ pkg-config ];
   buildInputs =
-    [ boost ffmpeg gettext glew
-      freetype libjpeg libpng libsamplerate libsndfile libtiff libwebp
-      opencolorio openexr openimageio openjpeg python zlib zstd fftw fftwFloat jemalloc
+    [
+      boost
+      ffmpeg
+      gettext
+      glew
+      freetype
+      libjpeg
+      libpng
+      libsamplerate
+      libsndfile
+      libtiff
+      libwebp
+      opencolorio
+      openexr
+      openimageio
+      openjpeg
+      python
+      zlib
+      zstd
+      fftw
+      fftwFloat
+      jemalloc
       alembic
       (opensubdiv.override { inherit cudaSupport; })
       tbb
@@ -77,15 +155,25 @@ stdenv.mkDerivation (finalAttrs: rec {
       openimagedenoise
     ]
     ++ lib.optionals waylandSupport [
-      wayland wayland-protocols libffi libdecor' libxkbcommon dbus
+      wayland
+      wayland-protocols
+      libffi
+      libdecor'
+      libxkbcommon
+      dbus
     ]
     ++ lib.optionals (!stdenv.isAarch64) [
       #openimagedenoise
       embree
     ]
     ++ lib.optionals (!stdenv.isDarwin) [
-      libXi libX11 libXext libXrender
-      libGLU libGL openal
+      libXi
+      libX11
+      libXext
+      libXrender
+      libGLU
+      libGL
+      openal
       libXxf86vm
       openxr-loader
       # OpenVDB currently doesn't build on darwin
@@ -98,12 +186,12 @@ stdenv.mkDerivation (finalAttrs: rec {
   pythonPath = with python311Packages; [ numpy requests zstandard ];
 
   postPatch = ''
-      substituteInPlace extern/clew/src/clew.c --replace '"libOpenCL.so"' '"${ocl-icd}/lib/libOpenCL.so"'
-    '' +
-    (lib.optionalString hipSupport ''
-      substituteInPlace extern/hipew/src/hipew.c --replace '"/opt/rocm/hip/lib/libamdhip64.so"' '"${rocmPackages.clr}/lib/libamdhip64.so"'
-      substituteInPlace extern/hipew/src/hipew.c --replace '"opt/rocm/hip/bin"' '"${rocmPackages.clr}/bin"'
-    '');
+    substituteInPlace extern/clew/src/clew.c --replace '"libOpenCL.so"' '"${ocl-icd}/lib/libOpenCL.so"'
+  '' +
+  (lib.optionalString hipSupport ''
+    substituteInPlace extern/hipew/src/hipew.c --replace '"/opt/rocm/hip/lib/libamdhip64.so"' '"${rocmPackages.clr}/lib/libamdhip64.so"'
+    substituteInPlace extern/hipew/src/hipew.c --replace '"opt/rocm/hip/bin"' '"${rocmPackages.clr}/bin"'
+  '');
 
   cmakeFlags =
     [

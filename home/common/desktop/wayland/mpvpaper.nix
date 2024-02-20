@@ -1,11 +1,13 @@
-{ pkgs, ... }: let
+{ pkgs, ... }:
+let
   wallpaper = ../../../../backgrounds/wallpaper-compressed.mp4;
-in {
+in
+{
   home.packages = with pkgs; [
     mpvpaper
   ];
 
-  systemd.user.services."mpvpaper" =  {
+  systemd.user.services."mpvpaper" = {
     Unit = {
       After = "graphical-session.target";
       PartOf = "graphical-session.target";
@@ -17,6 +19,6 @@ in {
       Restart = "on-failure";
       ExecSearchPath = "${pkgs.mpvpaper}/bin";
     };
-    Install.WantedBy = ["hyprland-session.target"];
+    Install.WantedBy = [ "hyprland-session.target" ];
   };
 }

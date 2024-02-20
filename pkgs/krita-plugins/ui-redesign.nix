@@ -2,7 +2,8 @@
 let
   pname = "ui-redesign";
   version = "0.0.0";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {

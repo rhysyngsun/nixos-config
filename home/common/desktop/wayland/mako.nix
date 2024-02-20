@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [libnotify];
+  home.packages = with pkgs; [ libnotify ];
   services.mako = {
     enable = true;
     defaultTimeout = 5000;

@@ -3,17 +3,17 @@
     plugins.lsp = {
       enable = true;
       servers = {
-#        bashls.enable = true;
+        #        bashls.enable = true;
         gopls.enable = true;
         lua-ls.enable = true;
         html = {
           enable = true;
-          filetypes = [ "html" "templ"];
+          filetypes = [ "html" "templ" ];
         };
 
         htmx = {
           enable = true;
-          filetypes = [ "html" "templ"];
+          filetypes = [ "html" "templ" ];
         };
         jsonls.enable = true;
         nil_ls.enable = true;
@@ -34,7 +34,7 @@
         };
         templ = {
           enable = true;
-          filetypes = ["templ"];
+          filetypes = [ "templ" ];
         };
         tsserver.enable = true;
         yamlls.enable = true;

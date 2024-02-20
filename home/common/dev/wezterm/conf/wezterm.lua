@@ -1,60 +1,105 @@
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
-return {
-  color_scheme = 'Catppuccin Mocha',
-  xcursor_theme = 'Catppuccin-Mocha-Lavender-Cursors',
-  -- font name as it appears in `fc-list`
-  font = wezterm.font 'Iosevka Nerd Font',
-  font_size = 11,
-  line_height = 0.9,
+-- for validation
+local config = wezterm.config_builder()
 
-  enable_scroll_bar = true,
-  tab_bar_at_bottom = true,
+-- theme
+config.color_scheme = 'Catppuccin Mocha'
+config.xcursor_theme = 'Catppuccin-Mocha-Lavender'
 
-  leader = { key = 'a', mods = 'CTRL'},
+-- font name as it appears in `fc-list`
+config.font = wezterm.font 'Iosevka Nerd Font'
+config.font_size = 11
+config.line_height = 0.9
 
-  keys = {
-      {
-        key = '-',
-        mods = 'LEADER',
-        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
-      },
-      {
-        key = '|',
-        mods = 'LEADER',
-        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
-      },
-      {
-        key = 'z',
-        mods = 'LEADER',
-        action = wezterm.action.TogglePaneZoomState,
-      },
-      -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
-      {
-        key = 'a',
-        mods = 'LEADER|CTRL',
-        action = wezterm.action.SendKey { key = 'a', mods = 'CTRL' },
-      },
+-- this never redisplays the cursor under hyprland/wayland
+config.hide_mouse_cursor_when_typing = false
+config.use_fancy_tab_bar = false
 
-    {
-      key = 'h',
-      mods = 'CTRL',
-      action = wezterm.action.ActivatePaneDirection 'Left'
-    },
-    {
-      key = 'l',
-      mods = 'CTRL',
-      action = wezterm.action.ActivatePaneDirection 'Right'
-    },
-    {
-      key = 'k',
-      mods = 'CTRL',
-      action = wezterm.action.ActivatePaneDirection 'Up'
-    },
-    {
-      key = 'j',
-      mods = 'CTRL',
-      action = wezterm.action.ActivatePaneDirection 'Down'
-    },
-  }
+config.leader = { key = 'a', mods = 'CTRL'}
+
+config.keys = {
+  -- send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
+  {
+    key = 'a',
+    mods = 'LEADER|CTRL',
+    action = act.SendKey { key = 'a', mods = 'CTRL' },
+  },
+  -- pane spliting
+  {
+    key = '-',
+    mods = 'LEADER',
+    action = act.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '|',
+    mods = 'LEADER|SHIFT',
+    action = act.SplitHorizontal { domain = 'CurrentPaneDomain' },
+  },
+  -- zoom pane
+  {
+    key = 'z',
+    mods = 'LEADER',
+    action = act.TogglePaneZoomState,
+  },
+  -- close pane
+  {
+    key = 'x',
+    mods = 'LEADER',
+    action = act.CloseCurrentPane { confirm = true },
+  },
+  -- map pane nav same as nvim
+  {
+    key = 'h',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Left'
+  },
+  {
+    key = 'j',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Down'
+  },
+  {
+    key = 'k',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Up'
+  },
+  {
+    key = 'l',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Right'
+  },
+  -- tmux-like pane resizing
+  {
+    key = 'H',
+    mods = 'LEADER',
+    action = act.AdjustPaneSize { 'Left', 5 }
+  },
+  {
+    key = 'J',
+    mods = 'LEADER',
+    action = act.AdjustPaneSize { 'Down', 5 }
+  },
+  {
+    key = 'K',
+    mods = 'LEADER',
+    action = act.AdjustPaneSize { 'Up', 5 }
+  },
+  {
+    key = 'L',
+    mods = 'LEADER',
+    action = act.AdjustPaneSize { 'Right', 5 }
+  },
 }
+
+for i = 1, 8 do
+  -- CTRL+ALT + number to activate that tab
+  table.insert(config.keys, {
+    key = tostring(i),
+    mods = 'CTRL|ALT',
+    action = act.ActivateTab(i - 1),
+  })
+end
+
+return config

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   systemd.user.services = {
-    myco= {
+    myco = {
       Unit = {
         Description = "Run mycorrhiza server";
         After = [ "graphical-session.target" ];

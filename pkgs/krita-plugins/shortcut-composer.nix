@@ -2,7 +2,8 @@
 let
   pname = "shortcut-composer";
   version = "1.4.0";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {

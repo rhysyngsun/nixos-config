@@ -1,4 +1,4 @@
-{pkgs, ... }:
+{ pkgs, ... }:
 let
   mochaTheme = (pkgs.fetchFromGitHub {
     owner = "yazi-rs";
@@ -8,7 +8,7 @@ let
   }) + "/catppuccin-mocha/theme.toml";
 in
 {
-  home.packages = with pkgs; [ueberzugpp];
+  home.packages = with pkgs; [ ueberzugpp ];
 
   programs.yazi = {
     enable = true;

@@ -33,6 +33,7 @@ with lib;
       zlib
       gnome.gnome-calendar
       google-chrome
+      mkchromecast
 
       qownnotes
 

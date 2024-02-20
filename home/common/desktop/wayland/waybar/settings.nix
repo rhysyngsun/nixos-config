@@ -76,7 +76,7 @@ with lib;
       format-source = "<span font='11'></span>";
       format-source-muted = "<span font='11'></span>";
       format-icons = {
-        default = [ "" ]; 
+        default = [ "" ];
         headset = "󰋎";
         headphone = "󰋋";
       };

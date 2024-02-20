@@ -1,5 +1,5 @@
 { pkgs, ... }:
-let 
+let
   rice = pkgs.rice;
 in
 {

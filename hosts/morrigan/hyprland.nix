@@ -9,7 +9,7 @@
     MOZ_ENABLE_WAYLAND = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_BACKEND = "vulkan";
-    GDK_BACKEND = "wayland";
+    # GDK_BACKEND = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     # QT_QPA_PLATFORMTHEME = "gtk2";
     # Fix for some Java AWT applications (e.g. Android Studio),

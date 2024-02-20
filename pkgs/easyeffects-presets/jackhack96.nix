@@ -2,7 +2,8 @@
 let
   pname = "jackhack96";
   version = "0.0.0-unstable";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchFromGitHub {

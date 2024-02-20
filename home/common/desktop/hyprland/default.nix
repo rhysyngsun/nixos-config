@@ -33,13 +33,17 @@ in
         force_zero_scaling = true
       }
 
+      env = GDK_SCALE,2
+      env = XCURSOR_SIZE,32
+      env = XCURSOR_THEME,Catppuccin-Mocha-Lavender
+      env = GTK_THEME,Catppuccin-Mocha-Compact-Lavender-Dark
+
       exec-once=pkill eww && eww daemon
       exec-once=${./scripts/xdg-portals-fix.sh}
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
 
       exec-once=xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
-      exec-once=export GDK_SCALE=2; export XCURSOR_SIZE=32; export GTK_THEME="Catppuccin-Mocha-Compact-Lavender-Dark"
       exec-once=hyprctl setcursor "Catppuccin-Mocha-Lavender" 32
       exec-once=env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
       exec-once=nm-applet -indicator

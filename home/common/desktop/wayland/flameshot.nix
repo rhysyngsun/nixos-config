@@ -1,6 +1,6 @@
-{ config, pkgs, lib, ...}:
+{ config, pkgs, lib, ... }:
 let
-  flameshot = pkgs.flameshot.overrideAttrs(_: {
+  flameshot = pkgs.flameshot.overrideAttrs (_: {
     src = pkgs.fetchFromGitHub {
       owner = "flameshot-org";
       repo = "flameshot";
@@ -11,10 +11,11 @@ let
       "-DUSE_WAYLAND_GRIM=1"
     ];
   });
-  fmt = pkgs.formats.ini {};
+  fmt = pkgs.formats.ini { };
   screenshotDir = "Pictures/Screenshots";
-in {
-  home.packages = [flameshot];
+in
+{
+  home.packages = [ flameshot ];
 
   home.file."${screenshotDir}/.keep".text = "";
 

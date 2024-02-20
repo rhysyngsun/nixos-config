@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, ... }:
 {
   imports = [
     ./colorschemes.nix
@@ -54,7 +54,7 @@
     globals.mapleader = ",";
 
     options = {
-      number = true;         # Show line numbers
+      number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
       tabstop = 2;
       shiftwidth = 2;

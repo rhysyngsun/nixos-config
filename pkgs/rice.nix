@@ -3,7 +3,7 @@
 with pkgs.nix-rice;
 with lib;
 
-let 
+let
   flavor = rec {
     name = "Mocha";
     lower = toLower name;
@@ -121,7 +121,7 @@ in
       hash = "sha256-DNorfyl3C4RBclF2KDgwvQQwixpTwSRu7fIvihPN8JY=";
     }) + "/basic/.local/share/rofi/themes";
   };
-  
+
   godot = {
     package = (pkgs.fetchFromGitHub {
       owner = "boranroni";

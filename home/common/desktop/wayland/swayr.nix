@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   swayrd = "${pkgs.swayr}/bin/swayrd";
-  settingsFormat = pkgs.formats.toml {};
+  settingsFormat = pkgs.formats.toml { };
 in
 {
   xdg.configFile."swayr/config.toml".source = (settingsFormat.generate "swayr.toml" {
@@ -14,7 +14,7 @@ in
         "-no-case-sensitive"
         "-no-drun-use-desktop-cache"
         "-l 20"
-        "-p {prompt}" 
+        "-p {prompt}"
       ];
     };
     format = {

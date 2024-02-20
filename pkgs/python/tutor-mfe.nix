@@ -1,6 +1,7 @@
 { buildPythonPackage
 , fetchPypi
-, tutor }:
+, tutor
+}:
 
 let
   pname = "tutor-mfe";

@@ -1,9 +1,9 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 let
   inherit (pkgs) wlogout;
 in
 {
-  home.packages = [ wlogout];
+  home.packages = [ wlogout ];
 
   xdg.configFile = {
     "wlogout/layout".text = ''

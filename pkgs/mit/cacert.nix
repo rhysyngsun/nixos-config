@@ -5,7 +5,7 @@ let
 in
 stdenv.mkDerivation {
   inherit version pname;
-  
+
   src = fetchurl {
     url = "https://ca.mit.edu/mitca.crt";
     hash = "sha256-K/sIXlEs6s+NbptIvG/FioJpYm0UKwMuvSjEYmvrmKc=";
