@@ -24,8 +24,8 @@
   boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_1.override {
     argsOverride = rec {
       src = pkgs.fetchurl {
-          url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
-          hash = "sha256-O1TsVncWzfs2GMrzjFioqrE3LMQcFkMGM/6+nM2z+R0=";
+        url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+        hash = "sha256-O1TsVncWzfs2GMrzjFioqrE3LMQcFkMGM/6+nM2z+R0=";
       };
       version = "6.1.77";
       modDirVersion = version;
