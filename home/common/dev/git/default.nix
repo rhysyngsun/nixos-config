@@ -24,7 +24,7 @@
     git = {
       enable = true;
 
-      delta.enable = true;
+      # delta.enable = true;
       difftastic.enable = true;
       lfs.enable = true;
 

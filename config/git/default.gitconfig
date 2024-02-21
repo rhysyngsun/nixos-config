@@ -131,7 +131,7 @@
   date = iso
 
 [merge]
-  conflictstyle = vdiff3
+  conflictstyle = zdiff3
 
 [push]
   default = upstream

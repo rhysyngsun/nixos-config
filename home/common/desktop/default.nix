@@ -5,10 +5,11 @@ with lib;
     # ./bin.nix
     ./ags
     ./browsers.nix
+    ./chat.nix
     # ./eww
     ./hyprland
     ./pls.nix
-    ./productivity.nix
+    # ./productivity.nix
     ./wayland
   ];
   home = {
@@ -20,11 +21,7 @@ with lib;
       qpwgraph
       unetbootin
       wtf
-      discord
-      slack
       unstable.zoom-us
-      element-desktop
-      fractal-next
       file
       nnn
       exiftool
@@ -36,10 +33,6 @@ with lib;
       mkchromecast
 
       qownnotes
-
-      copier
-
-      # thunderbird
 
       baobab
 

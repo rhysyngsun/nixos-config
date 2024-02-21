@@ -10,13 +10,11 @@ let
   };
 in
 {
-  programs.pls = {
-    enable = true;
-    enableAliases = true;
-  };
+  programs.pls.enable = true;
 
-  programs.bash.shellAliases = mkIf cfg.enableAliases aliases;
-  programs.fish.shellAliases = mkIf cfg.enableAliases aliases;
-  programs.zsh.shellAliases = mkIf cfg.enableAliases aliases;
+  # don't use enableAliases because we don't want to alias `ls`
+  programs.bash.shellAliases = aliases;
+  programs.fish.shellAliases = aliases;
+  programs.zsh.shellAliases = aliases;
 }
 

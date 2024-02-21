@@ -85,6 +85,11 @@
   inputs = {
     hyprland.url = "github:hyprwm/Hyprland";
 
+    hycov = {
+      url = "github:DreamMaoMao/hycov";
+      inputs.hyprland.follows = "hyprland";
+    };
+
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
     anyrun = {

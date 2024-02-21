@@ -23,6 +23,11 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+
+    plugins = [
+      inputs.hycov.packages.${pkgs.system}.hycov
+    ];
+
     extraConfig = ''
       $mod = SUPER
 
@@ -41,7 +46,7 @@ in
       exec-once=pkill eww && eww daemon
       exec-once=${./scripts/xdg-portals-fix.sh}
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-      exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
+exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
 
       exec-once=xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
       exec-once=hyprctl setcursor "Catppuccin-Mocha-Lavender" 32
@@ -49,6 +54,11 @@ in
       exec-once=nm-applet -indicator
 
       source=${inputs.catppuccin-hyprland}/themes/mocha.conf
+
+      debug {
+        disable_logs = false
+        enable_stdout_logs = true
+      }
 
       general {
         gaps_in = 4
@@ -101,13 +111,25 @@ in
       }
 
       plugin {
-        hy3 {
-          no_gaps_when_only = true
-          tabs = {
-            rounding = 6
-            col.active = rgba(b4befeff)
-            col.inactive = rgba(1e1e2eff)
-          }
+        hycov {
+          overview_gappo = 60 # gaps width from screen edge
+          overview_gappi = 24 # gaps width from clients
+          enable_hotarea = 1 # enable mouse cursor hotarea, when cursor enter hotarea, it will toggle overview    
+          hotarea_monitor = all # monitor name which hotarea is in, default is all
+          hotarea_pos = 1 # position of hotarea (1: bottom left, 2: bottom right, 3: top left, 4: top right)
+          hotarea_size = 10 # hotarea size, 10x10
+          swipe_fingers = 4 # finger number of gesture,move any directory
+          move_focus_distance = 100 # distance for movefocus,only can use 3 finger to move 
+          enable_gesture = 0 # enable gesture
+          auto_exit = 1 # enable auto exit when no client in overview
+          auto_fullscreen = 0 # auto make active window maximize after exit overview
+          only_active_workspace = 0 # only overview the active workspace
+          only_active_monitor = 0 # only overview the active monitor
+          enable_alt_release_exit = 0 # alt swith mode arg,see readme for detail
+          alt_replace_key = Alt_L # alt swith mode arg,see readme for detail
+          alt_toggle_auto_next = 0 # auto focus next window when toggle overview in alt swith mode
+          click_in_cursor = 1 # when click to jump,the target windwo is find by cursor, not the current foucus window.
+          hight_of_titlebar = 0 # height deviation of title bar height
         }
       }
 
@@ -120,6 +142,24 @@ in
 
         vrr = 1
       }
+
+      
+      # bind key to toggle overview (normal)
+      bind = ALT,tab,hycov:toggleoverview
+
+      # bind key to toggle overview (force mode, not affected by `only_active_workspace` or `only_active_monitor`)
+      bind = ALT,grave,hycov:toggleoverview,forceall #grave key is the '~' key
+
+      # bind key to toggle overview (shows all windows in one monitor, not affected by `only_active_workspace` or `only_active_monitor`)
+      bind = ALT,g,hycov:toggleoverview,forceallinone 
+
+      # The key binding for directional switch mode.
+      # Calculate the window closest to the direction to switch focus.
+      # This keybind is applicable not only to the overview, but also to the general layout.
+      bind=ALT,left,hycov:movefocus,l
+      bind=ALT,right,hycov:movefocus,r
+      bind=ALT,up,hycov:movefocus,u
+      bind=ALT,down,hycov:movefocus,d
 
       ${builtins.concatStringsSep "\n" (builtins.genList (
         x: let
@@ -151,8 +191,7 @@ in
       windowrulev2 = size $float_default_width $float_default_height,class:^(com.obsproject.Studio)$
       windowrulev2 = center,class:^(com.obsproject.Studio)$
 
-      windowrulev2 = nofullscreenrequest, class:(firefox), title:(Picture-in-Picture)
-      windowrulev2 = nomaximizerequest, class:(firefox), title:(Picture-in-Picture)
+      windowrulev2 = suppressevent maximize fullscreen, class:(firefox), title:(Picture-in-Picture)
       windowrulev2 = nodim, class:^(firefox)$, title:^(Picture-in-Picture)$
       windowrulev2 = opacity 1.0 override 1.0 override, class:^(firefox)$, title:^(Picture-in-Picture)$
 
@@ -166,7 +205,7 @@ in
 
       # make flameshot behave
       windowrulev2=move 0 0,title:^(flameshot)
-      windowrulev2=nofullscreenrequest,title:^(flameshot)
+      windowrulev2=suppressevent fullscreen,title:^(flameshot)
 
       windowrulev2 = forcergbx, class:^(blender)$
 

@@ -5,8 +5,8 @@
     ./git
     ./godot
     ./neovim
-    #./nvimalaya
-    ./nodejs
+    # ./nvimalaya
+    # ./nodejs
     # ./ol-local
     ./python
     ./tmux.nix
@@ -27,6 +27,7 @@
       git-ignore
 
       sphinx
+      copier
 
       # virtualization
       lazydocker
