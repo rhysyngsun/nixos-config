@@ -58,7 +58,6 @@ with lib;
       transmission-gtk
 
       blender
-      # blender-alpha
 
       prismlauncher
 
@@ -66,7 +65,8 @@ with lib;
       libxcrypt
 
       glade
-      # cambalache
+
+      obsidian
     ];
 
     sessionVariables =
