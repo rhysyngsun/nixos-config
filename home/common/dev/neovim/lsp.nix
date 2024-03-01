@@ -1,5 +1,9 @@
 {
   programs.nixvim = {
+    filetype.extension = {
+      ftl = "html";
+    };
+
     plugins.lsp = {
       enable = true;
       servers = {
@@ -15,6 +19,7 @@
           enable = true;
           filetypes = [ "html" "templ" ];
         };
+        java-language-server.enable = true;
         jsonls.enable = true;
         nil_ls.enable = true;
         ruff-lsp.enable = true;

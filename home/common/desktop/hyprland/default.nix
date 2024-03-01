@@ -89,7 +89,7 @@ in
         }
 
         active_opacity = 0.85
-        inactive_opacity = 0.6
+        inactive_opacity = 0.3
 
         drop_shadow = off
 

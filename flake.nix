@@ -15,6 +15,7 @@
             # overlays from inputs
             inputs.nix-rice.overlays.default
             inputs.copier.overlays.default
+            inputs.nixgl.overlay
             # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
@@ -108,6 +109,8 @@ permittedInsecurePackages = [
       url = "github:firecat53/networkmanager-dmenu";
       flake = false;
     };
+
+    nixgl.url = "github:guibou/nixGL";
   };
 
   # rice

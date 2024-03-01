@@ -1,9 +1,13 @@
-{ pkgs, ... }:
+{ pkgs-stable, ... }:
+let
+  pkgs = pkgs-stable;
+in
 {
   home.packages = [
     pkgs.discord
     pkgs.slack
     pkgs.element-desktop
+    pkgs.zoom-us
   ];
 
   xdg.desktopEntries = {

@@ -10,8 +10,8 @@ final: prev:
   ];
   catppuccin-palette = prev.callPackage ./catppuccin-palette.nix { };
   rice = prev.callPackage ./rice.nix { };
-  blender-launcher = prev.callPackage ./blender-launcher { };
-  blender-alpha = prev.callPackage ./blender-alpha { };
+  # blender-launcher = prev.callPackage ./blender-launcher { };
+  # blender-alpha = prev.callPackage ./blender-alpha { };
   mit = prev.callPackage ./mit { };
   # pants = prev.callPackage ./tools/pants {};
   krita-plugins = prev.callPackage ./krita-plugins { };

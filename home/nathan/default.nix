@@ -22,5 +22,11 @@ in
     inherit (nix-defaults.nixpkgs) config overlays;
   };
 
-  extraSpecialArgs = { inherit system inputs; };
+  extraSpecialArgs = { 
+    inherit system inputs; 
+    pkgs-stable = import inputs.nixpkgs {
+      inherit system;
+      inherit (nix-defaults.nixpkgs) config overlays;
+    };
+  };
 }

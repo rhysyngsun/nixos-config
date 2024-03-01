@@ -21,7 +21,6 @@ with lib;
       qpwgraph
       unetbootin
       wtf
-      unstable.zoom-us
       file
       nnn
       exiftool
@@ -29,7 +28,6 @@ with lib;
       unzip
       zlib
       gnome.gnome-calendar
-      google-chrome
       mkchromecast
 
       qownnotes

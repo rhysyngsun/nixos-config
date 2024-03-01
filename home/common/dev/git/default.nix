@@ -3,7 +3,10 @@
   home = {
     shellAliases = import ./aliases.nix;
 
-    packages = with pkgs; [ pre-commit ];
+    packages = with pkgs; [
+      gita
+      pre-commit
+    ];
   };
 
   xdg.configFile."git" = {
