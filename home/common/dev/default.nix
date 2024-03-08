@@ -25,6 +25,7 @@
       usql
       gnumake
       git-ignore
+      entr
 
       sphinx
       copier

@@ -18,6 +18,7 @@ in
     swaylock-effects
     inotify-tools
     swayr
+    hyprpicker
   ];
 
   wayland.windowManager.hyprland = {
@@ -242,6 +243,8 @@ in
 
       bind=$mod,apostrophe,changegroupactive,f
       bind=$mod SHIFT,apostrophe,changegroupactive,b
+
+      bind=$mod, S, exec, hyprpicker -a -f hex
 
       ${builtins.concatStringsSep "\n" (builtins.genList (
         x: let

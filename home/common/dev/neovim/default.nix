@@ -62,6 +62,7 @@
     };
 
     plugins = {
+      comment-nvim.enable = true;
       lualine.enable = true;
       nvim-autopairs.enable = true;
       trouble.enable = true;
