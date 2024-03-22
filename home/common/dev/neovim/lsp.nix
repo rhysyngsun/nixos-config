@@ -6,6 +6,17 @@
 
     plugins.lsp = {
       enable = true;
+
+      capabilities = ''
+        local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
+        for _, ls in ipairs(language_servers) do
+            require('lspconfig')[ls].setup({
+                capabilities = capabilities
+                -- you can add other fields for setting up lsp server in this table
+            })
+        end
+      '';
+
       servers = {
         #        bashls.enable = true;
         gopls.enable = true;
@@ -42,7 +53,13 @@
           filetypes = [ "templ" ];
         };
         tsserver.enable = true;
-        yamlls.enable = true;
+        yamlls = {
+          enable = true;
+          extraOptions.capabilities.textDocument.foldingRange = {
+            dynamicRegistration = false;
+            lineFoldingOnly = true;
+          };
+        };
       };
     };
   };

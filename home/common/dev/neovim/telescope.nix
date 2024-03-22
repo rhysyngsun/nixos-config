@@ -26,7 +26,6 @@
       };
 
       extensions = {
-        project-nvim.enable = true;
         frecency.enable = true;
       };
     };

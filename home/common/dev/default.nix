@@ -19,13 +19,16 @@
     packages = with pkgs; [
       heroku
       http-prompt
-      jq
       xh
       just
       usql
       gnumake
       git-ignore
       entr
+      tealdeer
+
+      # jq/xq/yq all-in-one
+      yq-go
 
       sphinx
       copier
@@ -42,6 +45,13 @@
       fly
     ];
     sessionPath = [ "$HOME/bin" ];
+    shellAliases = {
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      "....." = "cd ../../../..";
+      "rm" = "rm -I --preserve-root";
+    };
   };
 
   services.pueue = {

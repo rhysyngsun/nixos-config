@@ -55,7 +55,7 @@ with lib;
     };
     "clock" = {
       interval = 1;
-      format = "{:<span font='11'></span>   %a %b %d, %H:%M:%S}";
+      format = "<span font='11'></span>   {:%a %b %d, %H:%M:%S}";
     };
     "temperature" = {
       interval = 1;
