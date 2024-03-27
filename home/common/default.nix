@@ -1,5 +1,6 @@
 {
   imports = [
+    ./accounts
     ./desktop
     ./dev
     ./media

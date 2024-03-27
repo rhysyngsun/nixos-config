@@ -39,7 +39,7 @@
 
       doggo
 
-      devenv
+      #devenv
 
       # concourse cli
       fly

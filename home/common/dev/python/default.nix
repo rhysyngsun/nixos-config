@@ -60,15 +60,15 @@ in
 {
   home = {
     packages = [
-      tutor-python
-      tutor-env
-      tutor
-      # utils
-      tutor-ip
-      tutor-ip-watch
+      # tutor-python
+      # tutor-env
+      # tutor
+      # # utils
+      # tutor-ip
+      # tutor-ip-watch
 
-      pkgs.python3Packages.pkginfo
-      pkgs.python3Packages.wheel-inspect
+      # pkgs.python3Packages.pkginfo
+      # pkgs.python3Packages.wheel-inspect
     ];
   };
 

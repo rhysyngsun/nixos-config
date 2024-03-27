@@ -5,6 +5,7 @@ with lib;
     # ./bin.nix
     ./ags
     ./browsers.nix
+    ./calendar.nix
     ./chat.nix
     # ./eww
     ./hyprland
@@ -29,6 +30,7 @@ with lib;
       zlib
       gnome.gnome-calendar
       mkchromecast
+      cinnamon.nemo-with-extensions
 
       qownnotes
 
