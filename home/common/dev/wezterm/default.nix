@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{ pkgs-stable, ... }:
+let
+  pkgs = pkgs-stable;
+
+in
 {
   # note: NOT using home-manager's programs.wezterm.*
   #       because it handles wezterm.lua in not the most extensible way

@@ -5,6 +5,10 @@
 }:
 let
   system = "x86_64-linux";
+  pkgs = import inputs.nixpkgs-unstable {
+    inherit system;
+    inherit (nix-defaults.nixpkgs) config overlays;
+  };
 in
 {
   modules = [
@@ -12,15 +16,21 @@ in
     inputs.nixvim.homeManagerModules.nixvim
     inputs.stylix.homeManagerModules.stylix
     inputs.ags.homeManagerModules.default
+    inputs.hypridle.homeManagerModules.default
+    inputs.hyprlock.homeManagerModules.default 
     outputs.homeManagerModules
     ./home.nix
     ../../themes/stylix.nix
     ../common
+    {
+      nix = {
+        package = pkgs.nix;
+        inherit (nix-defaults.nix) settings;
+      };
+    }
   ];
-  pkgs = import inputs.nixpkgs-unstable {
-    inherit system;
-    inherit (nix-defaults.nixpkgs) config overlays;
-  };
+
+  inherit pkgs;
 
   extraSpecialArgs = {
     inherit system inputs;

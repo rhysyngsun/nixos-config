@@ -53,7 +53,7 @@
 
     globals.mapleader = ",";
 
-    options = {
+    opts = {
       number = true; # Show line numbers
       relativenumber = true; # Show relative line numbers
       tabstop = 2;
@@ -62,7 +62,7 @@
     };
 
     plugins = {
-      comment-nvim.enable = true;
+      comment.enable = true;
       lualine.enable = true;
       nvim-autopairs.enable = true;
       trouble.enable = true;

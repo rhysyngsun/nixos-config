@@ -92,7 +92,6 @@
   ];
 
   # enable audio
-  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -167,7 +166,14 @@
 
   programs.sway.enable = true;
 
-  security.pam.services.swaylock.text = "auth include login";
+  security = {
+    rtkit.enable = true;
+
+    pam.services = {
+      swaylock.text = "auth include login";
+      hyprlock.text = "auth include login";
+    };
+  };
 
   virtualisation = {
     docker.enable = true;

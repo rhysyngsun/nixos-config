@@ -4,6 +4,9 @@ local act = wezterm.action
 -- for validation
 local config = wezterm.config_builder()
 
+-- disable for now because it's broken
+config.enable_wayland = false
+
 -- theme
 config.color_scheme = 'Catppuccin Mocha'
 config.xcursor_theme = 'Catppuccin-Mocha-Lavender'

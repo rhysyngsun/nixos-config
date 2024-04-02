@@ -16,6 +16,11 @@
             inputs.nix-rice.overlays.default
             inputs.copier.overlays.default
             inputs.nixgl.overlay
+            # hyprland 
+            inputs.hypridle.overlays.default
+            inputs.hyprlock.overlays.default
+            inputs.hyprpicker.overlays.default
+            inputs.hyprcursor.overlays.default
             # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
@@ -87,13 +92,27 @@
   };
 
   inputs = {
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland?ref=v0.37.1";
 
     hycov = {
       url = "github:DreamMaoMao/hycov";
       inputs.hyprland.follows = "hyprland";
     };
 
+    hy3 = {
+      url = "github:outfoxxed/hy3?ref=hl0.37.1";
+      # or "github:outfoxxed/hy3" to follow the development branch.
+      # (you may encounter issues if you dont do the same for hyprland)
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    hypridle.url = "github:hyprwm/hypridle";
+    hyprlock.url = "github:hyprwm/hyprlock";
+    hyprpicker.url = "github:hyprwm/hyprpicker";
+    hyprcursor.url = "github:hyprwm/hyprcursor";
+  };
+
+  inputs = {
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
 
     anyrun = {

@@ -2,7 +2,7 @@
 with lib;
 let
   cmds = {
-    swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
+    hyprlock = lib.getExe config.programs.hyprlock.package; 
     swayr = "${pkgs.swayr}/bin/swayr";
     terminal = "${config.programs.wezterm.package}/bin/wezterm start --always-new-process";
   };
@@ -15,7 +15,6 @@ in
   home.packages = with pkgs; [
     grim
     wl-clipboard
-    swaylock-effects
     inotify-tools
     swayr
     hyprpicker
@@ -26,7 +25,7 @@ in
     systemd.enable = true;
 
     plugins = [
-      # inputs.hycov.packages.${pkgs.system}.hycov
+      # inputs.hy3.packages.x86_64-linux.hy3
     ];
 
     extraConfig = ''
@@ -144,24 +143,6 @@ in
         vrr = 1
       }
 
-      
-      # # bind key to toggle overview (normal)
-      # bind = ALT,tab,hycov:toggleoverview
-
-      # # bind key to toggle overview (force mode, not affected by `only_active_workspace` or `only_active_monitor`)
-      # bind = ALT,grave,hycov:toggleoverview,forceall #grave key is the '~' key
-
-      # # bind key to toggle overview (shows all windows in one monitor, not affected by `only_active_workspace` or `only_active_monitor`)
-      # bind = ALT,g,hycov:toggleoverview,forceallinone 
-
-      # # The key binding for directional switch mode.
-      # # Calculate the window closest to the direction to switch focus.
-      # # This keybind is applicable not only to the overview, but also to the general layout.
-      # bind=ALT,left,hycov:movefocus,l
-      # bind=ALT,right,hycov:movefocus,r
-      # bind=ALT,up,hycov:movefocus,u
-      # bind=ALT,down,hycov:movefocus,d
-
       ${builtins.concatStringsSep "\n" (builtins.genList (
         x: let
           ws = x + 1;
@@ -227,8 +208,7 @@ in
       bind=$mod,W,exec,${cmds.swayr} steal-window
 
       # screen lock on close or SUPER+L
-      bindl=,switch:Lid Switch,exec,${cmds.swaylock}
-      bind=$mod,L,exec,${cmds.swaylock}
+      bind=$mod,L,exec,${cmds.hyprlock}
 
       bind=$mod,RETURN,exec,${cmds.terminal}
       bind=$mod,B,exec,firefox
