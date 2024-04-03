@@ -2,6 +2,7 @@
   programs.nixvim = {
     filetype.extension = {
       ftl = "html";
+      mjml = "html";
     };
 
     plugins.lsp = {
@@ -23,7 +24,7 @@
         lua-ls.enable = true;
         html = {
           enable = true;
-          filetypes = [ "html" "templ" ];
+          filetypes = [ "html" "templ" "mjml" ];
         };
 
         htmx = {

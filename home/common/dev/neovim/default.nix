@@ -64,6 +64,7 @@
     plugins = {
       comment.enable = true;
       lualine.enable = true;
+      neoscroll.enable = true;
       nvim-autopairs.enable = true;
       trouble.enable = true;
     };
@@ -71,6 +72,15 @@
     extraPlugins = with pkgs.vimPlugins; [
       nvim-web-devicons
       overseer-nvim
+      (pkgs.vimUtils.buildVimPlugin { 
+        name = "mjml";
+        src = pkgs.fetchFromGitHub {
+          owner = "amadeus";
+          repo = "vim-mjml";
+          rev = "cb6249b1b49994ecaebd67a7fb421dce923bcd02";
+          hash = "sha256-iQkjHY/mD++ac3o+6fw6YxCaXJEVexVjcBWsnKCfYdM=";
+        };
+      })
     ];
 
     extraConfigLua = ''

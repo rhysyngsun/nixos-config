@@ -2,6 +2,7 @@
   home.packages = [
     pkgs.ungoogled-chromium
   ];
+
   programs.firefox = {
     enable = true;
     profiles = {
