@@ -103,38 +103,37 @@
   # NOTE: these settings override the entire `bluez_monitor.properties` value,
   # so we need to redefine all the defaults
   environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-        bluez_monitor.enabled = true
-    		bluez_monitor.properties = {
-    			["bluez5.enable-sbc-xq"] = true,
-    			["bluez5.enable-msbc"] = true,
-    			["bluez5.enable-hw-volume"] = true,
-    			["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]",
-          ["bluez5.codecs"] = "[ sbc sbc_xq aac ]",
-          ["bluez5.hfphsp-backend"] = "native",
-          ["bluez5.default.rate"] = 48000,
-          ["bluez5.default.channels"] = 2
-        }
-    	'';
+    bluez_monitor.enabled = true
+    bluez_monitor.properties = {
+      ["bluez5.enable-sbc-xq"] = true,
+      ["bluez5.enable-msbc"] = true,
+      ["bluez5.enable-hw-volume"] = true,
+      ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]",
+      ["bluez5.codecs"] = "[ sbc sbc_xq aac ]",
+      ["bluez5.hfphsp-backend"] = "native",
+      ["bluez5.default.rate"] = 48000,
+      ["bluez5.default.channels"] = 2
+    }
+  '';
 
-  services.xserver = {
-    enable = true;
+  services = {
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
     };
-    desktopManager.plasma5.enable = true;
+    # desktopManager.plasma5.enable = true;
   };
 
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    elisa
-    gwenview
-    okular
-    oxygen
-    khelpcenter
-    konsole
-    plasma-browser-integration
-    print-manager
-  ];
+  # environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+  #   elisa
+  #   gwenview
+  #   okular
+  #   oxygen
+  #   khelpcenter
+  #   konsole
+  #   plasma-browser-integration
+  #   print-manager
+  # ];
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
@@ -170,8 +169,7 @@
     rtkit.enable = true;
 
     pam.services = {
-      swaylock.text = "auth include login";
-      hyprlock.text = "auth include login";
+      hyprlock = {};
     };
   };
 
@@ -198,7 +196,7 @@
     BrowseProtocols all
   '';
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
   services.avahi.openFirewall = true;
 
   # Enable sound

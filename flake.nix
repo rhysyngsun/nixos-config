@@ -15,16 +15,12 @@
             # overlays from inputs
             inputs.nix-rice.overlays.default
             inputs.copier.overlays.default
-            inputs.nixgl.overlay
             # hyprland 
-            inputs.hypridle.overlays.default
-            inputs.hyprlock.overlays.default
-            inputs.hyprpicker.overlays.default
             inputs.hyprcursor.overlays.default
             # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
-            outputs.overlays.unstable-packages
+            #outputs.overlays.unstable-packages
           ];
           config = {
             allowUnfree = true;
@@ -81,7 +77,7 @@
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs.follows = "nixpkgs-unstable";
     # nixpkgs.follows = "nixpkgs-unstable";
 
     # Home manager
@@ -92,7 +88,7 @@
   };
 
   inputs = {
-    hyprland.url = "github:hyprwm/Hyprland?ref=v0.37.1";
+    hyprland.url = "github:hyprwm/Hyprland?ref=v0.40.0";
 
     hycov = {
       url = "github:DreamMaoMao/hycov";
@@ -100,14 +96,12 @@
     };
 
     hy3 = {
-      url = "github:outfoxxed/hy3?ref=hl0.37.1";
+      url = "github:outfoxxed/hy3?ref=hl0.40.0";
       # or "github:outfoxxed/hy3" to follow the development branch.
       # (you may encounter issues if you dont do the same for hyprland)
       inputs.hyprland.follows = "hyprland";
     };
 
-    hypridle.url = "github:hyprwm/hypridle";
-    hyprlock.url = "github:hyprwm/hyprlock";
     hyprpicker.url = "github:hyprwm/hyprpicker";
     hyprcursor.url = "github:hyprwm/hyprcursor";
   };
@@ -122,14 +116,14 @@
 
     ags.url = "github:Aylur/ags";
 
+    wezterm.url = "github:wez/wezterm?dir=nix";
+
     copier.url = "github:copier-org/copier";
 
     networkmanager-dmenu = {
       url = "github:firecat53/networkmanager-dmenu";
       flake = false;
     };
-
-    nixgl.url = "github:guibou/nixGL";
   };
 
   # rice

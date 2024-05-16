@@ -1,7 +1,4 @@
-{ pkgs-stable, ... }:
-let
-  pkgs = pkgs-stable;
-in
+{ pkgs, ... }:
 {
   home.packages = [
     pkgs.discord

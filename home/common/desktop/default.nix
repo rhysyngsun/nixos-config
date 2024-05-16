@@ -15,7 +15,7 @@ with lib;
   ];
   home = {
     packages = with pkgs; [
-      libsForQt5.kcharselect
+      #libsForQt5.kcharselect
       networkmanagerapplet
       pavucontrol
       helvum
@@ -48,10 +48,11 @@ with lib;
       keybase-gui
 
       gimp
+      inkscape-with-extensions
       shotwell
       ffmpeg
 
-      libreoffice-qt
+      # libreoffice-qt
       hunspell
       hunspellDicts.en_US
 

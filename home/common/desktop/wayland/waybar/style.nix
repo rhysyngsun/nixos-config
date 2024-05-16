@@ -1,6 +1,6 @@
 { inputs, ... }:
 let
-  border-radius = "6px";
+  border-radius = "12px";
   catppuccin-css = inputs.catppuccin-waybar + "/themes/mocha.css";
 in
 ''

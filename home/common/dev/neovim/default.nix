@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./colorschemes.nix
@@ -49,6 +49,12 @@
         key = "<C-j>";
         action = "<cmd>cprev<CR>zz";
       }
+      {
+        mode = "n";
+        key = "gi";
+        action = "vim.lsp.buf.implementation";
+        lua = true;
+      }
     ];
 
     globals.mapleader = ",";
@@ -66,6 +72,10 @@
       lualine.enable = true;
       neoscroll.enable = true;
       nvim-autopairs.enable = true;
+      nvim-jdtls = {
+        enable = true;
+        data = "${config.xdg.cacheHome}/jdtls/workspace";
+      };
       trouble.enable = true;
     };
 

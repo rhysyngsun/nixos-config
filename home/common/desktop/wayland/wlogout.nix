@@ -9,7 +9,7 @@ in
     "wlogout/layout".text = ''
       {
         "label" : "lock",
-        "action" : "${pkgs.swaylock-effects}/bin/swaylock",
+        "action" : "${pkgs.hyprlock}/bin/hyprlock",
         "text" : "Lock",
         "keybind" : "l"
       }
@@ -21,7 +21,7 @@ in
       }
       {
         "label" : "logout",
-        "action" : "loginctl terminate-user $USER",
+        "action" : "sleep 1; hyprctl dispatch exit",
         "text" : "Logout",
         "keybind" : "e"
       }

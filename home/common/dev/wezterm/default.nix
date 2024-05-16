@@ -1,12 +1,11 @@
-{ pkgs-stable, ... }:
+{ inputs, pkgs, ... }:
 let
-  pkgs = pkgs-stable;
-
+  wezterm = inputs.wezterm.packages.${pkgs.system}.default;
 in
 {
   # note: NOT using home-manager's programs.wezterm.*
   #       because it handles wezterm.lua in not the most extensible way
-  home.packages = with pkgs; [ wezterm ];
+  home.packages = [wezterm];
 
   xdg.configFile."wezterm/" = {
     source = ./conf;
@@ -15,7 +14,7 @@ in
 
   # copied from home-manager's 
   programs.zsh.initExtra = ''
-    source "${pkgs.wezterm}/etc/profile.d/wezterm.sh"
+    source "${wezterm}/etc/profile.d/wezterm.sh"
   '';
 
 }

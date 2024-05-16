@@ -5,7 +5,7 @@
 }:
 let
   system = "x86_64-linux";
-  pkgs = import inputs.nixpkgs-unstable {
+  pkgs = import inputs.nixpkgs {
     inherit system;
     inherit (nix-defaults.nixpkgs) config overlays;
   };
@@ -16,8 +16,6 @@ in
     inputs.nixvim.homeManagerModules.nixvim
     inputs.stylix.homeManagerModules.stylix
     inputs.ags.homeManagerModules.default
-    inputs.hypridle.homeManagerModules.default
-    inputs.hyprlock.homeManagerModules.default 
     outputs.homeManagerModules
     ./home.nix
     ../../themes/stylix.nix
@@ -34,9 +32,5 @@ in
 
   extraSpecialArgs = {
     inherit system inputs;
-    pkgs-stable = import inputs.nixpkgs {
-      inherit system;
-      inherit (nix-defaults.nixpkgs) config overlays;
-    };
   };
 }

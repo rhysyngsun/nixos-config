@@ -26,7 +26,32 @@
       };
 
       extensions = {
-        frecency.enable = true;
+        # frecency.enable = true;
+      };
+      settings = {
+        defaults = {
+          layout_config = {
+            width = 0.999;
+            height = 0.999;
+          };
+          selection_caret = " ";
+        };
+        pickers = {
+          buffers = {
+            mappings = {
+              i = {
+                "<c-d>" = {
+                  __raw = "require('telescope.actions').delete_buffer + require('telescope.actions').move_to_top";
+                };
+              };
+            };
+          };
+          find_files = {
+			      find_command = {
+              __raw = ''{ "rg", "--files", "--hidden", "--glob", "!**/.git/*" }'';
+            };
+          };
+        };
       };
     };
 
