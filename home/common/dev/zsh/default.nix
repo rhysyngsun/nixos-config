@@ -24,6 +24,7 @@
       enableZshIntegration = true;
       settings = {
         filter_mode = "session";
+        enter_accept = true;
       };
     };
 
