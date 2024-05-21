@@ -1,4 +1,15 @@
-{ stdenv, lib, fetchFromGitHub, makeWrapper, libGL, zlib, xorg, python39, pipenv, which }:
+{
+  stdenv,
+  lib,
+  fetchFromGitHub,
+  makeWrapper,
+  libGL,
+  zlib,
+  xorg,
+  python39,
+  pipenv,
+  which,
+}:
 let
   pname = "blender-launcher";
   version = "1.15.1";
@@ -22,9 +33,7 @@ stdenv.mkDerivation {
     which
   ];
 
-  nativeBuildInputs = [
-    makeWrapper
-  ];
+  nativeBuildInputs = [ makeWrapper ];
 
   format = "other";
 
@@ -32,7 +41,7 @@ stdenv.mkDerivation {
     export PIPENV_VENV_IN_PROJECT=1
 
     pipenv install
-    
+
   '';
 
   installPhase = ''
@@ -41,9 +50,11 @@ stdenv.mkDerivation {
 
   postFixup = ''
     wrapProgram $out/bin/blender-launcher \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
-      libGL
-      xorg.libxcb
-    ]}
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          libGL
+          xorg.libxcb
+        ]
+      }
   '';
 }

@@ -1,4 +1,11 @@
-{ stdenv, lib, fetchurl, libxcrypt, openssl, autoPatchelfHook }:
+{
+  stdenv,
+  lib,
+  fetchurl,
+  libxcrypt,
+  openssl,
+  autoPatchelfHook,
+}:
 stdenv.mkDerivation rec {
 
   pname = "pants";
@@ -13,9 +20,7 @@ stdenv.mkDerivation rec {
     libxcrypt
     openssl
   ];
-  nativeBuildInputs = [
-    autoPatchelfHook
-  ];
+  nativeBuildInputs = [ autoPatchelfHook ];
 
   dontUnpack = true;
   installPhase = ''

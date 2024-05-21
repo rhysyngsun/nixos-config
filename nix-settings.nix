@@ -17,8 +17,14 @@ in
     experimental-features = "nix-command flakes";
     # Deduplicate and optimize nix store
     auto-optimise-store = true;
-    allowed-users = [ "root" "nathan" ];
-    trusted-users = [ "root" "nathan" ];
+    allowed-users = [
+      "root"
+      "nathan"
+    ];
+    trusted-users = [
+      "root"
+      "nathan"
+    ];
 
     builders-use-substitutes = true;
 

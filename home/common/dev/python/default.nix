@@ -1,19 +1,27 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
-  python-packages = ps: with ps; [
-    tutor
-    tutor-discovery
-    tutor-license
-    tutor-mfe
-  ];
+  python-packages =
+    ps: with ps; [
+      tutor
+      tutor-discovery
+      tutor-license
+      tutor-mfe
+    ];
   tutor-python = pkgs.buildFHSUserEnv {
     name = "tutor-python";
-    targetPkgs = pkgs: (with pkgs; [
-      (python3.withPackages python-packages)
-      python3Packages.pip
-      python3Packages.virtualenv
-    ]);
+    targetPkgs =
+      pkgs:
+      (with pkgs; [
+        (python3.withPackages python-packages)
+        python3Packages.pip
+        python3Packages.virtualenv
+      ]);
     profile = ''
       export TUTOR_USE_COMPOSE_SUBCOMMAND=1
     '';
@@ -22,16 +30,16 @@ let
   venv-dir = "${config.xdg.dataHome}venv/tutor/";
 
   tutor-env = pkgs.writeShellScriptBin "tutor-env" ''
-  
-  if [[ ! -d ${venv-dir} ]] ; then
-    python -m venv ${venv-dir}
-  fi
 
-  source ${venv-dir}/bin/activate
+    if [[ ! -d ${venv-dir} ]] ; then
+      python -m venv ${venv-dir}
+    fi
 
-  $@
+    source ${venv-dir}/bin/activate
 
-  deactivate
+    $@
+
+    deactivate
   '';
 
   tutor = pkgs.writeShellScriptBin "tutor" "tutor-python tutor-env tutor $@";

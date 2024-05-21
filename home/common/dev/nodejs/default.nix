@@ -11,15 +11,15 @@ in
 {
 
   home = {
-    file = {
-      ".npmrc".source = ./npmrc;
-    } // lib.genAttrs
-      (map (path: path + "/.keep") npmDirs)
-      (_: { text = ""; });
+    file =
+      {
+        ".npmrc".source = ./npmrc;
+      }
+      // lib.genAttrs (map (path: path + "/.keep") npmDirs) (_: {
+        text = "";
+      });
 
-    sessionPath = [
-      "$HOME/${npmBin}"
-    ];
+    sessionPath = [ "$HOME/${npmBin}" ];
     sessionVariables = {
       NODE_PATH = "$HOME/${npmModules}";
     };

@@ -17,4 +17,3 @@ stdenv.mkDerivation {
     install -D $src $out/etc/ssl/certs/mitca.crt
   '';
 }
-

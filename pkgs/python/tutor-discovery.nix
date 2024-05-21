@@ -1,6 +1,7 @@
-{ buildPythonPackage
-, fetchPypi
-, tutor
+{
+  buildPythonPackage,
+  fetchPypi,
+  tutor,
 }:
 
 let

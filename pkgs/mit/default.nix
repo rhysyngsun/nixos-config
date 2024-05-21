@@ -1,3 +1,4 @@
-{ callPackage }: {
+{ callPackage }:
+{
   cacert = callPackage ./cacert.nix { };
 }

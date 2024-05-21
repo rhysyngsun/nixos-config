@@ -1,7 +1,15 @@
 {
   description = "Rhysyngsun's nixos configs";
 
-  outputs = { self, nixpkgs, sops-nix, home-manager, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+      sops-nix,
+      home-manager,
+      ...
+    }@inputs:
     let
       inherit (self) outputs;
 
@@ -24,15 +32,16 @@
           ];
           config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "electron-25.9.0"
-            ];
+            permittedInsecurePackages = [ "electron-25.9.0" ];
           };
         };
       };
 
       forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
       forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
+
+      # Eval the treefmt modules from ./treefmt.nix
+      treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
     {
       nixosModules = import ./modules/nixos;
@@ -42,7 +51,11 @@
       # Acessible through 'nix develop'
       devShells = forEachPkgs (pkgs: import ./shell.nix { inherit pkgs; });
 
-      formatter = forEachPkgs (pkgs: pkgs.nixfmt-rfc-style);
+      formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+
+      checks = forEachPkgs (pkgs: {
+        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      });
 
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
@@ -52,7 +65,9 @@
       nixosConfigurations = {
         morrigan = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+          };
           modules = [
             ./hosts/morrigan/configuration.nix
             sops-nix.nixosModules.sops
@@ -62,14 +77,13 @@
       };
 
       homeConfigurations = {
-        nathan = home-manager.lib.homeManagerConfiguration
-          (
-            import ./home/nathan {
-              inherit inputs outputs nix-defaults;
-            }
-          ) // {
-          nixpkgs.config = nix-defaults.nixpkgs.config;
-        };
+        nathan =
+          home-manager.lib.homeManagerConfiguration (
+            import ./home/nathan { inherit inputs outputs nix-defaults; }
+          )
+          // {
+            nixpkgs.config = nix-defaults.nixpkgs.config;
+          };
       };
     };
 
@@ -85,6 +99,8 @@
     # home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     sops-nix.url = "github:Mic92/sops-nix";
+
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   inputs = {

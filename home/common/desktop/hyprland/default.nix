@@ -1,16 +1,20 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 with lib;
 let
   cmds = {
-    hyprlock = lib.getExe config.programs.hyprlock.package; 
+    hyprlock = lib.getExe config.programs.hyprlock.package;
     swayr = "${pkgs.swayr}/bin/swayr";
     terminal = "${config.programs.wezterm.package}/bin/wezterm start --always-new-process";
   };
 in
 {
-  imports = [
-    ./services.nix
-  ];
+  imports = [ ./services.nix ];
 
   home.packages = with pkgs; [
     grim
@@ -143,23 +147,26 @@ in
         vrr = 1
       }
 
-      ${builtins.concatStringsSep "\n" (builtins.genList (
-        x: let
-          ws = x + 1;
-          monitor = if (lib.trivial.mod ws 2) == 1 then "eDP-1" else "HDMI-A-1";
-        in ''
-          workspace = ${toString ws}, workspace, monitor:${monitor}
-        ''
-      )
-      10)}
-    
+      ${builtins.concatStringsSep "\n" (
+        builtins.genList (
+          x:
+          let
+            ws = x + 1;
+            monitor = if (lib.trivial.mod ws 2) == 1 then "eDP-1" else "HDMI-A-1";
+          in
+          ''
+            workspace = ${toString ws}, workspace, monitor:${monitor}
+          ''
+        ) 10
+      )}
+
       windowrulev2 = tile, class:^(Spotify)$
 
       windowrulev2 = noanim, title: ^(wlogout)$
       windowrulev2 = animation fadeIn, title: ^(wlogout)$
       windowrulev2 = float, title: ^(wlogout)$
       windowrulev2 = fullscreen, title: ^(wlogout)$
-      
+
       windowrulev2 = noanim,class:^(flameshot)$
       windowrulev2 = float,class:^(flameshot)$
       windowrulev2 = move 0 0,class:^(flameshot)$
@@ -199,7 +206,7 @@ in
 
       windowrule = float,title:^(Open|Choose Files|Save As|Confirm to replace files|File Operation Progress)$
       windowrule = opacity 1.0 override 1.0 override,title:^(Open|Choose Files|Save As|Confirm to replace files|File Operation Progress)$
-    
+
       exec-once = firefox
 
       bind=$mod, Q, killactive
@@ -226,18 +233,22 @@ in
 
       bind=$mod, S, exec, hyprpicker -a -f hex
 
-      ${builtins.concatStringsSep "\n" (builtins.genList (
-        x: let
-          ws = let
-            c = (x + 1) / 10;
+      ${builtins.concatStringsSep "\n" (
+        builtins.genList (
+          x:
+          let
+            ws =
+              let
+                c = (x + 1) / 10;
+              in
+              builtins.toString (x + 1 - (c * 10));
           in
-            builtins.toString (x + 1 - (c * 10));
-        in ''
-          bind = $mod, ${ws}, workspace, ${toString (x + 1)}
-          bind = $mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}
-        ''
-      )
-      10)}
+          ''
+            bind = $mod, ${ws}, workspace, ${toString (x + 1)}
+            bind = $mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}
+          ''
+        ) 10
+      )}
 
       bindm=$mod,mouse:272,movewindow
 
@@ -252,7 +263,7 @@ in
       bind=,XF86AudioPrev,exec,playerctl previous
 
       bind=,Print, exec, flameshot gui
-      
+
     '';
 
     xwayland = {
@@ -260,4 +271,3 @@ in
     };
   };
 }
-

@@ -1,7 +1,13 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 
-{ inputs, config, pkgs, ... }: {
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
+{
   # You can import other NixOS modules here
   imports = [
     # outputs.nixosModules
@@ -23,11 +29,7 @@
 
   boot.plymouth = {
     enable = true;
-    themePackages = [
-      (pkgs.catppuccin-plymouth.override {
-        variant = "mocha";
-      })
-    ];
+    themePackages = [ (pkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
     theme = "catppuccin-mocha";
   };
 
@@ -91,9 +93,7 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
   # enable audio
   services.pipewire = {
@@ -163,7 +163,7 @@
     rtkit.enable = true;
 
     pam.services = {
-      hyprlock = {};
+      hyprlock = { };
     };
   };
 
@@ -176,7 +176,10 @@
 
   # Shells
   programs.zsh.enable = true;
-  environment.shells = with pkgs; [ zsh bash ];
+  environment.shells = with pkgs; [
+    zsh
+    bash
+  ];
 
   # Enable CUPS to print documents
   services.printing.enable = true;
@@ -211,7 +214,6 @@
   services.gnome.at-spi2-core.enable = true;
 
   services.devmon.enable = true;
-
 
   # services.dnsmasq = {
   #   enable = true;

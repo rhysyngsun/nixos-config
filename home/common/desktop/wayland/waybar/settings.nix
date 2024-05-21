@@ -1,12 +1,15 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 {
   mainBar = {
     layer = "top";
     position = "top";
-    modules-left = [
-      "hyprland/workspaces"
-    ];
+    modules-left = [ "hyprland/workspaces" ];
     modules-center = [
       "cpu"
       "memory"

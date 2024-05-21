@@ -3,9 +3,7 @@
   programs.nixvim = {
     plugins.nvim-ufo.enable = true;
 
-    extraPlugins = with pkgs.vimPlugins; [
-      statuscol-nvim
-    ];
+    extraPlugins = with pkgs.vimPlugins; [ statuscol-nvim ];
 
     extraConfigLua = ''
       vim.o.foldcolumn = '1'
@@ -16,7 +14,7 @@
 
       vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
       vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-      
+
       require('ufo').setup({
         provider_selector = function(bufnr, filetype, buftype)
           return {'treesitter', 'indent'}

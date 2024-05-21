@@ -33,8 +33,12 @@ in
         };
         name = "Iosevka Nerd Font Mono";
       };
-      sansSerif = { inherit (serif) package name; };
-      monospace = { inherit (serif) package name; };
+      sansSerif = {
+        inherit (serif) package name;
+      };
+      monospace = {
+        inherit (serif) package name;
+      };
       emoji = {
         package = pkgs.noto-fonts-emoji;
         name = "Noto Color Emoji";
@@ -46,4 +50,3 @@ in
     };
   };
 }
-

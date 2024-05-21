@@ -1,9 +1,7 @@
 { config, pkgs, ... }:
 {
   home = {
-    packages = with pkgs; [
-      starship
-    ];
+    packages = with pkgs; [ starship ];
     file.".profile".text = ''
       case $- in
         *i* )
@@ -32,7 +30,7 @@
     zsh = {
       enable = true;
       enableCompletion = true;
-      autosuggestion.enable= true;
+      autosuggestion.enable = true;
       history = {
         extended = true;
       };

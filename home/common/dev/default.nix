@@ -6,7 +6,6 @@
     ./godot
     ./neovim
     # ./nodejs
-    # ./ol-local
     ./python
     ./tmux.nix
     ./wezterm
@@ -96,5 +95,5 @@
   home.file.".cargo/config.toml".text = ''
     [net]
     git-fetch-with-cli = true
-  ''; 
+  '';
 }

@@ -47,7 +47,7 @@
             };
           };
           find_files = {
-			      find_command = {
+            find_command = {
               __raw = ''{ "rg", "--files", "--hidden", "--glob", "!**/.git/*" }'';
             };
           };
@@ -55,8 +55,6 @@
       };
     };
 
-    extraPackages = with pkgs; [
-      ripgrep
-    ];
+    extraPackages = with pkgs; [ ripgrep ];
   };
 }

@@ -1,79 +1,80 @@
-{ config
-, stdenv
-, lib
-, fetchgit
-, fetchzip
-, boost
-, cmake
-, ffmpeg
-, gettext
-, glew
-, git
-, libepoxy
-, libXi
-, libX11
-, libXext
-, libXrender
-, libjpeg
-, libpng
-, libsamplerate
-, libsndfile
-, libtiff
-, libwebp
-, libGLU
-, libGL
-, openal
-, opencolorio
-, openexr
-, openimagedenoise
-, openimageio
-, openjpeg
-, python311Packages
-, openvdb
-, libXxf86vm
-, tbb
-, alembic
-, vulkan-loader
-, shaderc
-, zlib
-, zstd
-, fftw
-, fftwFloat
-, opensubdiv
-, freetype
-, jemalloc
-, ocl-icd
-, addOpenGLRunpath
-, jackaudioSupport ? false
-, libjack2
-, cudaSupport ? config.cudaSupport
-, cudaPackages ? { }
-, hipSupport ? false
-, rocmPackages # comes with a significantly larger closure size
-, colladaSupport ? true
-, opencollada
-, spaceNavSupport ? stdenv.isLinux
-, libspnav
-, makeWrapper
-, pugixml
-, llvmPackages
-, waylandSupport ? stdenv.isLinux
-, pkg-config
-, wayland
-, wayland-protocols
-, libffi
-, libdecor
-, libxkbcommon
-, dbus
-, potrace
-, openxr-loader
-, embree
-, gmp
-, libharu
-, openpgl
-, mesa
-, runCommand
-, callPackage
+{
+  config,
+  stdenv,
+  lib,
+  fetchgit,
+  fetchzip,
+  boost,
+  cmake,
+  ffmpeg,
+  gettext,
+  glew,
+  git,
+  libepoxy,
+  libXi,
+  libX11,
+  libXext,
+  libXrender,
+  libjpeg,
+  libpng,
+  libsamplerate,
+  libsndfile,
+  libtiff,
+  libwebp,
+  libGLU,
+  libGL,
+  openal,
+  opencolorio,
+  openexr,
+  openimagedenoise,
+  openimageio,
+  openjpeg,
+  python311Packages,
+  openvdb,
+  libXxf86vm,
+  tbb,
+  alembic,
+  vulkan-loader,
+  shaderc,
+  zlib,
+  zstd,
+  fftw,
+  fftwFloat,
+  opensubdiv,
+  freetype,
+  jemalloc,
+  ocl-icd,
+  addOpenGLRunpath,
+  jackaudioSupport ? false,
+  libjack2,
+  cudaSupport ? config.cudaSupport,
+  cudaPackages ? { },
+  hipSupport ? false,
+  rocmPackages, # comes with a significantly larger closure size
+  colladaSupport ? true,
+  opencollada,
+  spaceNavSupport ? stdenv.isLinux,
+  libspnav,
+  makeWrapper,
+  pugixml,
+  llvmPackages,
+  waylandSupport ? stdenv.isLinux,
+  pkg-config,
+  wayland,
+  wayland-protocols,
+  libffi,
+  libdecor,
+  libxkbcommon,
+  dbus,
+  potrace,
+  openxr-loader,
+  embree,
+  gmp,
+  libharu,
+  openpgl,
+  mesa,
+  runCommand,
+  callPackage,
 }:
 
 let
@@ -89,7 +90,6 @@ let
     # Blender uses private APIs, need to patch to expose them
     patches = (old.patches or [ ]) ++ [ ./libdecor.patch ];
   });
-
 in
 stdenv.mkDerivation (finalAttrs: rec {
   pname = "blender";
@@ -183,15 +183,20 @@ stdenv.mkDerivation (finalAttrs: rec {
     ++ lib.optionals cudaSupport [ cudaPackages.cuda_cudart ]
     ++ lib.optional colladaSupport opencollada
     ++ lib.optional spaceNavSupport libspnav;
-  pythonPath = with python311Packages; [ numpy requests zstandard ];
+  pythonPath = with python311Packages; [
+    numpy
+    requests
+    zstandard
+  ];
 
-  postPatch = ''
-    substituteInPlace extern/clew/src/clew.c --replace '"libOpenCL.so"' '"${ocl-icd}/lib/libOpenCL.so"'
-  '' +
-  (lib.optionalString hipSupport ''
-    substituteInPlace extern/hipew/src/hipew.c --replace '"/opt/rocm/hip/lib/libamdhip64.so"' '"${rocmPackages.clr}/lib/libamdhip64.so"'
-    substituteInPlace extern/hipew/src/hipew.c --replace '"opt/rocm/hip/bin"' '"${rocmPackages.clr}/bin"'
-  '');
+  postPatch =
+    ''
+      substituteInPlace extern/clew/src/clew.c --replace '"libOpenCL.so"' '"${ocl-icd}/lib/libOpenCL.so"'
+    ''
+    + (lib.optionalString hipSupport ''
+      substituteInPlace extern/hipew/src/hipew.c --replace '"/opt/rocm/hip/lib/libamdhip64.so"' '"${rocmPackages.clr}/lib/libamdhip64.so"'
+      substituteInPlace extern/hipew/src/hipew.c --replace '"opt/rocm/hip/bin"' '"${rocmPackages.clr}/bin"'
+    '');
 
   cmakeFlags =
     [
@@ -227,9 +232,7 @@ stdenv.mkDerivation (finalAttrs: rec {
       "-DWITH_GHOST_WAYLAND_DYNLOAD=OFF"
       "-DWITH_GHOST_WAYLAND_LIBDECOR=ON"
     ]
-    ++ lib.optionals stdenv.hostPlatform.isAarch64 [
-      "-DWITH_CYCLES_EMBREE=OFF"
-    ]
+    ++ lib.optionals stdenv.hostPlatform.isAarch64 [ "-DWITH_CYCLES_EMBREE=OFF" ]
     ++ lib.optionals stdenv.isDarwin [
       "-DWITH_CYCLES_OSL=OFF" # requires LLVM
       "-DWITH_OPENVDB=OFF" # OpenVDB currently doesn't build on darwin
@@ -252,18 +255,21 @@ stdenv.mkDerivation (finalAttrs: rec {
   NIX_LDFLAGS = lib.optionalString cudaSupport "-rpath ${stdenv.cc.cc.lib}/lib";
 
   blenderExecutable =
-    placeholder "out" + (if stdenv.isDarwin then "/Applications/Blender.app/Contents/MacOS/Blender" else "/bin/blender");
-  postInstall = lib.optionalString stdenv.isDarwin ''
-    mkdir $out/Applications
-    mv $out/Blender.app $out/Applications
-  '' + ''
-    mv $out/share/blender/${lib.versions.majorMinor version}/python{,-ext}
-    buildPythonPath "$pythonPath"
-    wrapProgram $blenderExecutable \
-      --prefix PATH : $program_PATH \
-      --prefix PYTHONPATH : "$program_PYTHONPATH" \
-      --add-flags '--python-use-system-env'
-  '';
+    placeholder "out"
+    + (if stdenv.isDarwin then "/Applications/Blender.app/Contents/MacOS/Blender" else "/bin/blender");
+  postInstall =
+    lib.optionalString stdenv.isDarwin ''
+      mkdir $out/Applications
+      mv $out/Blender.app $out/Applications
+    ''
+    + ''
+      mv $out/share/blender/${lib.versions.majorMinor version}/python{,-ext}
+      buildPythonPath "$pythonPath"
+      wrapProgram $blenderExecutable \
+        --prefix PATH : $program_PATH \
+        --prefix PYTHONPATH : "$program_PYTHONPATH" \
+        --add-flags '--python-use-system-env'
+    '';
 
   # Set RUNPATH so that libcuda and libnvrtc in /run/opengl-driver(-32)/lib can be
   # found. See the explanation in libglvnd.
@@ -277,7 +283,15 @@ stdenv.mkDerivation (finalAttrs: rec {
   passthru = {
     inherit python pythonPackages;
 
-    withPackages = f: let packages = f pythonPackages; in buildEnv.override { blender = finalAttrs.finalPackage; extraModules = packages; };
+    withPackages =
+      f:
+      let
+        packages = f pythonPackages;
+      in
+      buildEnv.override {
+        blender = finalAttrs.finalPackage;
+        extraModules = packages;
+      };
 
     tests = {
       render = runCommand "${pname}-test" { } ''
@@ -323,9 +337,16 @@ stdenv.mkDerivation (finalAttrs: rec {
     # say: "We've decided to cancel the BL offering for an indefinite period."
     # OptiX, enabled with cudaSupport, is non-free.
     license = with licenses; [ gpl2Plus ] ++ optional cudaSupport unfree;
-    platforms = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
+    platforms = [
+      "x86_64-linux"
+      "x86_64-darwin"
+      "aarch64-linux"
+    ];
     broken = stdenv.isDarwin;
-    maintainers = with maintainers; [ goibhniu veprbl ];
+    maintainers = with maintainers; [
+      goibhniu
+      veprbl
+    ];
     mainProgram = "blender";
   };
 })

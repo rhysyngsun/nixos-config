@@ -2,7 +2,8 @@
 let
   swww = pkgs.swww;
   target = "graphical-session.target";
-in {
+in
+{
   home.packages = [ swww ];
 
   systemd.user.services."swww" = {

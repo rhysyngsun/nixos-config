@@ -1,4 +1,9 @@
-{ pkgs, system, inputs, ... }:
+{
+  pkgs,
+  system,
+  inputs,
+  ...
+}:
 let
   nixvim = inputs.nixvim.legacyPackages."${system}".makeNixvim {
     globals.mapleader = ",";
@@ -12,13 +17,9 @@ let
       enable = true;
     };
 
-    extraPackages = with pkgs; [
-      ripgrep
-    ];
+    extraPackages = with pkgs; [ ripgrep ];
 
-    extraPlugins = [
-      pkgs.unstable.vimPlugins.himalaya-vim
-    ];
+    extraPlugins = [ pkgs.unstable.vimPlugins.himalaya-vim ];
   };
   nvimalaya = pkgs.writeShellScriptBin "nvimalaya" "NVIM_APPNAME=nvimalaya ${nixvim}/bin/nvim";
 in

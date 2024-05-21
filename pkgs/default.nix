@@ -1,5 +1,4 @@
-final: prev:
-{
+final: prev: {
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
     (finalPy: prevPy: {
       tutor = finalPy.callPackage ./python/tutor.nix { };

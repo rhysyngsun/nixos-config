@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 
 {
@@ -30,7 +35,6 @@ with lib;
       };
     };
   };
-
 
   environment = {
     systemPackages = with pkgs; [

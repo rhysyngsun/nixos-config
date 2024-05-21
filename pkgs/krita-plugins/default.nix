@@ -1,4 +1,5 @@
-{ callPackage }: {
+{ callPackage }:
+{
   buli-brush-switch = callPackage ./buli-brush-switch.nix { };
   compact-brush-toggler = callPackage ./compact-brush-toggler.nix { };
   shapes-and-layers = callPackage ./shapes-and-layers.nix { };

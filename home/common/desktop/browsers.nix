@@ -1,7 +1,6 @@
-{ pkgs, ... }: {
-  home.packages = [
-    pkgs.ungoogled-chromium
-  ];
+{ pkgs, ... }:
+{
+  home.packages = [ pkgs.ungoogled-chromium ];
 
   programs.firefox = {
     enable = true;

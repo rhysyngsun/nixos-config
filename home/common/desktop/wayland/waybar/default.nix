@@ -1,4 +1,9 @@
-args@{ config, pkgs, lib, ... }:
+args@{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   programs.waybar = {
     enable = true;

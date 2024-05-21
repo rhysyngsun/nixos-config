@@ -24,12 +24,19 @@
         lua-ls.enable = true;
         html = {
           enable = true;
-          filetypes = [ "html" "templ" "mjml" ];
+          filetypes = [
+            "html"
+            "templ"
+            "mjml"
+          ];
         };
 
         htmx = {
           enable = true;
-          filetypes = [ "html" "templ" ];
+          filetypes = [
+            "html"
+            "templ"
+          ];
         };
         java-language-server.enable = true;
         jsonls.enable = true;
@@ -42,10 +49,17 @@
         };
         tailwindcss = {
           enable = true;
-          filetypes = [ "templ" "javascript" "typescript" "react" ];
+          filetypes = [
+            "templ"
+            "javascript"
+            "typescript"
+            "react"
+          ];
           extraOptions = {
             init_options = {
-              userLanguages = { templ = "html"; };
+              userLanguages = {
+                templ = "html";
+              };
             };
           };
         };

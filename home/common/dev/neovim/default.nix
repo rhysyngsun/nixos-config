@@ -82,7 +82,7 @@
     extraPlugins = with pkgs.vimPlugins; [
       nvim-web-devicons
       overseer-nvim
-      (pkgs.vimUtils.buildVimPlugin { 
+      (pkgs.vimUtils.buildVimPlugin {
         name = "mjml";
         src = pkgs.fetchFromGitHub {
           owner = "amadeus";

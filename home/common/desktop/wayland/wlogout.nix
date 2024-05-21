@@ -50,7 +50,7 @@ in
         outline: none;
         border: none;
       }
-      
+
       window {
         background-color: rgba(12, 12, 12, 0.3);
       }

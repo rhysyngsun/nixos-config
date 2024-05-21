@@ -3,9 +3,7 @@ let
   wallpaper = ../../../../backgrounds/wallpaper-compressed.mp4;
 in
 {
-  home.packages = with pkgs; [
-    mpvpaper
-  ];
+  home.packages = with pkgs; [ mpvpaper ];
 
   systemd.user.services."mpvpaper" = {
     Unit = {

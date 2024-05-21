@@ -1,13 +1,14 @@
-{ buildPythonPackage
-, fetchPypi
-, isPyPy
-, appdirs
-, click
-, jinja2
-, kubernetes
-, mypy
-, pycryptodome
-, pyyaml
+{
+  buildPythonPackage,
+  fetchPypi,
+  isPyPy,
+  appdirs,
+  click,
+  jinja2,
+  kubernetes,
+  mypy,
+  pycryptodome,
+  pyyaml,
 }:
 
 buildPythonPackage rec {

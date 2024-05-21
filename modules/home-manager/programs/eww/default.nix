@@ -1,8 +1,12 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
-  dependencies = [
-  ];
+  dependencies = [ ];
   cfg = config.programs.eww;
 in
 {
@@ -24,9 +28,7 @@ in
         ExecStart = "${cfg.package}/bin/eww daemon --no-daemonize";
         Restart = "on-failure";
       };
-      Install.WantedBy = [
-        "graphical-session.target"
-      ];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

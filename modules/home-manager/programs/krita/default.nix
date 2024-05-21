@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -32,10 +37,12 @@ in
     home.packages = [ cfg.package ];
     xdg.dataFile = mkIf (cfg.plugins != [ ]) (
       let
-        plugins = (pkgs.symlinkJoin {
-          name = "krita-plugins";
-          paths = cfg.plugins;
-        });
+        plugins = (
+          pkgs.symlinkJoin {
+            name = "krita-plugins";
+            paths = cfg.plugins;
+          }
+        );
       in
       {
         "krita/" = {

@@ -12,31 +12,45 @@
 
     keymaps = [
       {
-        mode = [ "n" "t" ];
+        mode = [
+          "n"
+          "t"
+        ];
         key = "<C-h>";
         action = "<CMD>NavigatorLeft<CR>";
       }
       {
-        mode = [ "n" "t" ];
+        mode = [
+          "n"
+          "t"
+        ];
         key = "<C-l>";
         action = "<CMD>NavigatorRight<CR>";
       }
       {
-        mode = [ "n" "t" ];
+        mode = [
+          "n"
+          "t"
+        ];
         key = "<C-k>";
         action = "<CMD>NavigatorUp<CR>";
       }
       {
-        mode = [ "n" "t" ];
+        mode = [
+          "n"
+          "t"
+        ];
         key = "<C-j>";
         action = "<CMD>NavigatorDown<CR>";
       }
       {
-        mode = [ "n" "t" ];
+        mode = [
+          "n"
+          "t"
+        ];
         key = "<C-p>";
         action = "<CMD>NavigatorPrevious<CR>";
       }
-
     ];
   };
 }

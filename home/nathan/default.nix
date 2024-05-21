@@ -1,7 +1,7 @@
-{ inputs
-, outputs
-, nix-defaults
-,
+{
+  inputs,
+  outputs,
+  nix-defaults,
 }:
 let
   system = "x86_64-linux";

@@ -3,9 +3,7 @@ let
   username = "nathan";
 in
 {
-  imports = [
-    ./myco.nix
-  ];
+  imports = [ ./myco.nix ];
 
   home = {
     username = "${username}";
@@ -27,5 +25,4 @@ in
       createDirectories = true;
     };
   };
-
 }

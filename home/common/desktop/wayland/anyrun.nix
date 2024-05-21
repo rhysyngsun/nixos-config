@@ -1,7 +1,8 @@
-{ pkgs
-, inputs
-, system
-, ...
+{
+  pkgs,
+  inputs,
+  system,
+  ...
 }:
 
 {
@@ -16,8 +17,12 @@
         websearch
       ];
 
-      y = { absolute = 50; };
-      width = { fraction = 0.35; };
+      y = {
+        absolute = 50;
+      };
+      width = {
+        fraction = 0.35;
+      };
       hideIcons = false;
       ignoreExclusiveZones = true;
       layer = "overlay";
@@ -37,7 +42,7 @@
         box-shadow: none;
         color: #cdd6f4;
       }
-      
+
 
       #window {
         background: rgba(147, 153, 178, 0.3);
