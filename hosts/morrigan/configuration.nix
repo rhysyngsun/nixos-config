@@ -80,6 +80,10 @@
     networkmanager = {
       enable = true;
     };
+    nameservers = [
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
   };
 
   boot.loader.systemd-boot.enable = true;
@@ -116,24 +120,14 @@
     }
   '';
 
-  services = {
-    displayManager.sddm = {
+  services.displayManager = {
+    defaultSession = "hyprland";
+    sddm = {
       enable = true;
       wayland.enable = true;
+      theme = "catppuccin-mocha";
     };
-    # desktopManager.plasma5.enable = true;
   };
-
-  # environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-  #   elisa
-  #   gwenview
-  #   okular
-  #   oxygen
-  #   khelpcenter
-  #   konsole
-  #   plasma-browser-integration
-  #   print-manager
-  # ];
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

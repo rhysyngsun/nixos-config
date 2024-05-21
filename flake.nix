@@ -42,7 +42,7 @@
       # Acessible through 'nix develop'
       devShells = forEachPkgs (pkgs: import ./shell.nix { inherit pkgs; });
 
-      formatter = forEachPkgs (pkgs: pkgs.nixpkgs-fmt);
+      formatter = forEachPkgs (pkgs: pkgs.nixfmt-rfc-style);
 
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
