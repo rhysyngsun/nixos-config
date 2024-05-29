@@ -20,12 +20,13 @@ config.line_height = 0.9
 config.hide_mouse_cursor_when_typing = false
 config.use_fancy_tab_bar = false
 
-config.leader = { key = 'a', mods = 'CTRL'}
+
+config.leader = { key = 'a', mods = 'CTRL' }
 
 config.keys = {
   -- send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
   {
-    key = 'a',
+    key = 'Space',
     mods = 'LEADER|CTRL',
     action = act.SendKey { key = 'a', mods = 'CTRL' },
   },
@@ -73,36 +74,87 @@ config.keys = {
     mods = 'CTRL',
     action = act.ActivatePaneDirection 'Right'
   },
-  -- tmux-like pane resizing
+  -- CTRL+SHIFT+Space, followed by 'r' will put us in resize-pane
+  -- mode until we cancel that mode.
   {
-    key = 'H',
+    key = 'r',
     mods = 'LEADER',
-    action = act.AdjustPaneSize { 'Left', 5 }
+    action = act.ActivateKeyTable {
+      name = "resize_pane",
+      one_shot = false,
+    }
   },
+  -- CTRL+SHIFT+Space, followed by 'a' will put us in activate-pane
+  -- mode until we press some other key or until 1 second (1000ms)
+  -- of time elapses
   {
-    key = 'J',
+    key = 'a',
     mods = 'LEADER',
-    action = act.AdjustPaneSize { 'Down', 5 }
+    action = act.ActivateKeyTable {
+      name = 'activate_pane',
+      timeout_milliseconds = 1000,
+    },
   },
-  {
-    key = 'K',
-    mods = 'LEADER',
-    action = act.AdjustPaneSize { 'Up', 5 }
-  },
-  {
-    key = 'L',
-    mods = 'LEADER',
-    action = act.AdjustPaneSize { 'Right', 5 }
-  },
+
+  -- pane switching
+  --
+  { key = "1", mods = 'CTRL|ALT', action = act.ActivateTab(0) },
+  { key = "2", mods = 'CTRL|ALT', action = act.ActivateTab(1) },
+  { key = "3", mods = 'CTRL|ALT', action = act.ActivateTab(2) },
+  { key = "4", mods = 'CTRL|ALT', action = act.ActivateTab(3) },
+  { key = "5", mods = 'CTRL|ALT', action = act.ActivateTab(4) },
+  { key = "6", mods = 'CTRL|ALT', action = act.ActivateTab(5) },
+  { key = "7", mods = 'CTRL|ALT', action = act.ActivateTab(6) },
+  { key = "8", mods = 'CTRL|ALT', action = act.ActivateTab(7) },
+  { key = "9", mods = 'CTRL|ALT', action = act.ActivateTab(8) },
+  { key = "0", mods = 'CTRL|ALT', action = act.ActivateTab(9) },
+  { key = "[", mods = 'CTRL|ALT', action = act.ActivateTabRelative(-1) },
+  { key = "]", mods = 'CTRL|ALT', action = act.ActivateTabRelative(1) },
 }
 
-for i = 1, 8 do
-  -- CTRL+ALT + number to activate that tab
-  table.insert(config.keys, {
-    key = tostring(i),
-    mods = 'CTRL|ALT',
-    action = act.ActivateTab(i - 1),
-  })
-end
+config.key_tables = {
+  -- Defines the keys that are active in our resize-pane mode.
+  -- Since we're likely to want to make multiple adjustments,
+  -- we made the activation one_shot=false. We therefore need
+  -- to define a key assignment for getting out of this mode.
+  -- 'resize_pane' here corresponds to the name="resize_pane" in
+  -- the key assignments above.
+  resize_pane = {
+    { key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
+    { key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
+
+    { key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
+    { key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
+
+    { key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
+    { key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
+
+    { key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
+    { key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
+
+    -- Cancel the mode by pressing escape
+    { key = 'Escape', action = 'PopKeyTable' },
+  },
+
+  -- Defines the keys that are active in our activate-pane mode.
+  -- 'activate_pane' here corresponds to the name="activate_pane" in
+  -- the key assignments above.
+  activate_pane = {
+    { key = 'LeftArrow', action = act.ActivatePaneDirection 'Left' },
+    { key = 'h', action = act.ActivatePaneDirection 'Left' },
+
+    { key = 'RightArrow', action = act.ActivatePaneDirection 'Right' },
+    { key = 'l', action = act.ActivatePaneDirection 'Right' },
+
+    { key = 'UpArrow', action = act.ActivatePaneDirection 'Up' },
+    { key = 'k', action = act.ActivatePaneDirection 'Up' },
+
+    { key = 'DownArrow', action = act.ActivatePaneDirection 'Down' },
+    { key = 'j', action = act.ActivatePaneDirection 'Down' },
+
+    -- Cancel the mode by pressing escape
+    { key = 'Escape', action = 'PopKeyTable' },
+  },
+}
 
 return config

@@ -15,4 +15,5 @@ final: prev: {
   # pants = prev.callPackage ./tools/pants {};
   krita-plugins = prev.callPackage ./krita-plugins { };
   easyeffects-presets = prev.callPackage ./easyeffects-presets { };
+  hyprshot = prev.callPackage ./hyprshot.nix {};
 }

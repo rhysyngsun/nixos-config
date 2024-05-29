@@ -6,7 +6,6 @@
       self,
       nixpkgs,
       treefmt-nix,
-      sops-nix,
       home-manager,
       ...
     }@inputs:
@@ -69,9 +68,13 @@
             inherit inputs;
           };
           modules = [
-            ./hosts/morrigan/configuration.nix
-            sops-nix.nixosModules.sops
+            inputs.sops-nix.nixosModules.sops
+            # keyboard remapper
+            inputs.xremap-flake.nixosModules.default
+
             nix-defaults
+
+            ./hosts/morrigan/configuration.nix
           ];
         };
       };
@@ -120,6 +123,8 @@
 
     hyprpicker.url = "github:hyprwm/hyprpicker";
     hyprcursor.url = "github:hyprwm/hyprcursor";
+
+    xremap-flake.url = "github:xremap/nix-flake";
   };
 
   inputs = {

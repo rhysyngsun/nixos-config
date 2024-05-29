@@ -22,6 +22,7 @@ in
     inotify-tools
     swayr
     hyprpicker
+    hyprshot
   ];
 
   wayland.windowManager.hyprland = {
@@ -34,6 +35,8 @@ in
 
     extraConfig = ''
       $mod = SUPER
+      $shiftMod=SUPER_SHIFT
+      $altMod=SUPER_ALT
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor=,preferred,auto,auto
@@ -46,6 +49,8 @@ in
       env = XCURSOR_SIZE,32
       env = XCURSOR_THEME,Catppuccin-Mocha-Lavender
       env = GTK_THEME,Catppuccin-Mocha-Compact-Lavender-Dark
+
+      env = HYPRSHOT_DIR,~/Pictures/Screenshots
 
       exec-once=pkill eww && eww daemon
       exec-once=${./scripts/xdg-portals-fix.sh}
@@ -262,7 +267,12 @@ in
       bind=,XF86AudioNext,exec,playerctl next
       bind=,XF86AudioPrev,exec,playerctl previous
 
-      bind=,Print, exec, flameshot gui
+      # Screenshot a window
+      bind = $mainMod, PRINT, exec, hyprshot -m window
+      # Screenshot a monitor
+      bind = , PRINT, exec, hyprshot -m output
+      # Screenshot a region
+      bind = $shiftMod, PRINT, exec, hyprshot -m region
 
     '';
 

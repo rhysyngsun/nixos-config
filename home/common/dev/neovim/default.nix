@@ -9,7 +9,7 @@
     ./lsp.nix
     ./navigator.nix
     ./oil.nix
-    ./project-nvim.nix
+#    ./project-nvim.nix
     ./telescope.nix
     ./treesitter.nix
     ./undotree.nix
@@ -41,13 +41,30 @@
       }
       {
         mode = "n";
+        key = "<C-c>";
+        action = "<CMD>close<CR>";
+      }
+      {
+        mode = "n";
         key = "<C-k>";
-        action = "<cmd>cnext<CR>zz";
+        action = "<CMD>cnext<CR>zz";
       }
       {
         mode = "n";
         key = "<C-j>";
-        action = "<cmd>cprev<CR>zz";
+        action = "<CMD>cprev<CR>zz";
+      }
+      {
+        mode = "n";
+        key = "gd";
+        action = "vim.lsp.buf.hover";
+        lua = true;
+      }
+      {
+        mode = "n";
+        key = "gD";
+        action = "vim.lsp.buf.declaration";
+        lua = true;
       }
       {
         mode = "n";

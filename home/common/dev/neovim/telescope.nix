@@ -2,16 +2,16 @@
 {
   programs.nixvim = {
     keymaps = [
-      {
-        mode = "n";
-        key = "<leader>pp";
-        action = "require'telescope'.extensions.projects.projects";
-        lua = true;
-      }
+      #{
+      #  mode = "n";
+      #  key = "<leader>pp";
+      #  action = "require'telescope'.extensions.projects.projects";
+      #  lua = true;
+      #}
       {
         mode = "n";
         key = "<leader><leader>";
-        action = "<Cmd>Telescope frecency<CR>";
+        action = "<CMD>Telescope frecency<CR>";
       }
     ];
 

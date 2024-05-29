@@ -150,6 +150,18 @@
       };
     };
   };
+  services.xremap = {
+    enable = true;
+    withHypr = true;
+    config.keymap = [
+      {
+        name = "Print Screen";
+        remap = {
+          KEY_INSERT = "KEY_PRINT";
+        };
+      }
+    ];
+  };
 
   fonts = {
     fontconfig.enable = true;
