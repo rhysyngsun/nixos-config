@@ -72,6 +72,23 @@
         action = "vim.lsp.buf.implementation";
         lua = true;
       }
+      # deletes without yanking
+      {
+        mode = "n";
+        key = "<leader>d";
+        action = "\"_d";
+      }
+      {
+        mode = "v";
+        key = "<leader>d";
+        action = "\"_d";
+      }
+      # paste without yanking
+      {
+        mode = "v";
+        key = "<leader>p";
+        action = "\"_dP";
+      }
     ];
 
     globals.mapleader = ",";

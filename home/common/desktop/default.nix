@@ -159,24 +159,24 @@ with lib;
     recursive = true;
   };
 
-  xdg.configFile."easyeffects" = {
-    source = pkgs.symlinkJoin {
-      name = "easyeffects-plugins";
-      paths = [
-        pkgs.easyeffects-presets.jackhack96
-        pkgs.easyeffects-presets.p-chan5
-      ];
-    };
-    recursive = true;
-  };
+  # xdg.configFile."easyeffects" = {
+  #   source = pkgs.symlinkJoin {
+  #     name = "easyeffects-plugins";
+  #     paths = [
+  #       pkgs.easyeffects-presets.jackhack96
+  #       pkgs.easyeffects-presets.p-chan5
+  #     ];
+  #   };
+  #   recursive = true;
+  # };
 
   # services
   services = {
     blueman-applet.enable = true;
-    easyeffects = {
-      enable = true;
-      preset = "";
-    };
+    # easyeffects = {
+    #   enable = true;
+    #   preset = "";
+    # };
     kbfs.enable = true;
     keybase.enable = true;
     mpd.enable = true;
