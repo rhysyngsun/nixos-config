@@ -2,16 +2,17 @@
 {
   programs.nixvim = {
     keymaps = [
-      #{
-      #  mode = "n";
-      #  key = "<leader>pp";
-      #  action = "require'telescope'.extensions.projects.projects";
-      #  lua = true;
-      #}
       {
         mode = "n";
-        key = "<leader><leader>";
-        action = "<CMD>Telescope frecency<CR>";
+        key = "<leader>rs";
+        action = "<CMD>LspRestart<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>fb";
+        action = {
+          __raw = "vim.lsp.buf.format";
+        };
       }
     ];
 
@@ -25,9 +26,6 @@
         "<leader>pb" = "buffers";
       };
 
-      extensions = {
-        # frecency.enable = true;
-      };
       settings = {
         defaults = {
           layout_config = {
@@ -41,7 +39,7 @@
             mappings = {
               i = {
                 "<c-d>" = {
-                  __raw = "require('telescope.actions').delete_buffer + require('telescope.actions').move_to_top";
+                  __raw = "require('telescope.actions').delete_buffer"; 
                 };
               };
             };

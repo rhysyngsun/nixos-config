@@ -6,8 +6,9 @@
       {
         mode = "n";
         key = "<leader>gs";
-        action = "vim.cmd.Git";
-        lua = true;
+        action = {
+          __raw = "vim.cmd.Git";
+        };
       }
     ];
   };

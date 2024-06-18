@@ -8,18 +8,8 @@
     plugins.lsp = {
       enable = true;
 
-      capabilities = ''
-        local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
-        for _, ls in ipairs(language_servers) do
-            require('lspconfig')[ls].setup({
-                capabilities = capabilities
-                -- you can add other fields for setting up lsp server in this table
-            })
-        end
-      '';
-
       servers = {
-        #        bashls.enable = true;
+        bashls.enable = true;
         gopls.enable = true;
         lua-ls.enable = true;
         html = {
@@ -40,7 +30,7 @@
         };
         java-language-server.enable = true;
         jsonls.enable = true;
-        nil_ls.enable = true;
+        nil-ls.enable = true;
         ruff-lsp.enable = true;
         rust-analyzer = {
           enable = true;
@@ -63,10 +53,7 @@
             };
           };
         };
-        templ = {
-          enable = true;
-          filetypes = [ "templ" ];
-        };
+        templ.enable = true;
         tsserver.enable = true;
         yamlls = {
           enable = true;

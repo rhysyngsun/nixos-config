@@ -169,8 +169,6 @@
     packages = map (f: f.package) (builtins.attrValues pkgs.rice.font);
   };
 
-  programs.sway.enable = true;
-
   security = {
     rtkit.enable = true;
 

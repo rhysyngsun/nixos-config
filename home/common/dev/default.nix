@@ -24,6 +24,7 @@
       git-ignore
       entr
       tealdeer
+      libtree
 
       # jq/xq/yq all-in-one
       yq-go
@@ -34,10 +35,6 @@
       # virtualization
       lazydocker
       vagrant
-
-      doggo
-
-      #devenv
 
       # concourse cli
       fly

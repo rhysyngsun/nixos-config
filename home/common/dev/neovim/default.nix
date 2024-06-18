@@ -57,29 +57,27 @@
       {
         mode = "n";
         key = "gd";
-        action = "vim.lsp.buf.hover";
-        lua = true;
+        action = {
+          __raw = "vim.lsp.buf.hover";
+        };
       }
       {
         mode = "n";
         key = "gD";
-        action = "vim.lsp.buf.declaration";
-        lua = true;
+        action = {
+          __raw = "vim.lsp.buf.declaration";
+        };
       }
       {
         mode = "n";
         key = "gi";
-        action = "vim.lsp.buf.implementation";
-        lua = true;
+        action = {
+          __raw = "vim.lsp.buf.implementation";
+        };
       }
       # deletes without yanking
       {
-        mode = "n";
-        key = "<leader>d";
-        action = "\"_d";
-      }
-      {
-        mode = "v";
+        mode = ["n" "v"];
         key = "<leader>d";
         action = "\"_d";
       }
@@ -88,6 +86,17 @@
         mode = "v";
         key = "<leader>p";
         action = "\"_dP";
+      }
+      # splits
+      {
+        mode = ["n" "v"];
+        key = "<leader>|";
+        action = "<CMD>vsplit<CR>";
+      }
+      {
+        mode = ["n" "v"];
+        key = "<leader>-";
+        action = "<CMD>split<CR>";
       }
     ];
 

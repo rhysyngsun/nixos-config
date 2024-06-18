@@ -31,6 +31,7 @@ with lib;
       gnome.gnome-calendar
       mkchromecast
       cinnamon.nemo-with-extensions
+      cosmic-edit
 
       qownnotes
 

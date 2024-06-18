@@ -4,6 +4,9 @@ default:
 git-stage:
   git add .
 
+update:
+  nix flake update
+
 switch-user *args='': git-stage
   home-manager switch --flake ".#$(whoami)" {{args}}
 
