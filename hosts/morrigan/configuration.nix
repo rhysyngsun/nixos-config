@@ -216,9 +216,10 @@
   location.provider = "geoclue2";
 
   # Video support
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
-  hardware.opengl.driSupport = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   hardware.nvidia.modesetting.enable = true;
 
   services.gnome.at-spi2-core.enable = true;

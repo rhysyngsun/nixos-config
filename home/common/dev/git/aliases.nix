@@ -52,9 +52,6 @@
   gcln = "git clean";
   gclndf = "git clean -df";
   gclndfx = "git clean -dfx";
-  gsm = "git submodule";
-  gsmi = "git submodule init";
-  gsmu = "git submodule update";
   gt = "git t";
   gbg = "git bisect good";
   gbb = "git bisect bad";

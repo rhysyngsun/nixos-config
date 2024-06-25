@@ -10,6 +10,8 @@
 
       servers = {
         bashls.enable = true;
+        biome.enable = true;
+        docker-compose-language-service.enable = true;
         gopls.enable = true;
         lua-ls.enable = true;
         html = {
@@ -31,12 +33,21 @@
         java-language-server.enable = true;
         jsonls.enable = true;
         nil-ls.enable = true;
-        ruff-lsp.enable = true;
-        rust-analyzer = {
+        pylsp = {
           enable = true;
-          installCargo = true;
-          installRustc = true;
+          settings.plugins = {
+            jedi_completion.enable = true;
+            jedi_definition.enable = true;
+            pylsp_mypy.enabled = true;
+            ruff.enabled = true;
+          };
         };
+        ruff-lsp.enable = true;
+        # rust-analyzer = {
+        #   enable = true;
+        #   installCargo = true;
+        #   installRustc = true;
+        # };
         tailwindcss = {
           enable = true;
           filetypes = [

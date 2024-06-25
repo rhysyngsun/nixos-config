@@ -98,6 +98,11 @@
         key = "<leader>-";
         action = "<CMD>split<CR>";
       }
+      {
+        mode = ["n" "v"];
+        key = "ga."; 
+        action = "<CMD>TextCaseOpenTelescope<CR>";
+      }
     ];
 
     globals.mapleader = ",";
@@ -125,6 +130,7 @@
     extraPlugins = with pkgs.vimPlugins; [
       nvim-web-devicons
       overseer-nvim
+      text-case-nvim
       (pkgs.vimUtils.buildVimPlugin {
         name = "mjml";
         src = pkgs.fetchFromGitHub {
@@ -167,6 +173,9 @@
           lualine_z = { 'location' },
         },
       })
+
+      require("textcase").setup({})
+      require("telescope").load_extension("textcase")
     '';
   };
 }
