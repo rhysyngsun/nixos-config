@@ -9,7 +9,7 @@
     ./lsp.nix
     ./navigator.nix
     ./oil.nix
-#    ./project-nvim.nix
+    ./spectre.nix
     ./telescope.nix
     ./treesitter.nix
     ./undotree.nix
@@ -120,11 +120,11 @@
       lualine.enable = true;
       neoscroll.enable = true;
       nvim-autopairs.enable = true;
+      nvim-bqf.enable = true;
       nvim-jdtls = {
         enable = true;
         data = "${config.xdg.cacheHome}/jdtls/workspace";
       };
-      trouble.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [
