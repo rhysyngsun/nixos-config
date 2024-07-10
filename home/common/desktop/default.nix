@@ -28,7 +28,7 @@ with lib;
       xdg-utils
       unzip
       zlib
-      gnome.gnome-calendar
+      gnome-calendar
       mkchromecast
       cinnamon.nemo-with-extensions
       cosmic-edit
@@ -57,9 +57,9 @@ with lib;
       hunspell
       hunspellDicts.en_US
 
-      transmission-gtk
+      transmission_4-gtk
 
-      blender
+      # blender
 
       prismlauncher
 

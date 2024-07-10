@@ -106,7 +106,9 @@
   };
 
   inputs = {
-    hyprland.url = "github:hyprwm/Hyprland?ref=v0.40.0";
+    hyprland = {
+      url = "github:hyprwm/Hyprland?ref=v0.40.0";
+    };
 
     hycov = {
       url = "github:DreamMaoMao/hycov";

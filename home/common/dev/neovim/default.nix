@@ -143,7 +143,8 @@
     ];
 
     extraConfigLua = ''
-      vim.opt.termguicolors = true
+      vim.o.termguicolors = true
+      vim.o.exrc = true
 
       require('overseer').setup()
 

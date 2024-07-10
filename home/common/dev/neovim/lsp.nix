@@ -43,11 +43,11 @@
           };
         };
         ruff-lsp.enable = true;
-        # rust-analyzer = {
-        #   enable = true;
-        #   installCargo = true;
-        #   installRustc = true;
-        # };
+        rust-analyzer = {
+          enable = true;
+          installCargo = true;
+          installRustc = true;
+        };
         tailwindcss = {
           enable = true;
           filetypes = [
@@ -75,5 +75,13 @@
         };
       };
     };
+
+    keymaps = [
+      {
+        key = "<leader>ca";
+        action = "<CMD>lua vim.lsp.buf.code_action()<CR>";
+        mode = ["n" "v"];
+      }
+    ];
   };
 }
