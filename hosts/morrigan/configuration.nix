@@ -21,7 +21,10 @@
     ./hardware-configuration.nix
   ];
 
-  i18n.inputMethod.enabled = "fcitx5";
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+  };
 
   services.dbus = {
     packages = with pkgs; [ blueman ];
@@ -152,7 +155,7 @@
   };
   services.xremap = {
     enable = true;
-    withHypr = true;
+    withWlroots = true;
     config.keymap = [
       {
         name = "Print Screen";
@@ -207,7 +210,6 @@
   services.avahi.openFirewall = true;
 
   # Enable sound
-  sound.enable = false;
   hardware.pulseaudio.enable = false;
 
   # timezone

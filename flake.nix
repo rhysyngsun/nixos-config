@@ -113,10 +113,7 @@
     #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
     # };
     hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
-      ref = "v0.41.2";
+      url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.40.0";
     };
 
     hycov = {
@@ -125,7 +122,7 @@
     };
 
     hy3 = {
-      url = "github:outfoxxed/hy3?ref=hl0.41.2";
+      url = "github:outfoxxed/hy3?ref=hl0.40.0";
       # or "github:outfoxxed/hy3" to follow the development branch.
       # (you may encounter issues if you dont do the same for hyprland)
       inputs.hyprland.follows = "hyprland";

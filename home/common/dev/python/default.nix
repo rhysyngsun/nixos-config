@@ -77,6 +77,7 @@ in
 
       # pkgs.python3Packages.pkginfo
       # pkgs.python3Packages.wheel-inspect
+      pkgs.rye
     ];
   };
 
