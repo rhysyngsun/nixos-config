@@ -57,9 +57,9 @@ with lib;
       hunspell
       hunspellDicts.en_US
 
-      transmission_4-gtk
+      # transmission_4-gtk
 
-      # blender
+      blender
 
       prismlauncher
 
