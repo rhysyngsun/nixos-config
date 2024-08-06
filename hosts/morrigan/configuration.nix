@@ -131,6 +131,7 @@
       theme = "catppuccin-mocha";
     };
   };
+  services.desktopManager.plasma6.enable = true;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

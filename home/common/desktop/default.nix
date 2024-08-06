@@ -32,6 +32,7 @@ with lib;
       mkchromecast
       cinnamon.nemo-with-extensions
       cosmic-edit
+      simple-scan
 
       qownnotes
 

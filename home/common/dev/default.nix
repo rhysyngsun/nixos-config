@@ -25,6 +25,7 @@
       entr
       tealdeer
       libtree
+      squirrel-sql
 
       # jq/xq/yq all-in-one
       yq-go

@@ -73,6 +73,7 @@
             lineFoldingOnly = true;
           };
         };
+        zls.enable = true;
       };
     };
 
