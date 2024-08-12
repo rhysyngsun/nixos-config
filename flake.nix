@@ -116,17 +116,12 @@
       url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.41.2";
     };
 
-    hycov = {
-      url = "github:DreamMaoMao/hycov";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    hy3 = {
-      url = "github:outfoxxed/hy3?ref=hl0.41.2";
-      # or "github:outfoxxed/hy3" to follow the development branch.
-      # (you may encounter issues if you dont do the same for hyprland)
-      inputs.hyprland.follows = "hyprland";
-    };
+    # hy3 = {
+    #   url = "github:outfoxxed/hy3?ref=hl0.41.2";
+    #   # or "github:outfoxxed/hy3" to follow the development branch.
+    #   # (you may encounter issues if you dont do the same for hyprland)
+    #   inputs.hyprland.follows = "hyprland";
+    # };
 
     hyprpicker.url = "github:hyprwm/hyprpicker";
     hyprcursor.url = "github:hyprwm/hyprcursor";

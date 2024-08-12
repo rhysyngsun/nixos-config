@@ -5,6 +5,7 @@
     ./completion.nix
     ./folding.nix
     ./fugitive.nix
+    ./git.nix
     ./harpoon.nix
     ./lsp.nix
     ./navigator.nix
