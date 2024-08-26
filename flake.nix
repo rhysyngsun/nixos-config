@@ -83,11 +83,12 @@
 
       homeConfigurations = {
         nathan =
-          home-manager.lib.homeManagerConfiguration (
-            import ./home/nathan { inherit inputs outputs nix-defaults; }
-          )
-          // {
-            nixpkgs.config = nix-defaults.nixpkgs.config;
+          home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            modules = [
+              inputs.hyprland.homeManagerModules.default
+              (import ./home/nathan { inherit inputs outputs nix-defaults; })
+            ];
           };
       };
     };
@@ -113,11 +114,11 @@
     #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
     # };
     hyprland = {
-      url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.41.2";
+      url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
     };
 
     # hy3 = {
-    #   url = "github:outfoxxed/hy3?ref=hl0.41.2";
+    #   url = "github:outfoxxed/hy3";
     #   # or "github:outfoxxed/hy3" to follow the development branch.
     #   # (you may encounter issues if you dont do the same for hyprland)
     #   inputs.hyprland.follows = "hyprland";

@@ -20,7 +20,6 @@ in
     grim
     wl-clipboard
     inotify-tools
-    swayr
     hyprpicker
     hyprshot
   ];
@@ -28,6 +27,7 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
     plugins = [
       # inputs.hy3.packages.${pkgs.system.hy3
