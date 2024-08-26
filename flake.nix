@@ -123,6 +123,11 @@
     #   inputs.hyprland.follows = "hyprland";
     # };
 
+    # hyprspace = {
+    #   url = "github:KZDKM/Hyprspace";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
+
     hyprpicker.url = "github:hyprwm/hyprpicker";
     hyprcursor.url = "github:hyprwm/hyprcursor";
 

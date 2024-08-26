@@ -10,6 +10,7 @@
     ./lsp.nix
     ./navigator.nix
     ./oil.nix
+    ./remote.nix
     ./spectre.nix
     ./telescope.nix
     ./treesitter.nix

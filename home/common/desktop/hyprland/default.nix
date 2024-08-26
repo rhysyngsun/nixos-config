@@ -30,7 +30,8 @@ in
     systemd.enable = true;
 
     plugins = [
-      # inputs.hy3.packages.x86_64-linux.hy3
+      # inputs.hy3.packages.${pkgs.system.hy3
+      # inputs.hyprspace.packages.${pkgs.system}.Hyprspace
     ];
 
     extraConfig = ''
@@ -214,6 +215,8 @@ in
       bind=$mod SHIFT,apostrophe,changegroupactive,b
 
       bind=$mod, S, exec, hyprpicker -a -f hex
+
+      bind=$mod, Space, overview:toggle
 
       ${builtins.concatStringsSep "\n" (
         builtins.genList (

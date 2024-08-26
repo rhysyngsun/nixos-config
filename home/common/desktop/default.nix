@@ -30,7 +30,7 @@ with lib;
       zlib
       gnome-calendar
       mkchromecast
-      cinnamon.nemo-with-extensions
+      nemo-with-extensions
       cosmic-edit
       simple-scan
 
