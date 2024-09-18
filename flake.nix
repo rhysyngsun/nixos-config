@@ -1,4 +1,5 @@
 {
+
   description = "Rhysyngsun's nixos configs";
 
   outputs =
@@ -73,7 +74,6 @@
           modules = [
             inputs.sops-nix.nixosModules.sops
             # keyboard remapper
-            inputs.xremap-flake.nixosModules.default
             nix-defaults
 
             ./hosts/morrigan/configuration.nix
@@ -83,13 +83,7 @@
 
       homeConfigurations = {
         nathan =
-          home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.x86_64-linux;
-            modules = [
-              inputs.hyprland.homeManagerModules.default
-              (import ./home/nathan { inherit inputs outputs nix-defaults; })
-            ];
-          };
+          home-manager.lib.homeManagerConfiguration        (import ./home/nathan { inherit inputs outputs nix-defaults; });
       };
     };
 
@@ -97,8 +91,8 @@
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.follows = "nixpkgs-stable";
     nixpkgs.follows = "nixpkgs-unstable";
-    # nixpkgs.follows = "nixpkgs-unstable";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -114,7 +108,9 @@
     #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
     # };
     hyprland = {
-      url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
+      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
+      # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows="nixpkgs-unstable";
     };
 
     # hy3 = {
@@ -131,8 +127,6 @@
 
     hyprpicker.url = "github:hyprwm/hyprpicker";
     hyprcursor.url = "github:hyprwm/hyprcursor";
-
-    xremap-flake.url = "github:xremap/nix-flake";
   };
 
   inputs = {

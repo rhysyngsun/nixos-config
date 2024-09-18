@@ -5,7 +5,7 @@
         enable = true;
         settings = {
           floating_window_scaling_factor = 0.99;
-          floating_window_use_plenary = true;
+          floating_window_use_plenary = 1;
         };
       };
       octo.enable = true;

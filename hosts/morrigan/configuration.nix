@@ -14,7 +14,7 @@
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
-    inputs.hyprland.nixosModules.default
+    # inputs.hyprland.nixosModules.default
 
     ./services
     ./open-learning
@@ -40,7 +40,8 @@
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   # file manager
@@ -154,18 +155,6 @@
       };
     };
   };
-  services.xremap = {
-    enable = true;
-    withWlroots = true;
-    config.keymap = [
-      {
-        name = "Print Screen";
-        remap = {
-          KEY_INSERT = "KEY_PRINT";
-        };
-      }
-    ];
-  };
 
   fonts = {
     fontconfig.enable = true;
@@ -223,6 +212,9 @@
     enable = true;
     enable32Bit = true;
   };
+  # hardware.opengl = {
+  #   enable = true;
+  # };
   hardware.nvidia.modesetting.enable = true;
 
   services.gnome.at-spi2-core.enable = true;
