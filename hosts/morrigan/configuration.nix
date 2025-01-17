@@ -36,13 +36,16 @@
     theme = "catppuccin-mocha";
   };
 
-  programs.nix-ld.enable = true;
-
-  programs.hyprland = {
+  programs.nix-ld = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    libraries = with pkgs; [stdenv.cc.cc];
   };
+
+  # programs.hyprland = {
+  #   enable = true;
+  #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  # };
 
   # file manager
   programs.thunar = {
@@ -67,6 +70,8 @@
     v4l-utils
     vulkan-tools
     wireplumber
+
+    dig
 
     # Theme
     (catppuccin-kde.override {
@@ -125,7 +130,8 @@
   '';
 
   services.displayManager = {
-    defaultSession = "hyprland";
+    # defaultSession = "hyprland";
+    defaultSession = "plasma";
     sddm = {
       enable = true;
       wayland.enable = true;

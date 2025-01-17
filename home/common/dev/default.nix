@@ -27,8 +27,11 @@
       libtree
       squirrel-sql
 
+      eclipses.eclipse-java
+
       # jq/xq/yq all-in-one
       yq-go
+      jq
 
       sphinx
       copier
@@ -47,6 +50,34 @@
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
       "rm" = "rm -I --preserve-root";
+    };
+  };
+
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      redhat.java
+      vscjava.vscode-java-debug
+      vscjava.vscode-java-dependency
+      vscjava.vscode-java-test
+      vscjava.vscode-maven
+    ];
+
+    userSettings = {
+      "java.configuration.runtimes" = [
+        {
+          "default" = true;
+          "name" = "JavaSE-17";
+          "path" = "${pkgs.openjdk}/lib/openjdk";
+        }
+      ];
+      "java.jdt.ls.java.home" = "${pkgs.openjdk}/lib/openjdk";
+      "files.exclude" = {
+        "**/.classpath" = true;
+        "**/.project" = true;
+        "**/.settings" = true;
+        "**/.factorypath" = true;
+      };
     };
   };
 

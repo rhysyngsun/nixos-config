@@ -11,9 +11,9 @@
       servers = {
         bashls.enable = true;
         biome.enable = true;
-        docker-compose-language-service.enable = true;
+        docker_compose_language_service.enable = true;
         gopls.enable = true;
-        lua-ls.enable = true;
+        lua_ls.enable = true;
         html = {
           enable = true;
           filetypes = [
@@ -30,9 +30,9 @@
             "templ"
           ];
         };
-        java-language-server.enable = true;
+        java_language_server.enable = true;
         jsonls.enable = true;
-        nil-ls.enable = true;
+        nil_ls.enable = true;
         pylsp = {
           enable = true;
           settings.plugins = {
@@ -42,8 +42,8 @@
             ruff.enabled = true;
           };
         };
-        ruff-lsp.enable = true;
-        rust-analyzer = {
+        ruff.enable = true;
+        rust_analyzer = {
           enable = true;
           installCargo = true;
           installRustc = true;
@@ -65,7 +65,7 @@
           };
         };
         templ.enable = true;
-        ts-ls.enable = true;
+        ts_ls.enable = true;
         yamlls = {
           enable = true;
           extraOptions.capabilities.textDocument.foldingRange = {

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./accounts
@@ -10,4 +10,8 @@
   ];
 
   news.display = "silent";
+
+  home.packages = with inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}; [
+    nix-alien
+  ];
 }

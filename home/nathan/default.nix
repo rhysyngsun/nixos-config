@@ -15,7 +15,7 @@ in
     inputs.anyrun.homeManagerModules.default
     inputs.nixvim.homeManagerModules.nixvim
     inputs.stylix.homeManagerModules.stylix
-    inputs.hyprland.homeManagerModules.default
+    # inputs.hyprland.homeManagerModules.default
     inputs.ags.homeManagerModules.default
     outputs.homeManagerModules
     ./home.nix

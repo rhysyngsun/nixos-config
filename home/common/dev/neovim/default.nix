@@ -3,6 +3,7 @@
   imports = [
     ./colorschemes.nix
     ./completion.nix
+    ./dap.nix
     ./folding.nix
     ./fugitive.nix
     ./git.nix
@@ -127,6 +128,7 @@
         enable = true;
         data = "${config.xdg.cacheHome}/jdtls/workspace";
       };
+      web-devicons.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [

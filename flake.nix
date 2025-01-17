@@ -112,29 +112,31 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs.follows = "nixpkgs-stable";
-    nixpkgs.follows = "nixpkgs-unstable";
+    nixpkgs.follows = "nixpkgs-stable";
+    # nixpkgs.follows = "nixpkgs-unstable";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    # home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    nix-alien.url = "github:thiagokokada/nix-alien";
   };
 
   inputs = {
     # hyprland = {
     #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
     # };
-    hyprland = {
-      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-      # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
-      inputs.nixpkgs.follows="nixpkgs-unstable";
-    };
+    # hyprland = {
+    #   url = "git+https://github.com/hyprwm/hyprland?submodules=1";
+    #   # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
+    #   inputs.nixpkgs.follows="nixpkgs-unstable";
+    # };
 
     # hy3 = {
     #   url = "github:outfoxxed/hy3";
@@ -174,7 +176,7 @@
 
   # rice
   inputs = {
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix/release-24.11";
 
     nix-rice.url = "github:bertof/nix-rice";
 

@@ -8,10 +8,10 @@ with lib;
     ./calendar.nix
     ./chat.nix
     # ./eww
-    ./hyprland
+    # ./hyprland
     ./pls.nix
     # ./productivity.nix
-    ./wayland
+    # ./wayland
   ];
   home = {
     packages = with pkgs; [
@@ -86,6 +86,16 @@ with lib;
   };
 
   programs = {
+    bash = {
+      initExtra = ''
+        jwtd() {
+            if [[ -x $(command -v jq) ]]; then
+                 ${pkgs.jq}/bin/jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "${1}"
+                 echo "Signature: $(echo "${1}" | ${pkgs.gawk}/bin/awk -F'.' '{print $3}')"
+            fi
+        }
+      '';
+    };
     broot = {
       enable = true;
       enableZshIntegration = true;
