@@ -28,9 +28,10 @@
 
       settings = {
         defaults = {
+          layout_strategy = "vertical";
           layout_config = {
-            width = 0.999;
-            height = 0.999;
+            width = 0.8;
+            height = 0.9;
           };
           selection_caret = " ";
         };

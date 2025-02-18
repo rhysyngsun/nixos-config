@@ -50,6 +50,7 @@ with lib;
       keybase-gui
 
       gimp
+      loupe
       inkscape-with-extensions
       shotwell
       ffmpeg

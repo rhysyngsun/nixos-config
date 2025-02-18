@@ -4,7 +4,7 @@
     ./alacritty
     ./git
     ./godot
-    ./neovim
+    ./nixvim
     # ./nodejs
     ./python
     ./tmux.nix
