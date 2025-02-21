@@ -66,6 +66,18 @@
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
+        lilith = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            inputs.sops-nix.nixosModules.sops
+            nix-defaults
+
+            ./hosts/lilith/configuration.nix
+          ];
+        };
         morrigan = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
@@ -73,7 +85,6 @@
           };
           modules = [
             inputs.sops-nix.nixosModules.sops
-            # keyboard remapper
             nix-defaults
 
             ./hosts/morrigan/configuration.nix
@@ -126,6 +137,8 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     nix-alien.url = "github:thiagokokada/nix-alien";
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   inputs = {

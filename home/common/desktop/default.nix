@@ -33,6 +33,7 @@ with lib;
       nemo-with-extensions
       cosmic-edit
       simple-scan
+      gpu-viewer
 
       qownnotes
 
