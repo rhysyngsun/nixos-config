@@ -5,6 +5,7 @@
     ./git
     ./godot
     ./nixvim
+    # ./nvf
     # ./nodejs
     ./python
     ./tmux.nix
@@ -28,6 +29,7 @@
       squirrel-sql
 
       eclipses.eclipse-java
+      bytecode-viewer
 
       # jq/xq/yq all-in-one
       yq-go

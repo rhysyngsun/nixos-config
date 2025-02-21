@@ -201,5 +201,7 @@
     };
 
     nixvim.url = "github:nix-community/nixvim";
+
+    nvf.url = "github:/notashelf/nvf";
   };
 }

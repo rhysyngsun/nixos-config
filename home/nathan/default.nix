@@ -14,6 +14,7 @@ in
   modules = [
     inputs.anyrun.homeManagerModules.default
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.nvf.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
     # inputs.hyprland.homeManagerModules.default
     inputs.ags.homeManagerModules.default
