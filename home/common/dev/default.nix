@@ -36,7 +36,7 @@
       jq
 
       sphinx
-      copier
+      # copier
 
       # virtualization
       lazydocker

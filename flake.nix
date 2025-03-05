@@ -22,7 +22,7 @@
           overlays = [
             # overlays from inputs
             inputs.nix-rice.overlays.default
-            inputs.copier.overlays.default
+            # inputs.copier.overlays.default
             # hyprland 
             inputs.hyprcursor.overlays.default
             # from flake outputs
@@ -179,7 +179,7 @@
 
     wezterm.url = "github:wez/wezterm?dir=nix";
 
-    copier.url = "github:copier-org/copier";
+    # copier.url = "github:copier-org/copier";
 
     networkmanager-dmenu = {
       url = "github:firecat53/networkmanager-dmenu";

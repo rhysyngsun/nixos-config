@@ -3,7 +3,7 @@ with lib;
 {
   imports = [
     # ./bin.nix
-    ./ags
+    # ./ags
     ./browsers.nix
     ./calendar.nix
     ./chat.nix

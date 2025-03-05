@@ -44,8 +44,6 @@
 
   # programs.hyprland = {
   #   enable = true;
-  #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-  #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   # };
 
   # file manager
@@ -71,6 +69,8 @@
     v4l-utils
     vulkan-tools
     wireplumber
+
+    lshw
 
     dig
 
@@ -217,8 +217,10 @@
     enable = true;
     enable32Bit = true;
   };
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     modesetting.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
     open = false;
     prime = {
       intelBusId = "PCI:0:2:0";
@@ -228,7 +230,7 @@
         enableOffloadCmd = true;
       };
       # Make the Intel iGPU default. The NVIDIA Quadro is for CUDA/NVENC
-      reverseSync.enable = true;
+      # reverseSync.enable = true;
     };
   };
   services.gnome.at-spi2-core.enable = true;
