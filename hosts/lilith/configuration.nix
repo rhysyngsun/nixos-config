@@ -11,8 +11,9 @@
   # You can import other NixOS modules here
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1
+    # inputs.nixos-hardware.nixosModules.common-gpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-nvidia
-    inputs.nixos-hardware.nixosModules.common-hidpi
+    # inputs.nixos-hardware.nixosModules.common-hidpi
 
     ./services
     ./open-learning
@@ -61,16 +62,26 @@
 
   programs.wireshark.enable = true;
 
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    LIBVA_DRIVER_NAME = "nvidia";
+    XDG_SESSION_TYPE = "wayland";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+  };
+
   environment.systemPackages = with pkgs; [
     # nix-doc
     libxcrypt
-    mesa.drivers
+    # mesa.drivers
     openssl
     v4l-utils
     vulkan-tools
     wireplumber
+    glxinfo
 
     lshw
+    nvtopPackages.full
 
     dig
 
@@ -115,19 +126,19 @@
   };
   # NOTE: these settings override the entire `bluez_monitor.properties` value,
   # so we need to redefine all the defaults
-  environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-    bluez_monitor.enabled = true
-    bluez_monitor.properties = {
-      ["bluez5.enable-sbc-xq"] = true,
-      ["bluez5.enable-msbc"] = true,
-      ["bluez5.enable-hw-volume"] = true,
-      ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]",
-      ["bluez5.codecs"] = "[ sbc sbc_xq aac ]",
-      ["bluez5.hfphsp-backend"] = "native",
-      ["bluez5.default.rate"] = 48000,
-      ["bluez5.default.channels"] = 2
-    }
-  '';
+  # environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+  #   bluez_monitor.enabled = true
+  #   bluez_monitor.properties = {
+  #     ["bluez5.enable-sbc-xq"] = true,
+  #     ["bluez5.enable-msbc"] = true,
+  #     ["bluez5.enable-hw-volume"] = true,
+  #     ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]",
+  #     ["bluez5.codecs"] = "[ sbc sbc_xq aac ]",
+  #     ["bluez5.hfphsp-backend"] = "native",
+  #     ["bluez5.default.rate"] = 48000,
+  #     ["bluez5.default.channels"] = 2
+  #   }
+  # '';
 
   services.displayManager = {
     defaultSession = "plasma";
@@ -166,6 +177,8 @@
     fontDir.enable = true;
     packages = map (f: f.package) (builtins.attrValues pkgs.rice.font);
   };
+
+  nixpkgs.config.allowUnfree = true;
 
   security = {
     rtkit.enable = true;
@@ -213,26 +226,40 @@
   location.provider = "geoclue2";
 
   # Video support
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia = {
-    modesetting.enable = true;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-    open = false;
-    prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+        intel-media-driver
+        libva-vdpau-driver
+      ];
+    };
+    nvidia = {
+      modesetting.enable = true;
+      # package = config.boot.kernelPackages.nvidiaPackages.beta;
+      # Minimum of 570 required to work with kernel 6.13
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        version = "570.86.16"; # use new 570 drivers
+        sha256_64bit = "sha256-RWPqS7ZUJH9JEAWlfHLGdqrNlavhaR1xMyzs8lJhy9U=";
+        openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";
+        settingsSha256 = "sha256-9rtqh64TyhDF5fFAYiWl3oDHzKJqyOW3abpcf2iNRT8=";
+        usePersistenced = false;
       };
-      # Make the Intel iGPU default. The NVIDIA Quadro is for CUDA/NVENC
-      # reverseSync.enable = true;
+      open = false;
+  		powerManagement.enable = true;
+  		powerManagement.finegrained = false;
+      prime = {
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+        offload.enable = false;
+        sync.enable = true;
+      };
     };
   };
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   services.gnome.at-spi2-core.enable = true;
 
   services.devmon.enable = true;

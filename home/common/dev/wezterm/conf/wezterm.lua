@@ -5,7 +5,7 @@ local act = wezterm.action
 local config = wezterm.config_builder()
 
 -- disable for now because it's broken
-config.enable_wayland = false
+config.enable_wayland = true
 
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
@@ -23,6 +23,8 @@ config.line_height = 0.9
 config.hide_mouse_cursor_when_typing = false
 config.use_fancy_tab_bar = false
 
+
+config.check_for_updates = false
 
 config.leader = { key = 'a', mods = 'CTRL' }
 

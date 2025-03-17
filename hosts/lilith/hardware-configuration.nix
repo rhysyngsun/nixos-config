@@ -9,9 +9,30 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_drm" "nvidia_uvm" ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  
+  # Critical kernel parameters for Nvidia KMS and video memory preservation
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"                   # Allows for early modeset in init
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"  # Helps with suspend/resume, flicker
+  ];
+
+  # Ensure modules load in correct order
+  boot.extraModprobeConfig = ''
+    options nvidia-drm modeset=1
+    softdep nvidia pre: nvidia-drm
+  '';
+
+  # Make sure all four nvidia modules are in the initrd
+  boot.initrd.kernelModules = [
+    "nvidia" 
+    "nvidia_modeset" 
+    "nvidia_uvm" 
+    "nvidia_drm"
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/f75907ab-9b04-4d20-83a9-d4900839e29e";
