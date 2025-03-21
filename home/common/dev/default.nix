@@ -4,8 +4,8 @@
     ./alacritty
     ./git
     ./godot
-    ./nixvim
-    # ./nvf
+    # ./nixvim
+   ./nvf
     # ./nodejs
     ./python
     ./tmux.nix
@@ -16,7 +16,7 @@
 
   home = {
     packages = with pkgs; [
-      heroku
+      unstable.heroku
       http-prompt
       xh
       just

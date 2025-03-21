@@ -25,10 +25,11 @@
             # inputs.copier.overlays.default
             # hyprland 
             inputs.hyprcursor.overlays.default
+            inputs.nur.overlays.default
             # from flake outputs
             outputs.overlays.additions
             outputs.overlays.modifications
-            #outputs.overlays.unstable-packages
+            outputs.overlays.unstable-packages
           ];
           config = {
             allowUnfree = true;
@@ -139,17 +140,22 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   inputs = {
     # hyprland = {
     #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
     # };
-    # hyprland = {
-    #   url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-    #   # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
-    #   inputs.nixpkgs.follows="nixpkgs-unstable";
-    # };
+    hyprland = {
+      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
+      # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
+      # inputs.nixpkgs.follows="nixpkgs-unstable";
+    };
 
     # hy3 = {
     #   url = "github:outfoxxed/hy3";
@@ -168,8 +174,6 @@
   };
 
   inputs = {
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-
     anyrun = {
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -177,9 +181,7 @@
 
     ags.url = "github:Aylur/ags";
 
-    wezterm.url = "github:wez/wezterm?dir=nix";
-
-    # copier.url = "github:copier-org/copier";
+    wezterm.url = "github:wez/wezterm?dir=nix&rev=7053748e4d899e7fc5e202d6f903b052fc78e759";
 
     networkmanager-dmenu = {
       url = "github:firecat53/networkmanager-dmenu";

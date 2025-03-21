@@ -1,5 +1,5 @@
 {
-  programs.nvf.vim.autocomplete.nvim-cmp = {
+  programs.nvf.settings.vim.autocomplete.nvim-cmp = {
     enable = true;
     setupOpts = {
       completion = {
@@ -7,12 +7,11 @@
         keywordLength = 1;
       };
     };
-    sources = [
-      { name = "nvim_lsp"; }
-      { name = "nvim_lua"; }
-      { name = "vsnip"; }
-      { name = "path"; }
-      { name = "buffer"; }
-    ];
+    sources = {
+      "buffer" = "[Buffer]";
+      "path" = "[Path]";
+      "nvim_lsp" = "[LSP]";
+      "nvim-cmp" = null;
+    };
   };
 }
