@@ -7,36 +7,18 @@
       enableLSP = true;
       enableTreesitter = true;
 
-      go = {
-        enable = true;
-      };
-      lua = {
-        enable = true;
-      };
-      nix = {
-        enable = true;
-      };
-      markdown = {
-        enable = true;
-      };
-      python = {
-        enable = true;
-      };
-      rust = {
-        enable = true;
-      };
-      sql = {
-        enable = true;
-      };
-      ts = {
-        enable = true;
-      };
-      yaml = {
-        enable = true;
-      };
-      zig = {
-        enable = true;
-      };
+      go.enable = true;
+      html.enable = true;
+      java.enable = true;
+      lua.enable = true;
+      nix.enable = true;
+      markdown.enable = true;
+      python.enable = true;
+      rust.enable = true;
+      sql.enable = true;
+      ts.enable = true;
+      yaml.enable = true;
+      zig.enable = true;
     };
 
     keymaps = [
