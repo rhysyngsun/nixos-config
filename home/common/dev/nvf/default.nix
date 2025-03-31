@@ -22,6 +22,11 @@ in {
           mapleader = ",";
         };
 
+        extraPackages = with pkgs; [
+          # neovim autodetects wl-copy
+          wl-clipboard
+        ];
+
         lsp = {
           enable = true;
         };

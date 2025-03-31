@@ -50,7 +50,7 @@ with lib;
 
       keybase-gui
 
-      gimp
+      unstable.gimp
       loupe
       inkscape-with-extensions
       shotwell

@@ -18,11 +18,13 @@
     packages = with pkgs; [
       unstable.heroku
       http-prompt
+      httpie
       xh
       just
       usql
       gnumake
       git-ignore
+      lazygit
       entr
       tealdeer
       libtree
