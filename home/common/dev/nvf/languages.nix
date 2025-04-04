@@ -25,17 +25,20 @@
       {
         mode = "n";
         key = "gd";
-        action = "<CMD>lua vim.lsp.buf.hover<CR>";
+        action = "vim.lsp.buf.hover";
+        lua = true;
       }
       {
         mode = "n";
         key = "gD";
-        action = "<CMD>lua vim.lsp.buf.declaration<CR>";
+        action = "vim.lsp.buf.declaration";
+        lua = true;
       }
       {
         mode = "n";
         key = "gi";
-        action = "<CMD>lua vim.lsp.buf.implementation<CR>";
+        action = "vim.lsp.buf.implementation";
+        lua = true;
       }
     ];
   };

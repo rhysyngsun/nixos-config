@@ -1,13 +1,12 @@
-{pkgs, ...}:
-{
+{pkgs, ...}: {
   programs.nvf.settings.vim = {
     lazy.plugins."nvim-spectre" = {
       package = pkgs.vimPlugins.nvim-spectre;
       setupModule = "spectre";
       setupOpts = {
         default = {
-          search = "${pkgs.ripgrep}/bin/ripgrep";
-          replace = "${pkgs.gnused}/bin/sed";
+          search.cmd = "rg";
+          replace.cmd = "sed";
         };
       };
       keys = [
@@ -28,5 +27,6 @@
         }
       ];
     };
+    extraPackages = with pkgs; [ripgrep gnused];
   };
 }
