@@ -1,6 +1,9 @@
-{ lib, pkgs, ... }:
-with lib;
 {
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   imports = [
     # ./bin.nix
     # ./ags
@@ -56,13 +59,13 @@ with lib;
       shotwell
       ffmpeg
 
-      # libreoffice-qt
+      libreoffice-qt
       hunspell
       hunspellDicts.en_US
 
       # transmission_4-gtk
 
-      blender
+      unstable.blender
 
       prismlauncher
 
@@ -74,17 +77,15 @@ with lib;
       obsidian
     ];
 
-    sessionVariables =
-      let
-        editor = "nvim";
-      in
-      {
-        EDITOR = editor;
-        VISUAL = editor;
-        GIT_EDITOR = editor;
+    sessionVariables = let
+      editor = "nvim";
+    in {
+      EDITOR = editor;
+      VISUAL = editor;
+      GIT_EDITOR = editor;
 
-        # SHELL = "${pkgs.zsh}/bin/zsh";
-      };
+      # SHELL = "${pkgs.zsh}/bin/zsh";
+    };
   };
 
   programs = {
@@ -201,7 +202,7 @@ with lib;
   systemd.user.targets.tray = {
     Unit = {
       Description = "Home Manager System Tray";
-      Requires = [ "graphical-session-pre.target" ];
+      Requires = ["graphical-session-pre.target"];
     };
   };
   # systemd.user.services.polkit-gnome-authentication-agent-1 = {

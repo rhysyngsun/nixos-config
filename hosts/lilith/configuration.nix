@@ -1,13 +1,11 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
-
 {
   inputs,
   config,
   pkgs,
   ...
-}:
-{
+}: {
   # You can import other NixOS modules here
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1
@@ -29,12 +27,12 @@
   };
 
   services.dbus = {
-    packages = with pkgs; [ blueman ];
+    packages = with pkgs; [blueman];
   };
 
   boot.plymouth = {
     enable = true;
-    themePackages = [ (pkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
+    themePackages = [(pkgs.catppuccin-plymouth.override {variant = "mocha";})];
     theme = "catppuccin-mocha";
   };
 
@@ -51,6 +49,30 @@
   #   # make sure to also set the portal package, so that they are in sync
   #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   # };
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-kde
+      xdg-desktop-portal-gtk
+    ];
+    wlr.enable = true;
+  };
+
+  system.activationScripts.xdg-portals.text = ''
+    #!/usr/bin/env bash
+    set -eu
+
+    echo "Setting up xdg-desktop-portal-kde and xdg-desktop-portal for zoom-us"
+
+    mkdir -p /usr/share/xdg-desktop-portal
+    rm -f /usr/share/xdg-desktop-portal/portals
+    ln -s  /run/current-system/sw/share/xdg-desktop-portal/portals /usr/share/xdg-desktop-portal/portals
+
+    mkdir -p /usr/libexec
+    rm -f /usr/libexec/xdg-desktop-portal-hyprland /usr/libexec/xdg-desktop-portal-gtk /usr/libexec/xdg-desktop-portal
+    ln -s  ${pkgs.xdg-desktop-portal-gtk}/libexec/xdg-desktop-portal-gtk /usr/libexec/xdg-desktop-portal-gtk
+    ln -s  ${pkgs.xdg-desktop-portal}/libexec/xdg-desktop-portal /usr/libexec/xdg-desktop-portal
+  '';
 
   # file manager
   programs.thunar = {
@@ -94,8 +116,8 @@
 
     # Theme
     (catppuccin-kde.override {
-      flavour = [ "mocha" ];
-      accents = [ "lavender" ];
+      flavour = ["mocha"];
+      accents = ["lavender"];
     })
 
     # Cursor
@@ -120,7 +142,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
   # enable audio
   services.pipewire = {
@@ -182,16 +204,25 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    packages = map (f: f.package) (builtins.attrValues pkgs.rice.font);
+    packages =
+      (map (f: f.package) (builtins.attrValues pkgs.rice.font))
+      ++ [
+        (pkgs.google-fonts.override {
+          fonts = [
+            "Expletus Sans"
+          ];
+        })
+      ];
   };
 
   nixpkgs.config.allowUnfree = true;
+  nix.settings.download-buffer-size = 524288000;
 
   security = {
     rtkit.enable = true;
 
     pam.services = {
-      hyprlock = { };
+      hyprlock = {};
     };
   };
 
@@ -248,15 +279,15 @@
       # package = config.boot.kernelPackages.nvidiaPackages.beta;
       # Minimum of 570 required to work with kernel 6.13
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "570.86.16"; # use new 570 drivers
-        sha256_64bit = "sha256-RWPqS7ZUJH9JEAWlfHLGdqrNlavhaR1xMyzs8lJhy9U=";
+        version = "570.133.07"; # use new 570 drivers
+        sha256_64bit = "sha256-LUPmTFgb5e9VTemIixqpADfvbUX1QoTT2dztwI3E3CY=";
         openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";
         settingsSha256 = "sha256-9rtqh64TyhDF5fFAYiWl3oDHzKJqyOW3abpcf2iNRT8=";
         usePersistenced = false;
       };
       open = false;
-  		powerManagement.enable = true;
-  		powerManagement.finegrained = false;
+      powerManagement.enable = true;
+      powerManagement.finegrained = false;
       prime = {
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:1:0:0";
@@ -265,7 +296,7 @@
       };
     };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   services.gnome.at-spi2-core.enable = true;
 

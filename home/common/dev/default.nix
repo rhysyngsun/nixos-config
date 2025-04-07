@@ -1,13 +1,10 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./alacritty
     ./git
     ./godot
-    # ./nixvim
-   ./nvf
+    ./nvf
     # ./nodejs
-    ./python
     ./tmux.nix
     ./wezterm
     ./yazi.nix
@@ -47,7 +44,7 @@
       # concourse cli
       fly
     ];
-    sessionPath = [ "$HOME/bin" ];
+    sessionPath = ["$HOME/bin"];
     shellAliases = {
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -121,7 +118,7 @@
         daemon_key = null;
         shared_secret_path = null;
       };
-      profiles = { };
+      profiles = {};
     };
   };
 

@@ -1,106 +1,101 @@
 {
-
   description = "Rhysyngsun's nixos configs";
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      treefmt-nix,
-      home-manager,
-      ...
-    }@inputs:
-    let
-      inherit (self) outputs;
+  outputs = {
+    self,
+    nixpkgs,
+    treefmt-nix,
+    home-manager,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
 
-      nix-defaults = {
-        nix = import ./nix-settings.nix {
-          inherit inputs;
-          inherit (nixpkgs) lib;
-        };
-        nixpkgs = {
-          overlays = [
-            # overlays from inputs
-            inputs.nix-rice.overlays.default
-            # inputs.copier.overlays.default
-            # hyprland 
-            inputs.hyprcursor.overlays.default
-            inputs.nur.overlays.default
-            # from flake outputs
-            outputs.overlays.additions
-            outputs.overlays.modifications
-            outputs.overlays.unstable-packages
-          ];
-          config = {
-            allowUnfree = true;
-            permittedInsecurePackages = [
-              "electron-25.9.0"
-              "python3.12-youtube-dl-2021.12.17"
-            ];
-          };
-        };
+    nix-defaults = {
+      nix = import ./nix-settings.nix {
+        inherit inputs;
+        inherit (nixpkgs) lib;
       };
-
-      forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
-      forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
-
-      # Eval the treefmt modules from ./treefmt.nix
-      treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-    in
-    {
-      nixosModules = import ./modules/nixos;
-      homeManagerModules = import ./modules/home-manager;
-
-      # Devshell for bootstrapping
-      # Acessible through 'nix develop'
-      devShells = forEachPkgs (pkgs: import ./shell.nix { inherit pkgs; });
-
-      formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-
-      checks = forEachPkgs (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
-      });
-
-      # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays { inherit inputs; };
-
-      # NixOS configuration entrypoint
-      # Available through 'nixos-rebuild --flake .#your-hostname'
-      nixosConfigurations = {
-        lilith = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-          };
-          modules = [
-            inputs.sops-nix.nixosModules.sops
-            nix-defaults
-
-            ./hosts/lilith/configuration.nix
+      nixpkgs = {
+        overlays = [
+          # overlays from inputs
+          inputs.nix-rice.overlays.default
+          # inputs.copier.overlays.default
+          # hyprland
+          inputs.hyprcursor.overlays.default
+          inputs.nur.overlays.default
+          # from flake outputs
+          outputs.overlays.additions
+          outputs.overlays.modifications
+          outputs.overlays.unstable-packages
+        ];
+        config = {
+          allowUnfree = true;
+          permittedInsecurePackages = [
+            "electron-25.9.0"
+            "python3.12-youtube-dl-2021.12.17"
           ];
         };
-        morrigan = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-          };
-          modules = [
-            inputs.sops-nix.nixosModules.sops
-            nix-defaults
-
-            ./hosts/morrigan/configuration.nix
-          ];
-        };
-      };
-
-      homeConfigurations = {
-        nathan =
-          home-manager.lib.homeManagerConfiguration        (import ./home/nathan { inherit inputs outputs nix-defaults; });
       };
     };
 
-  nixConfig = {
+    forEachSystem = nixpkgs.lib.genAttrs ["x86_64-linux"];
+    forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
 
+    # Eval the treefmt modules from ./treefmt.nix
+    treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+  in {
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
+
+    # Devshell for bootstrapping
+    # Acessible through 'nix develop'
+    devShells = forEachPkgs (pkgs: import ./shell.nix {inherit pkgs;});
+
+    formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+
+    checks = forEachPkgs (pkgs: {
+      formatting = treefmtEval.${pkgs.system}.config.build.check self;
+    });
+
+    # Your custom packages and modifications, exported as overlays
+    overlays = import ./overlays {inherit inputs;};
+
+    # NixOS configuration entrypoint
+    # Available through 'nixos-rebuild --flake .#your-hostname'
+    nixosConfigurations = {
+      lilith = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          nix-defaults
+
+          ./hosts/lilith/configuration.nix
+        ];
+      };
+      morrigan = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          nix-defaults
+
+          ./hosts/morrigan/configuration.nix
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      nathan =
+        home-manager.lib.homeManagerConfiguration (import ./home/nathan {inherit inputs outputs nix-defaults;});
+    };
+  };
+
+  nixConfig = {
     # add binary caches
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
