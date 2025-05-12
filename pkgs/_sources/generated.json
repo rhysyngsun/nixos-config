@@ -1,0 +1,196 @@
+{
+    "catppuccin-btop": {
+        "cargoLock": null,
+        "date": "2024-09-23",
+        "extract": null,
+        "name": "catppuccin-btop",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "catppuccin",
+            "repo": "btop",
+            "rev": "f437574b600f1c6d932627050b15ff5153b58fa3",
+            "sha256": "sha256-mEGZwScVPWGu+Vbtddc/sJ+mNdD2kKienGZVUcTSl+c=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "f437574b600f1c6d932627050b15ff5153b58fa3"
+    },
+    "catppuccin-godot": {
+        "cargoLock": null,
+        "date": "2023-03-14",
+        "extract": null,
+        "name": "catppuccin-godot",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "boranroni",
+            "repo": "godot-engine",
+            "rev": "62f50af79b40f36e00b27ce9d9baaccdf220d8e6",
+            "sha256": "sha256-ZnF7QefFV6mtpuVpMKNgNG0AyiUbk5439ZBvibJmQas=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "62f50af79b40f36e00b27ce9d9baaccdf220d8e6"
+    },
+    "catppuccin-rofi": {
+        "cargoLock": null,
+        "date": "2025-07-19",
+        "extract": null,
+        "name": "catppuccin-rofi",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "catppuccin",
+            "repo": "rofi",
+            "rev": "71fb15577ccb091df2f4fc1f65710edbc61b5a53",
+            "sha256": "sha256-81eeFjwM/haPjIEWkZPp1JSDwhWbWDAuKtWiCg7P9Q0=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "71fb15577ccb091df2f4fc1f65710edbc61b5a53"
+    },
+    "headlamp": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "headlamp",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-oXH0Jcc7aLehE3CIp4UWhurTskrbFM5gd7A04cHMEQw=",
+            "type": "url",
+            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.43.0/Headlamp-0.43.0-linux-x64.AppImage"
+        },
+        "version": "0.43.0"
+    },
+    "nvim-treesitter": {
+        "cargoLock": null,
+        "date": "2026-04-03",
+        "extract": null,
+        "name": "nvim-treesitter",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+            "sha256": "sha256-PQR6tFt4lCrAZNQG7BLMD1IiCKja9wDS1S4laGJf/HE=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/nvim-treesitter/nvim-treesitter"
+        },
+        "version": "4916d6592ede8c07973490d9322f187e07dfefac"
+    },
+    "odl-agent-kit": {
+        "cargoLock": null,
+        "date": "2026-06-25",
+        "extract": null,
+        "name": "odl-agent-kit",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "a67c634487f0f65039e8e6859b104f7faf628763",
+            "sha256": "sha256-ETOhV3+gNIV5hv2l/dUgwBRuZuQpEJxl7cTU+pkj9JM=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/mitodl/agent-kit.git"
+        },
+        "version": "a67c634487f0f65039e8e6859b104f7faf628763"
+    },
+    "pkl-lsp": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "pkl-lsp",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-ToRFBTfBteDt329k/JOub4hP9F7j7UKWtcBh56fH804=",
+            "type": "url",
+            "url": "https://github.com/apple/pkl-lsp/releases/download/0.7.1/pkl-lsp-0.7.1.jar"
+        },
+        "version": "0.7.1"
+    },
+    "pkl-neovim": {
+        "cargoLock": null,
+        "date": "2026-06-11",
+        "extract": null,
+        "name": "pkl-neovim",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "apple",
+            "repo": "pkl-neovim",
+            "rev": "5b1285db16a83c10dacc53dd4701825c0924ea8f",
+            "sha256": "sha256-rOOmHGt52h4A7XmttKN/x5dCR8JXNW8GRvMdRW1n+nY=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "5b1285db16a83c10dacc53dd4701825c0924ea8f"
+    },
+    "tree-sitter-pkl": {
+        "cargoLock": null,
+        "date": "2026-06-11",
+        "extract": null,
+        "name": "tree-sitter-pkl",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "90b64cb6e563bcc96552490ccd40667418c65cdc",
+            "sha256": "sha256-sunORGHH/yzrqKZcByU6hs6PzsLr2rdi3ph4FBceyLk=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/apple/tree-sitter-pkl"
+        },
+        "version": "90b64cb6e563bcc96552490ccd40667418c65cdc"
+    },
+    "whichpy-nvim": {
+        "cargoLock": null,
+        "date": "2026-05-09",
+        "extract": null,
+        "name": "whichpy-nvim",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "96bc91d36d52fd64f1e5ab358c1b85f313c11628",
+            "sha256": "sha256-a4TqZ7wW5quTvZ1TgTdpzm4K2hM6+fsvLZgVzl8USfU=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/neolooong/whichpy.nvim"
+        },
+        "version": "96bc91d36d52fd64f1e5ab358c1b85f313c11628"
+    }
+}

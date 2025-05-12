@@ -11,9 +11,12 @@
     NIXPKGS_ALLOW_UNFREE = 1;
     nativeBuildInputs = with pkgs; [
       nix
+      nix-tree
       home-manager
       git
       sops
+      age
+      ragenix
       nvfetcher
     ];
   };
