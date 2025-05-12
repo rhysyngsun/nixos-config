@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.nvf.settings.vim = {
     lazy.plugins."nvim-spectre" = {
       package = pkgs.vimPlugins.nvim-spectre;
@@ -11,22 +12,34 @@
       };
       keys = [
         {
-          mode = ["n" "v"];
+          mode = [
+            "n"
+            "v"
+          ];
           action = "<cmd>lua require('spectre').toggle()<cr>";
           key = "<leader>fss";
         }
         {
-          mode = ["n" "v"];
+          mode = [
+            "n"
+            "v"
+          ];
           action = "<cmd>lua require('spectre').open_visual({select_word=true})<cr>";
           key = "<leader>fsw";
         }
         {
-          mode = ["n" "v"];
+          mode = [
+            "n"
+            "v"
+          ];
           action = "<cmd>lua require('spectre').open_file_search({select_word=true})<cr>";
           key = "<leader>fsf";
         }
       ];
     };
-    extraPackages = with pkgs; [ripgrep gnused];
+    extraPackages = with pkgs; [
+      ripgrep
+      gnused
+    ];
   };
 }

@@ -10,3 +10,8 @@
 127.0.0.1   keycloak.odl.local
 127.0.0.1   ue.odl.local
 127.0.0.1   mail.odl.local
+127.0.0.1   openedx.odl.local
+127.0.0.1   studio.openedx.odl.local
+127.0.0.1   preview.openedx.odl.local
+127.0.0.1   meilisearch.openedx.odl.local
+127.0.0.1   apps.openedx.odl.local

@@ -1,4 +1,7 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ godot_4 godot-voxel ];
+  home.packages = with pkgs; [
+    godot_4
+    godot-voxel
+  ];
 }

@@ -38,7 +38,7 @@
 
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [stdenv.cc.cc];
+    libraries = with pkgs; [ stdenv.cc.cc ];
   };
 
   # programs.hyprland = {

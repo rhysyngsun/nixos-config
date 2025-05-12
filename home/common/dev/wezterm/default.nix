@@ -12,7 +12,7 @@ in
     recursive = true;
   };
 
-  # copied from home-manager's 
+  # copied from home-manager's
   programs.zsh.initExtra = ''
     source "${wezterm}/etc/profile.d/wezterm.sh"
   '';

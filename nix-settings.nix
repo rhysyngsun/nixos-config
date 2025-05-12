@@ -1,5 +1,8 @@
-{ inputs, lib, ... }:
-
+{
+  inputs,
+  lib,
+  ...
+}:
 let
   # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake
@@ -37,6 +40,7 @@ in
       "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
       "copier.cachix.org-1:sVkdQyyNXrgc53qXPCH9zuS91zpt5eBYcg7JQSmTBG4="
       "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+      "nixpkgs-python.cachix.org-1:hxjI7pFxTyuTHn2NkvWCrAUcNZLNS3ZAvfYNuYifcEU="
     ];
     substituters = [
       "https://cache.nixos.org"
@@ -46,6 +50,7 @@ in
       "https://anyrun.cachix.org"
       "https://copier.cachix.org"
       "https://wezterm.cachix.org"
+      "https://nixpkgs-python.cachix.org"
     ];
   };
 

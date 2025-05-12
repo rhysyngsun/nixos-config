@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   programs.nvf.settings.vim = {
     languages = {
@@ -13,7 +14,10 @@
       lua.enable = true;
       nix.enable = true;
       markdown.enable = true;
-      python.enable = true;
+      python = {
+        enable = true;
+        lsp.package = pkgs.unstable.basedpyright;
+      };
       rust.enable = true;
       sql.enable = true;
       ts.enable = true;
@@ -41,5 +45,24 @@
         lua = true;
       }
     ];
+
+    lazy.plugins.nvim-whichpy = {
+      package = pkgs.vimUtils.buildVimPlugin {
+        pname = "nvim-whichpy";
+        version = "latest";
+        src = pkgs.fetchFromGitHub {
+          owner = "neolooong";
+          repo = "whichpy.nvim";
+          rev = "8bc5ca0d22d0f6686425c905850cf6ddeda51445";
+          hash = "sha256-Hm72XJN45o8sqGufLp/18tusfcpsumnOvQc1gsZZerQ=";
+        };
+      };
+
+      setupModule = "whichpy";
+
+      ft = [ "python" ];
+
+      cmd = [ "WhichPy" ];
+    };
   };
 }

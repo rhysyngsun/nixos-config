@@ -1,99 +1,103 @@
 {
   description = "Rhysyngsun's nixos configs";
 
-  outputs = {
-    self,
-    nixpkgs,
-    treefmt-nix,
-    home-manager,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      inherit (self) outputs;
 
-    nix-defaults = {
-      nix = import ./nix-settings.nix {
-        inherit inputs;
-        inherit (nixpkgs) lib;
+      nix-defaults = {
+        nix = import ./nix-settings.nix {
+          inherit inputs;
+          inherit (nixpkgs) lib;
+        };
+        nixpkgs = {
+          overlays = [
+            # overlays from inputs
+            inputs.nix-rice.overlays.default
+            # inputs.copier.overlays.default
+            # hyprland
+            inputs.hyprcursor.overlays.default
+            inputs.nur.overlays.default
+            # from flake outputs
+            outputs.overlays.additions
+            outputs.overlays.modifications
+            outputs.overlays.unstable-packages
+          ];
+          config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              "electron-25.9.0"
+              "python3.12-youtube-dl-2021.12.17"
+            ];
+          };
+        };
       };
-      nixpkgs = {
-        overlays = [
-          # overlays from inputs
-          inputs.nix-rice.overlays.default
-          # inputs.copier.overlays.default
-          # hyprland
-          inputs.hyprcursor.overlays.default
-          inputs.nur.overlays.default
-          # from flake outputs
-          outputs.overlays.additions
-          outputs.overlays.modifications
-          outputs.overlays.unstable-packages
-        ];
-        config = {
-          allowUnfree = true;
-          permittedInsecurePackages = [
-            "electron-25.9.0"
-            "python3.12-youtube-dl-2021.12.17"
+
+      forEachSystem = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
+      forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
+
+      # Eval the treefmt modules from ./treefmt.nix
+      treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+    in
+    {
+      nixosModules = import ./modules/nixos;
+      homeManagerModules = import ./modules/home-manager;
+
+      # Devshell for bootstrapping
+      # Acessible through 'nix develop'
+      devShells = forEachPkgs (pkgs: import ./shell.nix { inherit pkgs; });
+
+      formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+
+      checks = forEachPkgs (pkgs: {
+        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      });
+
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays { inherit inputs; };
+
+      # NixOS configuration entrypoint
+      # Available through 'nixos-rebuild --flake .#your-hostname'
+      nixosConfigurations = {
+        lilith = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            inputs.sops-nix.nixosModules.sops
+            nix-defaults
+
+            ./hosts/lilith/configuration.nix
+          ];
+        };
+        morrigan = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            inputs.sops-nix.nixosModules.sops
+            nix-defaults
+
+            ./hosts/morrigan/configuration.nix
           ];
         };
       };
-    };
 
-    forEachSystem = nixpkgs.lib.genAttrs ["x86_64-linux"];
-    forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
-
-    # Eval the treefmt modules from ./treefmt.nix
-    treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-  in {
-    nixosModules = import ./modules/nixos;
-    homeManagerModules = import ./modules/home-manager;
-
-    # Devshell for bootstrapping
-    # Acessible through 'nix develop'
-    devShells = forEachPkgs (pkgs: import ./shell.nix {inherit pkgs;});
-
-    formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-
-    checks = forEachPkgs (pkgs: {
-      formatting = treefmtEval.${pkgs.system}.config.build.check self;
-    });
-
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      lilith = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          nix-defaults
-
-          ./hosts/lilith/configuration.nix
-        ];
-      };
-      morrigan = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          nix-defaults
-
-          ./hosts/morrigan/configuration.nix
-        ];
+      homeConfigurations = {
+        nathan = home-manager.lib.homeManagerConfiguration (
+          import ./home/nathan { inherit inputs outputs nix-defaults; }
+        );
       };
     };
-
-    homeConfigurations = {
-      nathan =
-        home-manager.lib.homeManagerConfiguration (import ./home/nathan {inherit inputs outputs nix-defaults;});
-    };
-  };
 
   nixConfig = {
     # add binary caches
@@ -105,6 +109,7 @@
       "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
       "copier.cachix.org-1:sVkdQyyNXrgc53qXPCH9zuS91zpt5eBYcg7JQSmTBG4="
       "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
+      "nixpkgs-python.cachix.org-1:hxjI7pFxTyuTHn2NkvWCrAUcNZLNS3ZAvfYNuYifcEU="
     ];
     substituters = [
       "https://cache.nixos.org"
@@ -114,6 +119,7 @@
       "https://anyrun.cachix.org"
       "https://copier.cachix.org"
       "https://wezterm.cachix.org"
+      "https://nixpkgs-python.cachix.org"
     ];
   };
 
@@ -126,7 +132,6 @@
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-24.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
 
@@ -210,8 +215,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim.url = "github:nix-community/nixvim";
-
-    nvf.url = "github:/notashelf/nvf";
+    nvf.url = "github:notashelf/nvf";
+    nvf.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 }

@@ -1,17 +1,47 @@
+{ lib, ... }:
+let
+  inherit (lib.generators) mkLuaInline;
+in
 {
-  programs.nvf.settings.vim.autocomplete.nvim-cmp = {
-    enable = true;
-    setupOpts = {
-      completion = {
-        autocomplete = [ "TextChanged" ];
-        keywordLength = 1;
+  programs.nvf.settings.vim.autocomplete = {
+    enableSharedCmpSources = true;
+    blink-cmp = {
+      enable = true;
+      friendly-snippets.enable = true;
+      setupOpts = {
+        keymap.preset = "default";
+        completion = {
+          menu = {
+            auto_show = true;
+          };
+        };
+        completion = {
+          menu = {
+            border = "single";
+          };
+          documentation = {
+            window = {
+              border = "single";
+            };
+          };
+        };
+        signature = {
+          window = {
+            border = "single";
+          };
+        };
+        sources = {
+          default = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+          ];
+          providers.lsp = {
+            fallbacks = [ ];
+          };
+        };
       };
-    };
-    sources = {
-      "buffer" = "[Buffer]";
-      "path" = "[Path]";
-      "nvim_lsp" = "[LSP]";
-      "nvim-cmp" = null;
     };
   };
 }

@@ -3,7 +3,8 @@
   pkgs,
   ...
 }:
-with lib; {
+with lib;
+{
   imports = [
     # ./bin.nix
     # ./ags
@@ -53,7 +54,7 @@ with lib; {
 
       keybase-gui
 
-      unstable.gimp
+      unstable.gimp3-with-plugins
       loupe
       inkscape-with-extensions
       shotwell
@@ -77,15 +78,17 @@ with lib; {
       obsidian
     ];
 
-    sessionVariables = let
-      editor = "nvim";
-    in {
-      EDITOR = editor;
-      VISUAL = editor;
-      GIT_EDITOR = editor;
+    sessionVariables =
+      let
+        editor = "nvim";
+      in
+      {
+        EDITOR = editor;
+        VISUAL = editor;
+        GIT_EDITOR = editor;
 
-      # SHELL = "${pkgs.zsh}/bin/zsh";
-    };
+        # SHELL = "${pkgs.zsh}/bin/zsh";
+      };
   };
 
   programs = {
@@ -202,7 +205,7 @@ with lib; {
   systemd.user.targets.tray = {
     Unit = {
       Description = "Home Manager System Tray";
-      Requires = ["graphical-session-pre.target"];
+      Requires = [ "graphical-session-pre.target" ];
     };
   };
   # systemd.user.services.polkit-gnome-authentication-agent-1 = {

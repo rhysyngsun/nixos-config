@@ -1,4 +1,4 @@
-{ 
+{
   alsa-lib,
   autoPatchelfHook,
   buildPackages,
@@ -47,58 +47,59 @@
   withWayland ? true,
   withX11 ? true,
 }:
-let 
+let
   pname = "godot-voxel";
   version = "1.3.0";
-  libs = 
-      [
-        alsa-lib
-        libGL
-        vulkan-loader
-      ]
-      ++ lib.optionals withX11 [
-        libX11
-        libXcursor
-        libXext
-        libXfixes
-        libXi
-        libXinerama
-        libxkbcommon
-        libXrandr
-        libXrender
-      ]
-      ++ lib.optionals withWayland [
-        libdecor
-        wayland
-      ]
-      ++ lib.optionals withDbus [
-        dbus
-        dbus.lib
-      ]
-      ++ lib.optionals withFontconfig [
-        fontconfig
-        fontconfig.lib
-      ]
-      ++ lib.optionals withPulseaudio [ libpulseaudio ]
-      ++ lib.optionals withSpeechd [ speechd-minimal ]
-      ++ lib.optionals withUdev [ udev ];
-in stdenv.mkDerivation {
-    inherit pname version;
+  libs =
+    [
+      alsa-lib
+      libGL
+      vulkan-loader
+    ]
+    ++ lib.optionals withX11 [
+      libX11
+      libXcursor
+      libXext
+      libXfixes
+      libXi
+      libXinerama
+      libxkbcommon
+      libXrandr
+      libXrender
+    ]
+    ++ lib.optionals withWayland [
+      libdecor
+      wayland
+    ]
+    ++ lib.optionals withDbus [
+      dbus
+      dbus.lib
+    ]
+    ++ lib.optionals withFontconfig [
+      fontconfig
+      fontconfig.lib
+    ]
+    ++ lib.optionals withPulseaudio [ libpulseaudio ]
+    ++ lib.optionals withSpeechd [ speechd-minimal ]
+    ++ lib.optionals withUdev [ udev ];
+in
+stdenv.mkDerivation {
+  inherit pname version;
 
-    src = fetchzip {
-      url = "https://github.com/Zylann/godot_voxel/releases/download/v${version}/godot.linuxbsd.editor.x86_64.zip";
-      hash = "sha256-4cfuBrrWE0RAUBiwHIHww6GA8OL3Bqqb6+cBTPFG6G0=";
-    };
+  src = fetchzip {
+    url = "https://github.com/Zylann/godot_voxel/releases/download/v${version}/godot.linuxbsd.editor.x86_64.zip";
+    hash = "sha256-4cfuBrrWE0RAUBiwHIHww6GA8OL3Bqqb6+cBTPFG6G0=";
+  };
 
-    nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
 
-    installPhase = ''
-      install -m755 -D godot.linuxbsd.editor.x86_64 $out/bin/godot-voxel
-    '';
+  installPhase = ''
+    install -m755 -D godot.linuxbsd.editor.x86_64 $out/bin/godot-voxel
+  '';
 
-    postFixup = ''
-      wrapProgram $out/bin/godot-voxel \
-        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath libs}
-    '';
-    
-  }
+  postFixup = ''
+    wrapProgram $out/bin/godot-voxel \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath libs}
+  '';
+
+}

@@ -1,7 +1,8 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   imports = [
-    ./alacritty
-    ./git
+    ./aliases.nix
+    ./git.nix
     ./godot
     ./nvf
     # ./nodejs
@@ -14,8 +15,6 @@
   home = {
     packages = with pkgs; [
       unstable.heroku
-      http-prompt
-      httpie
       xh
       just
       usql
@@ -27,15 +26,18 @@
       libtree
       squirrel-sql
 
-      eclipses.eclipse-java
-      bytecode-viewer
+      # http request cli's
+      http-prompt
+      httpie
+      unstable.posting
 
       # jq/xq/yq all-in-one
       yq-go
       jq
 
       sphinx
-      # copier
+
+      cachix
 
       # virtualization
       lazydocker
@@ -44,7 +46,7 @@
       # concourse cli
       fly
     ];
-    sessionPath = ["$HOME/bin"];
+    sessionPath = [ "$HOME/bin" ];
     shellAliases = {
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -118,7 +120,7 @@
         daemon_key = null;
         shared_secret_path = null;
       };
-      profiles = {};
+      profiles = { };
     };
   };
 

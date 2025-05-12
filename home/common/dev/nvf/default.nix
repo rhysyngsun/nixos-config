@@ -1,13 +1,21 @@
-{pkgs, lib, inputs, ... }: let
-  inherit (inputs.nvf.lib.nvim.binds) mkKeymap;
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
   inherit (lib.generators) mkLuaInline;
-in {
+in
+{
   imports = [
+    ./blender.nix
     ./completion.nix
     ./folding.nix
     ./git.nix
     ./languages.nix
+    ./oil.nix
     ./spectre.nix
+    ./telescope.nix
     ./undotree.nix
   ];
 
@@ -18,10 +26,17 @@ in {
         viAlias = true;
         vimAlias = true;
 
+        package = pkgs.unstable.neovim-unwrapped;
+
         globals = {
           mapleader = ",";
         };
 
+        autopairs.nvim-autopairs.enable = true;
+
+        diagnostics = {
+          # enable = true;
+        };
         extraPackages = with pkgs; [
           # neovim autodetects wl-copy
           wl-clipboard
@@ -29,22 +44,21 @@ in {
 
         lsp = {
           enable = true;
+          trouble.enable = true;
         };
 
-        lazy.plugins = {
-          "oil.nvim" = {
-            package = pkgs.vimPlugins.oil-nvim;
-            setupModule = "oil";
-            lazy = false;
-          };
-        };
-
-        telescope = {
-          enable = true;
-        };
-        lazy.plugins.telescope.keys = [
-          (mkKeymap "n" "<leader>fG" "<cmd>Telescope grep_string<CR>" {})
-        ];
+        # luaConfigPre =
+        #   /*
+        #   lua
+        #   */
+        #   ''
+        #     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        #       group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+        #       callback = function ()
+        #         vim.diagnostic.open_float(nil, {focus=false})
+        #       end
+        #     })
+        #   '';
 
         theme = {
           enable = true;
@@ -56,24 +70,24 @@ in {
           colorizer.enable = true;
         };
 
+        undoFile.enable = true;
+
         visuals = {
           nvim-web-devicons.enable = true;
           tiny-devicons-auto-colors = {
             enable = true;
             setupOpts = {
-              colors = mkLuaInline ''
-                require("catppuccin.palettes").get_palette("mocha")
-              '';
+              colors =
+                mkLuaInline
+                  # lua
+                  ''
+                    require("catppuccin.palettes").get_palette("mocha")
+                  '';
             };
           };
         };
 
         keymaps = [
-          {
-            mode = "n";
-            key = "<leader>pv";
-            action = "<CMD>Oil<CR>";
-          }
           {
             mode = "n";
             key = "<C-u>";
@@ -101,7 +115,10 @@ in {
           }
           # deletes without yanking
           {
-            mode = ["n" "v"];
+            mode = [
+              "n"
+              "v"
+            ];
             key = "<leader>d";
             action = "\"_d";
           }
@@ -113,19 +130,20 @@ in {
           }
           # splits
           {
-            mode = ["n" "v"];
+            mode = [
+              "n"
+              "v"
+            ];
             key = "<leader>|";
             action = "<CMD>vsplit<CR>";
           }
           {
-            mode = ["n" "v"];
+            mode = [
+              "n"
+              "v"
+            ];
             key = "<leader>-";
             action = "<CMD>split<CR>";
-          }
-          {
-            mode = ["n" "v"];
-            key = "ga."; 
-            action = "<CMD>TextCaseOpenTelescope<CR>";
           }
         ];
 
@@ -135,6 +153,7 @@ in {
           tabstop = 2;
           shiftwidth = 2;
           expandtab = true;
+          updatetime = 250;
         };
       };
     };
