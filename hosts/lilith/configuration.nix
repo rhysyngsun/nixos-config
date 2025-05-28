@@ -5,8 +5,7 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   # You can import other NixOS modules here
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1
@@ -28,12 +27,12 @@
   };
 
   services.dbus = {
-    packages = with pkgs; [ blueman ];
+    packages = with pkgs; [blueman];
   };
 
   boot.plymouth = {
     enable = true;
-    themePackages = [ (pkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
+    themePackages = [(pkgs.catppuccin-plymouth.override {variant = "mocha";})];
     theme = "catppuccin-mocha";
   };
 
@@ -41,19 +40,19 @@
 
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [ stdenv.cc.cc ];
+    libraries = with pkgs; [stdenv.cc.cc];
   };
 
-  # programs.hyprland = {
-  #   enable = true;
-  #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-  #   # make sure to also set the portal package, so that they are in sync
-  #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  # };
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-kde
+      kdePackages.xdg-desktop-portal-kde
       xdg-desktop-portal-gtk
     ];
     wlr.enable = true;
@@ -101,8 +100,8 @@
 
     # Theme
     (catppuccin-kde.override {
-      flavour = [ "mocha" ];
-      accents = [ "lavender" ];
+      flavour = ["mocha"];
+      accents = ["lavender"];
     })
 
     # Cursor
@@ -127,7 +126,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
   # enable audio
   services.pipewire = {
@@ -189,13 +188,19 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    packages = (map (f: f.package) (builtins.attrValues pkgs.rice.font)) ++ [
-      (pkgs.google-fonts.override {
-        fonts = [
-          "Expletus Sans"
-        ];
-      })
-    ];
+    packages =
+      [
+        (pkgs.google-fonts.override {
+          fonts = [
+            "Expletus Sans"
+          ];
+        })
+      ]
+      ++ (with pkgs.nerd-fonts; [
+        fira-code
+        fira-mono
+        iosevka
+      ]);
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -205,7 +210,7 @@
     rtkit.enable = true;
 
     pam.services = {
-      hyprlock = { };
+      hyprlock = {};
     };
   };
 
@@ -239,7 +244,7 @@
   services.avahi.openFirewall = true;
 
   # Enable sound
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # timezone
   services.localtimed.enable = true;
@@ -279,7 +284,7 @@
       };
     };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   services.gnome.at-spi2-core.enable = true;
 

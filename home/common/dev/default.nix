@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./aliases.nix
     ./git.nix
@@ -46,7 +45,7 @@
       # concourse cli
       fly
     ];
-    sessionPath = [ "$HOME/bin" ];
+    sessionPath = ["$HOME/bin"];
     shellAliases = {
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -56,33 +55,37 @@
     };
   };
 
-  programs.vscode = {
-    enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      redhat.java
-      vscjava.vscode-java-debug
-      vscjava.vscode-java-dependency
-      vscjava.vscode-java-test
-      vscjava.vscode-maven
-    ];
-
-    userSettings = {
-      "java.configuration.runtimes" = [
-        {
-          "default" = true;
-          "name" = "JavaSE-17";
-          "path" = "${pkgs.openjdk}/lib/openjdk";
-        }
-      ];
-      "java.jdt.ls.java.home" = "${pkgs.openjdk}/lib/openjdk";
-      "files.exclude" = {
-        "**/.classpath" = true;
-        "**/.project" = true;
-        "**/.settings" = true;
-        "**/.factorypath" = true;
-      };
-    };
+  systemd.user.sessionVariables = {
+    "MANPAGERS" = "nvim +Man!";
   };
+
+  # programs.vscode = {
+  #   enable = true;
+  #   extensions = with pkgs.vscode-extensions; [
+  #     redhat.java
+  #     vscjava.vscode-java-debug
+  #     vscjava.vscode-java-dependency
+  #     vscjava.vscode-java-test
+  #     vscjava.vscode-maven
+  #   ];
+  #
+  #   userSettings = {
+  #     "java.configuration.runtimes" = [
+  #       {
+  #         "default" = true;
+  #         "name" = "JavaSE-17";
+  #         "path" = "${pkgs.openjdk}/lib/openjdk";
+  #       }
+  #     ];
+  #     "java.jdt.ls.java.home" = "${pkgs.openjdk}/lib/openjdk";
+  #     "files.exclude" = {
+  #       "**/.classpath" = true;
+  #       "**/.project" = true;
+  #       "**/.settings" = true;
+  #       "**/.factorypath" = true;
+  #     };
+  #   };
+  # };
 
   services.pueue = {
     enable = true;
@@ -120,7 +123,7 @@
         daemon_key = null;
         shared_secret_path = null;
       };
-      profiles = { };
+      profiles = {};
     };
   };
 

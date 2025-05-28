@@ -1,8 +1,7 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     spotify
-    twitch-dl
+    # twitch-dl
 
     # audio production
     audacity

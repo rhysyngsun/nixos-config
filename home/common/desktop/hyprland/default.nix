@@ -5,16 +5,14 @@
   inputs,
   ...
 }:
-with lib;
-let
+with lib; let
   cmds = {
     hyprlock = lib.getExe config.programs.hyprlock.package;
     swayr = "${pkgs.swayr}/bin/swayr";
     terminal = "${config.programs.wezterm.package}/bin/wezterm start --always-new-process";
   };
-in
-{
-  imports = [ ./services.nix ];
+in {
+  imports = [./services.nix];
 
   home.packages = with pkgs; [
     grim
@@ -27,11 +25,11 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 
     plugins = [
-      # inputs.hy3.packages.${pkgs.system.hy3
-      # inputs.hyprspace.packages.${pkgs.system}.Hyprspace
     ];
 
     extraConfig = ''
@@ -132,15 +130,17 @@ in
 
       ${builtins.concatStringsSep "\n" (
         builtins.genList (
-          x:
-          let
+          x: let
             ws = x + 1;
-            monitor = if (lib.trivial.mod ws 2) == 1 then "eDP-1" else "HDMI-A-1";
-          in
-          ''
+            monitor =
+              if (lib.trivial.mod ws 2) == 1
+              then "eDP-1"
+              else "HDMI-A-1";
+          in ''
             workspace = ${toString ws}, workspace, monitor:${monitor}
           ''
-        ) 10
+        )
+        10
       )}
 
       windowrulev2 = tile, class:^(Spotify)$
@@ -220,19 +220,17 @@ in
 
       ${builtins.concatStringsSep "\n" (
         builtins.genList (
-          x:
-          let
-            ws =
-              let
-                c = (x + 1) / 10;
-              in
+          x: let
+            ws = let
+              c = (x + 1) / 10;
+            in
               builtins.toString (x + 1 - (c * 10));
-          in
-          ''
+          in ''
             bind = $mod, ${ws}, workspace, ${toString (x + 1)}
             bind = $mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}
           ''
-        ) 10
+        )
+        10
       )}
 
       bindm=$mod,mouse:272,movewindow

@@ -7,9 +7,7 @@
   pkgs,
   modulesPath,
   ...
-}:
-
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -22,8 +20,8 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.kernelModules = ["kvm-intel"];
+  boot.extraModulePackages = [];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Critical kernel parameters for Nvidia KMS and video memory preservation
@@ -31,6 +29,10 @@
     "nvidia-drm.modeset=1" # Allows for early modeset in init
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Helps with suspend/resume, flicker
   ];
+
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = "1048576";
+  };
 
   # Ensure modules load in correct order
   boot.extraModprobeConfig = ''
@@ -60,7 +62,7 @@
     ];
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

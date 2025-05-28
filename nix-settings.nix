@@ -2,13 +2,21 @@
   inputs,
   lib,
   ...
-}:
-let
+}: let
   # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake
-  registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-in
-{
+  registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+  substituters = [
+    "https://cache.nixos.org"
+    "https://devenv.cachix.org"
+    "https://nixpkgs-wayland.cachix.org"
+    "https://hyprland.cachix.org"
+    "https://anyrun.cachix.org"
+    "https://copier.cachix.org"
+    "https://wezterm.cachix.org"
+    "https://nixpkgs-python.cachix.org"
+  ];
+in {
   inherit registry;
 
   # This will additionally add your inputs to the system's legacy channels
@@ -42,16 +50,8 @@ in
       "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
       "nixpkgs-python.cachix.org-1:hxjI7pFxTyuTHn2NkvWCrAUcNZLNS3ZAvfYNuYifcEU="
     ];
-    substituters = [
-      "https://cache.nixos.org"
-      "https://devenv.cachix.org"
-      "https://nixpkgs-wayland.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://anyrun.cachix.org"
-      "https://copier.cachix.org"
-      "https://wezterm.cachix.org"
-      "https://nixpkgs-python.cachix.org"
-    ];
+    inherit substituters;
+    trusted-substituters = substituters;
   };
 
   gc = {

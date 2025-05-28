@@ -1,11 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nvf.settings.vim = {
     languages = {
       enableDAP = true;
       enableExtraDiagnostics = true;
       enableFormat = true;
-      enableLSP = true;
       enableTreesitter = true;
 
       go.enable = true;
@@ -46,23 +44,14 @@
       }
     ];
 
-    lazy.plugins.nvim-whichpy = {
-      package = pkgs.vimUtils.buildVimPlugin {
-        pname = "nvim-whichpy";
-        version = "latest";
-        src = pkgs.fetchFromGitHub {
-          owner = "neolooong";
-          repo = "whichpy.nvim";
-          rev = "8bc5ca0d22d0f6686425c905850cf6ddeda51445";
-          hash = "sha256-Hm72XJN45o8sqGufLp/18tusfcpsumnOvQc1gsZZerQ=";
-        };
-      };
+    lazy.plugins."whichpy.nvim" = {
+      package = pkgs.unstable.vimPlugins.whichpy-nvim;
 
       setupModule = "whichpy";
 
-      ft = [ "python" ];
+      ft = ["python"];
 
-      cmd = [ "WhichPy" ];
+      cmd = ["WhichPy"];
     };
   };
 }

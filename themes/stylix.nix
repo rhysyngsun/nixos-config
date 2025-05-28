@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   flavor = rec {
     name = "Mocha";
     lower = lib.toLower name;
@@ -8,8 +11,7 @@ let
     name = "Lavender";
     lower = lib.toLower name;
   };
-in
-{
+in {
   stylix = {
     autoEnable = false;
     image = ./backgrounds/the_valley.png;
@@ -22,23 +24,15 @@ in
       size = 14;
     };
 
-    fonts = rec {
+    fonts = let
       serif = {
-        package = pkgs.nerdfonts.override {
-          fonts = [
-            "FiraCode"
-            "FiraMono"
-            "Iosevka"
-          ];
-        };
+        package = pkgs.nerd-fonts.iosevka;
         name = "Iosevka Nerd Font Mono";
       };
-      sansSerif = {
-        inherit (serif) package name;
-      };
-      monospace = {
-        inherit (serif) package name;
-      };
+    in {
+      inherit serif;
+      sansSerif = serif;
+      monospace = serif;
       emoji = {
         package = pkgs.noto-fonts-emoji;
         name = "Noto Color Emoji";

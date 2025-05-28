@@ -1,7 +1,10 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   home = {
-    packages = with pkgs; [ starship ];
+    packages = with pkgs; [starship];
     file.".profile".text = ''
       case $- in
         *i* )
@@ -36,7 +39,7 @@
         extended = true;
       };
 
-      initExtra = ''
+      initContent = ''
         eval "$(${pkgs.starship}/bin/starship init zsh)"
         eval "$(${config.programs.zoxide.package}/bin/zoxide init zsh)"
       '';

@@ -1,8 +1,6 @@
-{ lib, ... }:
-let
+{lib, ...}: let
   inherit (lib.generators) mkLuaInline;
-in
-{
+in {
   programs.nvf.settings.vim.autocomplete = {
     enableSharedCmpSources = true;
     blink-cmp = {
@@ -17,15 +15,39 @@ in
         };
         completion = {
           menu = {
-            border = "single";
+            # border = "single";
+
+            draw = {
+              columns =
+                mkLuaInline
+                # lua
+                ''
+                  {
+                    { "label", "label_description", gap = 3 },
+                    { "kind_icon", "kind" , gap = 1},
+                    { "source_name" },
+                  }
+                '';
+              components = {
+                source_name.text =
+                  mkLuaInline
+                  # lua
+                  ''
+                    function (ctx)
+                      return "[" .. ctx.source_name .. "]"
+                    end
+                  '';
+              };
+            };
           };
           documentation = {
             window = {
-              border = "single";
+              # border = "single";
             };
           };
         };
         signature = {
+          enabled = true;
           window = {
             border = "single";
           };
@@ -38,7 +60,7 @@ in
             "buffer"
           ];
           providers.lsp = {
-            fallbacks = [ ];
+            fallbacks = [];
           };
         };
       };

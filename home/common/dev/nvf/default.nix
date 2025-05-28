@@ -2,17 +2,16 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   inherit (lib.generators) mkLuaInline;
-in
-{
+in {
   imports = [
     ./blender.nix
     ./completion.nix
     ./folding.nix
     ./git.nix
     ./languages.nix
+    ./neotest.nix
     ./oil.nix
     ./spectre.nix
     ./telescope.nix
@@ -44,6 +43,7 @@ in
 
         lsp = {
           enable = true;
+          inlayHints.enable = true;
           trouble.enable = true;
         };
 
@@ -59,6 +59,9 @@ in
         #       end
         #     })
         #   '';
+        terminal = {
+          toggleterm.enable = true;
+        };
 
         theme = {
           enable = true;
@@ -67,6 +70,12 @@ in
         };
 
         ui = {
+          smartcolumn = {
+            enable = true;
+            setupOpts.custom_colorcolumn = {
+              python = "88";
+            };
+          };
           colorizer.enable = true;
         };
 
@@ -79,10 +88,10 @@ in
             setupOpts = {
               colors =
                 mkLuaInline
-                  # lua
-                  ''
-                    require("catppuccin.palettes").get_palette("mocha")
-                  '';
+                # lua
+                ''
+                  require("catppuccin.palettes").get_palette("mocha")
+                '';
             };
           };
         };

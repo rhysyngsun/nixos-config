@@ -2,9 +2,8 @@
   pkgs,
   lib,
   ...
-}:
-{
-  home.packages = with pkgs; [ ungoogled-chromium ];
+}: {
+  home.packages = with pkgs; [ungoogled-chromium];
 
   programs = {
     firefox = {
@@ -18,19 +17,19 @@
             "network.protocol-handler.expose.magnet" = true;
           };
 
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
-            # catppuccin-gh-file-explorer
             ebates
             firefox-color
             stylus
           ];
 
           search = {
-            default = "DuckDuckGo";
+            default = "ddg";
 
             engines = {
-              "Nix Packages" = {
+              np = {
+                name = "Nix Packages";
                 urls = [
                   {
                     template = "https://search.nixos.org/packages";
@@ -48,9 +47,10 @@
                 ];
 
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                definedAliases = [ "@np" ];
+                definedAliases = ["@np"];
               };
-              "Nix Options" = {
+              no = {
+                name = "Nix Options";
                 urls = [
                   {
                     template = "https://search.nixos.org/options";
@@ -64,35 +64,39 @@
                 ];
 
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                definedAliases = [ "@no" ];
+                definedAliases = ["@no"];
               };
 
-              "NixOS Wiki" = {
-                urls = [ { template = "https://wiki.nixos.org/index.php?search={searchTerms}"; } ];
-                iconUpdateURL = "https://wiki.nixos.org/favicon.png";
+              nw = {
+                name = "NixOS Wiki";
+                urls = [{template = "https://wiki.nixos.org/index.php?search={searchTerms}";}];
+                icon = "https://wiki.nixos.org/favicon.png";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
-                definedAliases = [ "@nw" ];
+                definedAliases = ["@nw"];
               };
 
-              "GitHub Code" = {
-                urls = [ { template = "https://github.com/search?q={searchTerms}&type=code"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
-                definedAliases = [ "@ghc" ];
+              ghc = {
+                name = "GitHub Code";
+                urls = [{template = "https://github.com/search?q={searchTerms}&type=code";}];
+                icon = "https://github.githubassets.com/favicons/favicon.png";
+                definedAliases = ["@ghc"];
               };
-              "GitHub Repos" = {
-                urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
-                definedAliases = [ "@ghr" ];
+              ghr = {
+                name = "GitHub Repos";
+                urls = [{template = "https://github.com/search?q={searchTerms}&type=repositories";}];
+                icon = "https://github.githubassets.com/favicons/favicon.png";
+                definedAliases = ["@ghr"];
               };
-              "GitHub Issues" = {
-                urls = [ { template = "https://github.com/search?q={searchTerms}&type=issues"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
-                definedAliases = [ "@ghi" ];
+              ghi = {
+                name = "GitHub Issues";
+                urls = [{template = "https://github.com/search?q={searchTerms}&type=issues";}];
+                icon = "https://github.githubassets.com/favicons/favicon.png";
+                definedAliases = ["@ghi"];
               };
 
-              "Bing".metaData.hidden = true;
-              "Google".metaData.hidden = true;
-              "DuckDuckGo".definedAliases = lib.mkForce [ "@ddg" ];
+              bing.metaData.hidden = true;
+              google.metaData.hidden = true;
+              ddg.definedAliases = lib.mkForce ["@ddg"];
             };
           };
         };

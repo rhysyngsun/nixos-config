@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nvf.settings.vim = {
     lazy.plugins."nvim-blender" = {
       package = pkgs.vimUtils.buildVimPlugin {
@@ -11,6 +10,7 @@
           rev = "3b0ea86bcee052d12be77d26d6cd1518a8e4b47d";
           hash = "sha256-neq2H1hOtoPsO+pDhvEiHTIUPrBCb/e6hyJ+ySWgxvs=";
         };
+        doCheck = false;
       };
       setupModule = "blender";
       setupOpts = {
@@ -42,6 +42,7 @@
             rev = "1654dd709f13874089eefc80d82e0eb667f7fdfb";
             hash = "sha256-dq/HZ2EEbGu4uHEJQ4tJPSgIn72wga6Bf3ku3XvjKkY=";
           };
+          doCheck = false;
         };
       };
     };
