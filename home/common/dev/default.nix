@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./aliases.nix
     ./git.nix
@@ -39,14 +38,20 @@
 
       cachix
 
+      kubectl
+      headlamp
+      awscli2
+
       # virtualization
       lazydocker
       vagrant
 
+      bytecode-viewer
+
       # concourse cli
       fly
     ];
-    sessionPath = [ "$HOME/bin" ];
+    sessionPath = ["$HOME/bin"];
     shellAliases = {
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -120,7 +125,7 @@
         daemon_key = null;
         shared_secret_path = null;
       };
-      profiles = { };
+      profiles = {};
     };
   };
 

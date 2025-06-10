@@ -5,8 +5,7 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   # You can import other NixOS modules here
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1
@@ -28,20 +27,22 @@
   };
 
   services.dbus = {
-    packages = with pkgs; [ blueman ];
+    packages = with pkgs; [blueman];
   };
 
   boot.plymouth = {
     enable = true;
-    themePackages = [ (pkgs.catppuccin-plymouth.override { variant = "mocha"; }) ];
+    themePackages = [(pkgs.catppuccin-plymouth.override {variant = "mocha";})];
     theme = "catppuccin-mocha";
   };
 
   programs.xwayland.enable = true;
 
+  services.flatpak.enable = true;
+
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [ stdenv.cc.cc ];
+    libraries = with pkgs; [stdenv.cc.cc];
   };
 
   # programs.hyprland = {
@@ -101,8 +102,8 @@
 
     # Theme
     (catppuccin-kde.override {
-      flavour = [ "mocha" ];
-      accents = [ "lavender" ];
+      flavour = ["mocha"];
+      accents = ["lavender"];
     })
 
     # Cursor
@@ -120,6 +121,8 @@
     nameservers = [
       "8.8.8.8"
       "8.8.4.4"
+      "2001:4860:4860::8888"
+      "2001:4860:4860::8844"
     ];
   };
 
@@ -127,7 +130,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
   # enable audio
   services.pipewire = {
@@ -189,13 +192,15 @@
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
-    packages = (map (f: f.package) (builtins.attrValues pkgs.rice.font)) ++ [
-      (pkgs.google-fonts.override {
-        fonts = [
-          "Expletus Sans"
-        ];
-      })
-    ];
+    packages =
+      (map (f: f.package) (builtins.attrValues pkgs.rice.font))
+      ++ [
+        (pkgs.google-fonts.override {
+          fonts = [
+            "Expletus Sans"
+          ];
+        })
+      ];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -205,7 +210,7 @@
     rtkit.enable = true;
 
     pam.services = {
-      hyprlock = { };
+      hyprlock = {};
     };
   };
 
@@ -279,7 +284,7 @@
       };
     };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   services.gnome.at-spi2-core.enable = true;
 
