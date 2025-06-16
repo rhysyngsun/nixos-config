@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   flavor = rec {
     name = "Mocha";
     lower = lib.toLower name;
@@ -8,8 +11,7 @@ let
     name = "Lavender";
     lower = lib.toLower name;
   };
-in
-{
+in {
   stylix = {
     autoEnable = false;
     image = ./backgrounds/the_valley.png;
@@ -24,13 +26,7 @@ in
 
     fonts = rec {
       serif = {
-        package = pkgs.nerdfonts.override {
-          fonts = [
-            "FiraCode"
-            "FiraMono"
-            "Iosevka"
-          ];
-        };
+        package = pkgs.nerd-fonts.iosevka;
         name = "Iosevka Nerd Font Mono";
       };
       sansSerif = {

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment.sessionVariables = {
     CLUTTER_BACKEND = "wayland";
     XDG_SESSION_TYPE = "wayland";
@@ -22,6 +21,6 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [pkgs.kdePackages.xdg-desktop-portal-gtk];
   };
 }

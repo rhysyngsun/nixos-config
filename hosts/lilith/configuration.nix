@@ -54,7 +54,7 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-kde
+      kdePackages.xdg-desktop-portal-kde
       xdg-desktop-portal-gtk
     ];
     wlr.enable = true;
@@ -216,7 +216,6 @@
 
   virtualisation = {
     docker.enable = true;
-    virtualbox.host.enable = true;
   };
 
   programs.dconf.enable = true;
@@ -244,7 +243,7 @@
   services.avahi.openFirewall = true;
 
   # Enable sound
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # timezone
   services.localtimed.enable = true;
@@ -266,13 +265,25 @@
       modesetting.enable = true;
       # package = config.boot.kernelPackages.nvidiaPackages.beta;
       # Minimum of 570 required to work with kernel 6.13
-      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "570.133.07"; # use new 570 drivers
-        sha256_64bit = "sha256-LUPmTFgb5e9VTemIixqpADfvbUX1QoTT2dztwI3E3CY=";
-        openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";
-        settingsSha256 = "sha256-XMk+FvTlGpMquM8aE8kgYK2PIEszUZD2+Zmj2OpYrzU=";
-        usePersistenced = false;
-      };
+      package = let
+        # https://github.com/NVIDIA/open-gpu-kernel-modules/issues/840
+        gpl_symbols_linux_615_patch = pkgs.fetchpatch {
+          url = "https://github.com/CachyOS/kernel-patches/raw/914aea4298e3744beddad09f3d2773d71839b182/6.15/misc/nvidia/0003-Workaround-nv_vm_flags_-calling-GPL-only-code.patch";
+          hash = "sha256-YOTAvONchPPSVDP9eJ9236pAPtxYK5nAePNtm2dlvb4=";
+          stripLen = 1;
+          extraPrefix = "kernel/";
+        };
+      in
+        config.boot.kernelPackages.nvidiaPackages.mkDriver {
+          version = "575.57.08";
+          sha256_64bit = "sha256-KqcB2sGAp7IKbleMzNkB3tjUTlfWBYDwj50o3R//xvI=";
+          sha256_aarch64 = "sha256-VJ5z5PdAL2YnXuZltuOirl179XKWt0O4JNcT8gUgO98=";
+          openSha256 = "sha256-DOJw73sjhQoy+5R0GHGnUddE6xaXb/z/Ihq3BKBf+lg=";
+          settingsSha256 = "sha256-AIeeDXFEo9VEKCgXnY3QvrW5iWZeIVg4LBCeRtMs5Io=";
+          persistencedSha256 = "sha256-Len7Va4HYp5r3wMpAhL4VsPu5S0JOshPFywbO7vYnGo=";
+
+          patches = [gpl_symbols_linux_615_patch];
+        };
       open = false;
       powerManagement.enable = true;
       powerManagement.finegrained = false;

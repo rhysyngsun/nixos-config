@@ -1,9 +1,9 @@
-{ lib, pkgs }:
-
+{
+  lib,
+  pkgs,
+}:
 with pkgs.nix-rice;
-with lib;
-
-let
+with lib; let
   flavor = rec {
     name = "Mocha";
     lower = toLower name;
@@ -14,7 +14,7 @@ let
   };
   theme = kitty-themes.getThemeByName "Catppuccin-${flavor.name}";
   gtk-theme = pkgs.catppuccin-gtk.override {
-    accents = [ "${accent.lower}" ];
+    accents = ["${accent.lower}"];
     size = "compact";
     tweaks = [
       "rimless"
@@ -28,39 +28,44 @@ let
     rev = "a8579d0f4c16652b0bf705062f4f03b950f7096f";
     hash = "sha256-1iFDzLBRpbOE3teWvK4BdKXXhB/xR1zqfigo34Xe1ow=";
   };
-in
-{
+in {
   colors = {
     inherit flavor accent;
   };
-  colorPalette = rec {
-    normal = palette.defaultPalette // {
-      black = theme.color0;
-      red = theme.color1;
-      green = theme.color2;
-      yellow = theme.color3;
-      blue = theme.color4;
-      magenta = theme.color5;
-      cyan = theme.color6;
-      white = theme.color7;
-    };
-    bright = palette.brighten 10 normal // {
-      black = theme.color8;
-      red = theme.color9;
-      green = theme.color10;
-      yellow = theme.color11;
-      blue = theme.color12;
-      magenta = theme.color13;
-      cyan = theme.color14;
-      white = theme.color15;
-    };
-    dark = palette.darken 10 normal;
-    primary = {
-      inherit (theme) background foreground;
-      bright_foreground = color.brighten 10 theme.foreground;
-      dim_foreground = color.darken 10 theme.foreground;
-    };
-  } // theme;
+  colorPalette =
+    rec {
+      normal =
+        palette.defaultPalette
+        // {
+          black = theme.color0;
+          red = theme.color1;
+          green = theme.color2;
+          yellow = theme.color3;
+          blue = theme.color4;
+          magenta = theme.color5;
+          cyan = theme.color6;
+          white = theme.color7;
+        };
+      bright =
+        palette.brighten 10 normal
+        // {
+          black = theme.color8;
+          red = theme.color9;
+          green = theme.color10;
+          yellow = theme.color11;
+          blue = theme.color12;
+          magenta = theme.color13;
+          cyan = theme.color14;
+          white = theme.color15;
+        };
+      dark = palette.darken 10 normal;
+      primary = {
+        inherit (theme) background foreground;
+        bright_foreground = color.brighten 10 theme.foreground;
+        dim_foreground = color.darken 10 theme.foreground;
+      };
+    }
+    // theme;
   font = {
     normal = {
       name = "Cantarell";
@@ -69,14 +74,8 @@ in
     };
     monospace = {
       name = "Iosevka Nerd Font Mono";
-      family = "FiraCode, FiraMono, Iosevka, mono";
-      package = pkgs.nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "FiraMono"
-          "Iosevka"
-        ];
-      };
+      family = "Iosevka, mono";
+      package = pkgs.nerd-fonts.iosevka;
       size = 10;
     };
   };
@@ -97,13 +96,13 @@ in
 
   icons = {
     name = "Papirus-Dark";
-    package = pkgs.papirus-icon-theme.override { color = "white"; };
+    package = pkgs.papirus-icon-theme.override {color = "white";};
   };
 
   alacritty = {
     package = catppuccin-alacritty;
     config = {
-      import = [ (catppuccin-alacritty + "/catppuccin-${flavor.lower}.toml") ];
+      import = [(catppuccin-alacritty + "/catppuccin-${flavor.lower}.toml")];
     };
   };
 
