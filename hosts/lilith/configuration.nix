@@ -29,6 +29,7 @@
   services.dbus = {
     packages = with pkgs; [blueman];
   };
+  services.logrotate.checkConfig = false;
 
   boot.plymouth = {
     enable = true;
@@ -142,7 +143,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
   # enable audio
   services.pipewire = {
@@ -282,7 +283,7 @@
         version = "570.133.07"; # use new 570 drivers
         sha256_64bit = "sha256-LUPmTFgb5e9VTemIixqpADfvbUX1QoTT2dztwI3E3CY=";
         openSha256 = "sha256-DuVNA63+pJ8IB7Tw2gM4HbwlOh1bcDg2AN2mbEU9VPE=";
-        settingsSha256 = "sha256-9rtqh64TyhDF5fFAYiWl3oDHzKJqyOW3abpcf2iNRT8=";
+        settingsSha256 = "sha256-XMk+FvTlGpMquM8aE8kgYK2PIEszUZD2+Zmj2OpYrzU=";
         usePersistenced = false;
       };
       open = false;
