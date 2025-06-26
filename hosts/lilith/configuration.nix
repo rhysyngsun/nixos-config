@@ -126,6 +126,8 @@
 
     # SDDM theme
     catppuccin-sddm-corners
+
+    awscli2
   ];
 
   networking = {
@@ -137,6 +139,30 @@
       "8.8.8.8"
       "8.8.4.4"
     ];
+  };
+
+  services.flatpak = {
+    enable = true;
+    update.auto = {
+      enable = true;
+      onCalendar = "weekly"; # Default value
+    };
+    packages = [
+      "io.kinvolk.Headlamp"
+    ];
+
+    overrides = {
+      "io.kinvolk.Headlamp" = {
+        Context = {
+          talk-name = "org.freedesktop.Flatpak";
+          shared = ["ipc" "network" "host-os"];
+          filesystems = [
+            "~/.kube/:ro"
+            "/run/current-system/sw/bin:ro"
+          ];
+        };
+      };
+    };
   };
 
   boot.loader.systemd-boot.enable = true;

@@ -70,6 +70,8 @@
         };
         modules = [
           inputs.sops-nix.nixosModules.sops
+          inputs.nix-flatpak.nixosModules.nix-flatpak
+
           nix-defaults
 
           ./hosts/lilith/configuration.nix
@@ -127,6 +129,8 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     sops-nix.url = "github:Mic92/sops-nix";
 

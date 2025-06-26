@@ -1,4 +1,9 @@
-{pkgs, lib, inputs, ... }: let
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: let
   inherit (inputs.nvf.lib.nvim.binds) mkKeymap;
   inherit (lib.generators) mkLuaInline;
 in {
@@ -71,7 +76,7 @@ in {
         keymaps = [
           {
             mode = "n";
-            key = "<leader>pv";
+            key = "<leader>fd";
             action = "<CMD>Oil<CR>";
           }
           {
@@ -124,7 +129,7 @@ in {
           }
           {
             mode = ["n" "v"];
-            key = "ga."; 
+            key = "ga.";
             action = "<CMD>TextCaseOpenTelescope<CR>";
           }
         ];
