@@ -13,6 +13,7 @@ in
     ./folding.nix
     ./git.nix
     ./languages.nix
+    ./lsp.nix
     ./oil.nix
     ./spectre.nix
     ./telescope.nix

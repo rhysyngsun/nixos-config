@@ -21,7 +21,7 @@
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
             # catppuccin-gh-file-explorer
-            ebates
+            # ebates
             firefox-color
             stylus
           ];

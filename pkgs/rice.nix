@@ -22,12 +22,6 @@ with lib; let
     ];
     variant = "${flavor.lower}";
   };
-  catppuccin-alacritty = pkgs.fetchFromGitHub {
-    owner = "catppuccin";
-    repo = "alacritty";
-    rev = "a8579d0f4c16652b0bf705062f4f03b950f7096f";
-    hash = "sha256-1iFDzLBRpbOE3teWvK4BdKXXhB/xR1zqfigo34Xe1ow=";
-  };
 in {
   colors = {
     inherit flavor accent;
@@ -75,7 +69,7 @@ in {
     monospace = {
       name = "Iosevka Nerd Font Mono";
       family = "Iosevka, mono";
-      package = pkgs.nerd-fonts.iosevka;
+      package = pkgs.iosevka;
       size = 10;
     };
   };
@@ -99,44 +93,12 @@ in {
     package = pkgs.papirus-icon-theme.override {color = "white";};
   };
 
-  alacritty = {
-    package = catppuccin-alacritty;
-    config = {
-      import = [(catppuccin-alacritty + "/catppuccin-${flavor.lower}.toml")];
-    };
-  };
-
   btop = {
-    package =
-      (pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "btop";
-        rev = "7109eac2884e9ca1dae431c0d7b8bc2a7ce54e54";
-        hash = "sha256-QoPPx4AzxJMYo/prqmWD/CM7e5vn/ueyx+XQ5+YfHF8=";
-      })
-      + "/themes";
+    package = pkgs.catppuccin-themes.btop + "/themes";
   };
 
   rofi = {
-    package =
-      (pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "rofi";
-        rev = "5350da41a11814f950c3354f090b90d4674a95ce";
-        hash = "sha256-DNorfyl3C4RBclF2KDgwvQQwixpTwSRu7fIvihPN8JY=";
-      })
-      + "/basic/.local/share/rofi/themes";
-  };
-
-  godot = {
-    package = (
-      pkgs.fetchFromGitHub {
-        owner = "boranroni";
-        repo = "godot-engine";
-        rev = "62f50af79b40f36e00b27ce9d9baaccdf220d8e6";
-        hash = "sha256-ZnF7QefFV6mtpuVpMKNgNG0AyiUbk5439ZBvibJmQas=";
-      }
-    );
+    package = pkgs.catppuccin-themes.rofi + "/basic/.local/share/rofi/themes";
   };
 
   opacity = 1.0;

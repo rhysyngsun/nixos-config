@@ -50,7 +50,6 @@ with lib;
       vlc
       coreutils-full
       less
-      pulseaudio
 
       keybase-gui
 

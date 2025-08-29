@@ -24,7 +24,7 @@
   ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Critical kernel parameters for Nvidia KMS and video memory preservation
   boot.kernelParams = [

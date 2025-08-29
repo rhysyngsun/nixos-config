@@ -3,5 +3,6 @@
   imports = [
     ./eww
     ./krita
+    ./nvf
   ];
 }

@@ -102,7 +102,7 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
   # enable audio
   services.pipewire = {

@@ -1,15 +1,9 @@
 {
   appimageTools,
-  fetchurl,
+  source,
   ...
 }: let
-  pname = "headlamp";
-  version = "0.30.0";
-  src = fetchurl {
-    url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v${version}/Headlamp-${version}-linux-x64.AppImage";
-    name = "${pname}-${version}.AppImage";
-    sha256 = "sha256-S6e0/fUjdJ2Oepv3q+rCT8VnyiwZOm60wOu28a07xHA=";
-  };
+  inherit (source) pname version src;
 in
   appimageTools.wrapType2 {
     inherit version pname src;

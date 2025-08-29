@@ -9,9 +9,7 @@
   # You can import other NixOS modules here
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1
-    # inputs.nixos-hardware.nixosModules.common-gpu-intel
     inputs.nixos-hardware.nixosModules.common-gpu-nvidia
-    # inputs.nixos-hardware.nixosModules.common-hidpi
 
     ./services
     ./open-learning
@@ -86,9 +84,8 @@
   environment.systemPackages = with pkgs; [
     # nix-doc
     libxcrypt
-    # mesa.drivers
     openssl
-    v4l-utils
+    # v4l-utils
     vulkan-tools
     wireplumber
     glxinfo
@@ -130,7 +127,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # enable loopback webcam in kernel
-  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
 
   # enable audio
   services.pipewire = {
@@ -243,7 +240,7 @@
   services.avahi.openFirewall = true;
 
   # Enable sound
-  services.pulseaudio.enable = false;
+  # services.pulseaudio.enable = false;
 
   # timezone
   services.localtimed.enable = true;

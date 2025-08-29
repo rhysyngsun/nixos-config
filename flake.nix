@@ -127,6 +127,8 @@
     nixpkgs.follows = "nixpkgs-stable";
     # nixpkgs.follows = "nixpkgs-unstable";
 
+    pinned-textual-nixpkgs.url = "github:nixos/nixpkgs/9b008d60392981ad674e04016d25619281550a9d";
+
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-25.05";
 
@@ -212,7 +214,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf.url = "github:notashelf/nvf";
-    nvf.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nvf.url = "github:notashelf/nvf?rev=ab991a7e57de67ae8e14b2d6a3ad27368ab1d5e3";
   };
 }

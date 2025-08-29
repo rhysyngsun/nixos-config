@@ -1,0 +1,16 @@
+[headlamp]
+src.github = "kubernetes-sigs/headlamp"
+src.prefix = "v"
+fetch.url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v$ver/Headlamp-$ver-linux-x64.AppImage"
+
+[catppuccin-btop]
+src.git = "https://github.com/catppuccin/btop"
+fetch.github = "catppuccin/btop"
+
+[catppuccin-godot]
+src.git = "https://github.com/boranroni/godot-engine"
+fetch.github = "boranroni/godot-engine"
+
+[catppuccin-rofi]
+src.git = "https://github.com/catppuccin/rofi"
+fetch.github = "catppuccin/rofi"

@@ -20,6 +20,7 @@
         });
       })
     ];
+    textual = inputs.pinned-textual-nixpkgs.legacyPackages.${prev.system}.python3Packages.textual;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
