@@ -27,24 +27,28 @@
   # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Critical kernel parameters for Nvidia KMS and video memory preservation
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1" # Allows for early modeset in init
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Helps with suspend/resume, flicker
-  ];
+  # boot.kernelParams = [
+  #   "nvidia-drm.modeset=1" # Allows for early modeset in init
+  #   "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Helps with suspend/resume, flicker
+  # ];
+
+  # boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_6_16;
+  # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_16.override {
+  #   argsOverride = rec {
+  #     src = pkgs.fetchurl {
+  #           url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+  #           sha256 = "sha256-dr/7rn6rKh3h7QVpK+9wn0OwKlL+la5lXKzw+iUiE/M=";
+  #     };
+  #     version = "6.16.5";
+  #     modDirVersion = "6.16.5";
+  #     };
+  # });
 
   # Ensure modules load in correct order
-  boot.extraModprobeConfig = ''
-    options nvidia-drm modeset=1
-    softdep nvidia pre: nvidia-drm
-  '';
-
-  # Make sure all four nvidia modules are in the initrd
-  boot.initrd.kernelModules = [
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-  ];
+  # boot.extraModprobeConfig = ''
+  #   options nvidia-drm modeset=1
+  #   softdep nvidia pre: nvidia-drm
+  # '';
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f75907ab-9b04-4d20-83a9-d4900839e29e";

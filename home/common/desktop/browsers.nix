@@ -18,7 +18,7 @@
             "network.protocol-handler.expose.magnet" = true;
           };
 
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
             # catppuccin-gh-file-explorer
             # ebates
@@ -27,10 +27,11 @@
           ];
 
           search = {
-            default = "DuckDuckGo";
+            default = "ddg";
 
             engines = {
-              "Nix Packages" = {
+              nix-packages = {
+                name = "Nix Packages";
                 urls = [
                   {
                     template = "https://search.nixos.org/packages";
@@ -50,7 +51,8 @@
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = [ "@np" ];
               };
-              "Nix Options" = {
+              nix-options = {
+                name = "Nix Options";
                 urls = [
                   {
                     template = "https://search.nixos.org/options";
@@ -67,32 +69,36 @@
                 definedAliases = [ "@no" ];
               };
 
-              "NixOS Wiki" = {
+              nix-wiki = {
+                name = "NixOS Wiki";
                 urls = [ { template = "https://wiki.nixos.org/index.php?search={searchTerms}"; } ];
-                iconUpdateURL = "https://wiki.nixos.org/favicon.png";
+                icon = "https://wiki.nixos.org/favicon.png";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
                 definedAliases = [ "@nw" ];
               };
 
-              "GitHub Code" = {
+              github-code = {
+                  name = "GitHub Code";
                 urls = [ { template = "https://github.com/search?q={searchTerms}&type=code"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
+                icon = "https://github.githubassets.com/favicons/favicon.png";
                 definedAliases = [ "@ghc" ];
               };
-              "GitHub Repos" = {
+              github-repos = {
+                name = "GitHub Repos";
                 urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
+                icon = "https://github.githubassets.com/favicons/favicon.png";
                 definedAliases = [ "@ghr" ];
               };
-              "GitHub Issues" = {
+              github-issues = {
+                name = "GitHub Issues";
                 urls = [ { template = "https://github.com/search?q={searchTerms}&type=issues"; } ];
-                iconUpdateURL = "https://github.githubassets.com/favicons/favicon.png";
+                icon = "https://github.githubassets.com/favicons/favicon.png";
                 definedAliases = [ "@ghi" ];
               };
 
-              "Bing".metaData.hidden = true;
-              "Google".metaData.hidden = true;
-              "DuckDuckGo".definedAliases = lib.mkForce [ "@ddg" ];
+              bing.metaData.hidden = true;
+              google.metaData.hidden = true;
+              ddg.definedAliases = lib.mkForce [ "@ddg" ];
             };
           };
         };

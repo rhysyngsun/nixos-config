@@ -11,11 +11,10 @@ with lib;
     ./browsers.nix
     ./calendar.nix
     ./chat.nix
-    # ./eww
-    # ./hyprland
+    ./eww
+    ./hyprland
     ./pls.nix
-    # ./productivity.nix
-    # ./wayland
+    ./wayland
   ];
   home = {
     packages = with pkgs; [
@@ -25,7 +24,7 @@ with lib;
       helvum
       qpwgraph
       unetbootin
-      wtf
+      wtfutil
       file
       nnn
       exiftool
@@ -38,6 +37,7 @@ with lib;
       cosmic-edit
       simple-scan
       gpu-viewer
+      woeusb
 
       qownnotes
 
@@ -90,6 +90,13 @@ with lib;
       };
   };
 
+  catppuccin = {
+    accent = "lavender";
+    flavor = "mocha";
+    btop.enable = true;
+    rofi.enable = true;
+  };
+
   programs = {
     bash = {
       initExtra = ''
@@ -109,7 +116,6 @@ with lib;
     btop = {
       enable = true;
       settings = {
-        color_theme = "catppuccin_mocha";
         theme_background = false;
       };
     };
@@ -170,22 +176,6 @@ with lib;
       enableZshIntegration = true;
     };
   };
-
-  xdg.configFile."btop/themes" = {
-    source = pkgs.rice.btop.package;
-    recursive = true;
-  };
-
-  # xdg.configFile."easyeffects" = {
-  #   source = pkgs.symlinkJoin {
-  #     name = "easyeffects-plugins";
-  #     paths = [
-  #       pkgs.easyeffects-presets.jackhack96
-  #       pkgs.easyeffects-presets.p-chan5
-  #     ];
-  #   };
-  #   recursive = true;
-  # };
 
   # services
   services = {

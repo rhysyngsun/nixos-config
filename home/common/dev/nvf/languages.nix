@@ -5,7 +5,6 @@
       enableDAP = true;
       enableExtraDiagnostics = true;
       enableFormat = true;
-      enableLSP = true;
       enableTreesitter = true;
 
       go.enable = true;
@@ -56,6 +55,7 @@
           rev = "8bc5ca0d22d0f6686425c905850cf6ddeda51445";
           hash = "sha256-Hm72XJN45o8sqGufLp/18tusfcpsumnOvQc1gsZZerQ=";
         };
+        doCheck = false;
       };
 
       setupModule = "whichpy";

@@ -36,7 +36,7 @@
         extended = true;
       };
 
-      initExtra = ''
+      initContent = ''
         eval "$(${pkgs.starship}/bin/starship init zsh)"
         eval "$(${config.programs.zoxide.package}/bin/zoxide init zsh)"
       '';

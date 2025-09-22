@@ -13,7 +13,7 @@ in
   };
 
   # copied from home-manager's
-  programs.zsh.initExtra = ''
+  programs.zsh.initContent = ''
     source "${wezterm}/etc/profile.d/wezterm.sh"
   '';
 }

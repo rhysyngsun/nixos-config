@@ -15,7 +15,14 @@ in
     inputs.nvf.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
     # inputs.hyprland.homeManagerModules.default
+    ({ modulesPath, ... }: {
+      # Important! We disable home-manager's module to avoid option
+      # definition collisions
+      disabledModules = ["${modulesPath}/programs/anyrun.nix"];
+    })
+    inputs.anyrun.homeManagerModules.default
     inputs.ags.homeManagerModules.default
+    inputs.catppuccin.homeModules.catppuccin
     outputs.homeManagerModules
     ./home.nix
     ../../themes/stylix.nix

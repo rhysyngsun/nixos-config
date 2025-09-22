@@ -39,10 +39,10 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.34.0";
+    version = "0.35.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.34.0/Headlamp-0.34.0-linux-x64.AppImage";
-      sha256 = "sha256-tPWVQ2h0xO6PDqB6CgmIOUff7P2kP0RpOMs+D2qcM7E=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.35.0/Headlamp-0.35.0-linux-x64.AppImage";
+      sha256 = "sha256-9nt6vYmobElz5+ml0FOTwulxqX5icwQN2G9HCarlOAo=";
     };
   };
 }

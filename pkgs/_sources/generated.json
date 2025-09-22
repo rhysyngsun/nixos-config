@@ -15,6 +15,7 @@
             "repo": "btop",
             "rev": "f437574b600f1c6d932627050b15ff5153b58fa3",
             "sha256": "sha256-mEGZwScVPWGu+Vbtddc/sJ+mNdD2kKienGZVUcTSl+c=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "f437574b600f1c6d932627050b15ff5153b58fa3"
@@ -35,6 +36,7 @@
             "repo": "godot-engine",
             "rev": "62f50af79b40f36e00b27ce9d9baaccdf220d8e6",
             "sha256": "sha256-ZnF7QefFV6mtpuVpMKNgNG0AyiUbk5439ZBvibJmQas=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "62f50af79b40f36e00b27ce9d9baaccdf220d8e6"
@@ -55,6 +57,7 @@
             "repo": "rofi",
             "rev": "71fb15577ccb091df2f4fc1f65710edbc61b5a53",
             "sha256": "sha256-81eeFjwM/haPjIEWkZPp1JSDwhWbWDAuKtWiCg7P9Q0=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "71fb15577ccb091df2f4fc1f65710edbc61b5a53"
@@ -68,10 +71,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-tPWVQ2h0xO6PDqB6CgmIOUff7P2kP0RpOMs+D2qcM7E=",
+            "sha256": "sha256-9nt6vYmobElz5+ml0FOTwulxqX5icwQN2G9HCarlOAo=",
             "type": "url",
-            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.34.0/Headlamp-0.34.0-linux-x64.AppImage"
+            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.35.0/Headlamp-0.35.0-linux-x64.AppImage"
         },
-        "version": "0.34.0"
+        "version": "0.35.0"
     }
 }

@@ -1,5 +1,4 @@
 {
-  pkgs,
   inputs,
   system,
   ...
@@ -8,7 +7,6 @@
 {
   programs.anyrun = {
     enable = true;
-    package = inputs.anyrun.packages.anyrun;
     config = {
       plugins = with inputs.anyrun.packages.${system}; [
         applications
@@ -22,7 +20,7 @@
         absolute = 50;
       };
       width = {
-        fraction = 0.35;
+        fraction = 0.45;
       };
       hideIcons = false;
       ignoreExclusiveZones = true;
@@ -37,7 +35,7 @@
       * {
         transition: 200ms ease;
         font-family: Font Awesome, FiraCode, FiraMono, Isoveka;
-        font-size: 1.3rem;
+        font-size: 0.9rem;
         outline: none; 
         border: none;
         box-shadow: none;
@@ -45,31 +43,31 @@
       }
 
 
-      #window {
-        background: rgba(147, 153, 178, 0.3);
+      window {
+        background: rgba(0, 0, 0, 0.3);
       }
 
-      #match,
-      #entry,
-      #plugin,
-      #main {
+      .match,
+      .entry,
+      .plugin,
+      .main {
         background: transparent;
       }
 
-      #match:selected {
+      .match:selected {
         background: rgba(203, 166, 247, 0.7);
       }
 
-      #match {
+      .match {
         padding: 3px;
         border-radius: 5px;
       }
 
-      #entry {
+      .entry {
         border: 1px solid #585b70;
       }
 
-      box#main {
+      box.main {
         background: #1e1e2e;
         border-radius: 5px;
         padding: 8px;

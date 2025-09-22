@@ -1,5 +1,10 @@
-{ pkgs, ... }:
-{
+{ pkgs, lib, config, ... }:
+let
+  inherit (config.catppuccin) sources flavor accent;
+  palette = (lib.importJSON "${sources.palette}/palette.json").${flavor}.colors;
+  theme = palette.${accent}.hex;
+in {
+
   programs = {
     tmux = {
       enable = true;
@@ -7,8 +12,6 @@
       baseIndex = 1;
       keyMode = "vi";
       prefix = "C-a";
-
-      # shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
         bind '-' split-window -c "#{pane_current_path}"
@@ -42,7 +45,7 @@
             };
           };
           extraConfig = ''
-            set -g @tmux_power_theme '#${pkgs.catppuccin-palette.mocha.lavender.hex}'
+            set -g @tmux_power_theme '#${theme}'
           '';
         }
         {

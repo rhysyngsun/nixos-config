@@ -1,6 +1,6 @@
 { inputs, ... }:
 let
-  border-radius = "12px";
+  border-radius = "5px";
   catppuccin-css = inputs.catppuccin-waybar + "/themes/mocha.css";
 in
 ''
@@ -57,7 +57,7 @@ in
   #window,
   #taskbar,
   #custom-powermenu {
-    padding: 5px 10px;
+    padding: 3px 6px;
   }
 
   #workspaces {
@@ -82,6 +82,10 @@ in
   #custom-powermenu {
     margin-right: 8px;
     margin-left: 8px;
+  }
+
+  #custom-powermenu:hover {
+    background-color: @crust;
   }
 
   @keyframes blink {

@@ -2,12 +2,6 @@ final: prev: let
   sources = prev.callPackage ./_sources/generated.nix {};
 in
 {
-  catppuccin-themes = {
-    btop = sources.catppuccin-btop;
-    godot = sources.catppuccin-godot;
-    rofi = sources.catppuccin-rofi;
-  };
-  catppuccin-palette = prev.callPackage ./catppuccin-palette.nix {};
   rice = prev.callPackage ./rice.nix {};
   mit = prev.callPackage ./mit {};
   krita-plugins = prev.callPackage ./krita-plugins {};

@@ -1,10 +1,13 @@
-{ config, pkgs, ... }:
+{ config, lib, ... }:
 let
-  palette = pkgs.catppuccin-palette.mocha;
+  inherit (config.catppuccin) sources flavor;
+  palette = (lib.importJSON "${sources.palette}/palette.json").${flavor}.colors;
   shadow = {
     shadow_passes = 1; # 0 disables shadow
     shadow_color = "rgb(${palette.mantle.hex})";
   };
+
+  mkRGBA = rgb: opacity: "rgba(${toString rgb.r}, ${toString rgb.g}, ${toString rgb.b}, ${lib.strings.floatToString opacity})";
 in
 {
   programs.hyprlock = {
@@ -33,12 +36,12 @@ in
             size = "300, 50";
             outline_thickness = 2;
 
-            outer_color = "rgb(${palette.crust.hex})";
-            inner_color = "rgb(${palette.mantle.hex})";
-            font_color = "rgb(${palette.lavender.hex})";
-            placeholder_text = ''
-              <span foreground="##${palette.surface0.hex}">Password...</span>
-            '';
+            outer_color = mkRGBA palette.crust.rgb 1.0;
+            inner_color = mkRGBA palette.mantle.rgb 1.0;
+            font_color = mkRGBA palette.lavender.rgb 1.0;
+            # placeholder_text = ''
+            #   <span foreground="##${palette.surface0.hex}">Password...</span>
+            # '';
             fade_on_empty = false;
             dots_spacing = 0.3;
             dots_center = true;

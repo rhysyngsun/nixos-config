@@ -123,7 +123,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
     nixpkgs.follows = "nixpkgs-stable";
     # nixpkgs.follows = "nixpkgs-unstable";
 
@@ -175,7 +176,6 @@
   inputs = {
     anyrun = {
       url = "github:Kirottu/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ags.url = "github:Aylur/ags";
@@ -193,6 +193,8 @@
     stylix.url = "github:danth/stylix/release-24.11";
 
     nix-rice.url = "github:bertof/nix-rice";
+
+    catppuccin.url = "github:catppuccin/nix/release-25.05";
 
     catppuccin-hyprland = {
       url = "github:catppuccin/hyprland";

@@ -14,8 +14,10 @@ config.scrollback_lines = 10000
 config.color_scheme = 'Catppuccin Mocha'
 config.xcursor_theme = 'Catppuccin-Mocha-Lavender'
 
+-- config.colors.tab_bar.active_tab.bg_color = '#7287fd'
+
 -- font name as it appears in `fc-list`
-config.font = wezterm.font 'Iosevka Nerd Font'
+config.font = wezterm.font 'Iosevka'
 config.font_size = 11
 config.line_height = 0.9
 

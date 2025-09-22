@@ -1,7 +1,6 @@
 { ... }:
 {
   imports = [
-    ./eww
     ./krita
     ./nvf
   ];
