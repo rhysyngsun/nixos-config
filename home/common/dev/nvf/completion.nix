@@ -1,7 +1,3 @@
-{ lib, ... }:
-let
-  inherit (lib.generators) mkLuaInline;
-in
 {
   programs.nvf.settings.vim.autocomplete = {
     enableSharedCmpSources = true;
@@ -26,6 +22,7 @@ in
           };
         };
         signature = {
+          enabled = true;
           window = {
             border = "single";
           };

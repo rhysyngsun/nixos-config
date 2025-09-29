@@ -23,8 +23,12 @@ args@{
   systemd.user.services = {
     waybar = {
       Service = {
+        ExecCondition = "/lib/systemd/systemd-xdg-autostart-condition \"Hyprland\" \"\"";
         ExecStart = lib.mkForce "${pkgs.waybar}/bin/waybar --log-level debug";
+        Restart = "on-failure";
+        Slice = "app-graphical.slice";
       };
+      Install.WantedBy = ["graphical-session.target"];
     };
   };
 }
