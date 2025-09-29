@@ -20,6 +20,7 @@ in
       # definition collisions
       disabledModules = ["${modulesPath}/programs/anyrun.nix"];
     })
+    inputs.walker.homeManagerModules.default
     inputs.anyrun.homeManagerModules.default
     inputs.ags.homeManagerModules.default
     inputs.catppuccin.homeModules.catppuccin

@@ -178,6 +178,8 @@
       url = "github:Kirottu/anyrun";
     };
 
+    walker.url = "github:abenz1267/walker";
+
     ags.url = "github:Aylur/ags";
 
     wezterm.url = "github:wez/wezterm?dir=nix&rev=7053748e4d899e7fc5e202d6f903b052fc78e759";

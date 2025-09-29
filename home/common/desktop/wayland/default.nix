@@ -8,6 +8,7 @@
     ./mako.nix
     ./swayr.nix
     ./swww.nix
+    ./walker.nix
     ./wlogout.nix
   ];
 

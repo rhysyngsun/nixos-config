@@ -54,7 +54,7 @@ in
       env = HYPRSHOT_DIR,~/Pictures/Screenshots
 
       exec-once=pkill eww && eww daemon
-      exec-once=${./scripts/xdg-portals-fix.sh}
+      # exec-once=${./scripts/xdg-portals-fix.sh}
       exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
       exec-once=hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_ DISPLAY SWAYSOCK
 
@@ -202,7 +202,8 @@ in
 
       bind=$mod,RETURN,exec,${cmds.terminal}
       bind=$mod,B,exec,firefox
-      bind=$mod,D,exec,anyrun
+      # bind=$mod,D,exec,anyrun
+      bind=$mod,D,exec,nc -U /run/user/1000/walker/walker.sock
 
       bind=$mod,F,fullscreen,1
       bind=$mod SHIFT,F,fullscreen,0
