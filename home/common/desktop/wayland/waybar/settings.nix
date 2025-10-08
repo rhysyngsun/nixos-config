@@ -1,10 +1,7 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with lib;
 {
   mainBar = {
     layer = "top";
@@ -123,25 +120,5 @@ with lib;
       format = "<span font='11'>⏻</span>";
       on-click = "${pkgs.wlogout}/bin/wlogout -p layer-shell";
     };
-
-    # "custom/notification" = {
-    #   "tooltip" = false;
-    #   "format" = "<span font='16' rise='-2000'>{icon}</span> {}";
-    #   "format-icons" = {
-    #     "notification" = "<span foreground='red'><sup></sup></span>";
-    #     "none" = "";
-    #     "dnd-notification" = "<span foreground='red'><sup></sup></span>";
-    #     "dnd-none" = "";
-    #     "inhibited-notification" = "<span foreground='red'><sup></sup></span>";
-    #     "inhibited-none" = "";
-    #     "dnd-inhibited-notification" = "<span foreground='red'><sup></sup></span>";
-    #     "dnd-inhibited-none" = "";
-    #   };
-    #   "return-type" = "json";
-    #   "exec" = "${pkgs.swaynotificationcenter}/bin/swaync-client -swb";
-    #   "on-click" = "${pkgs.swaynotificationcenter}/bin/swaync-client -t -sw";
-    #   "on-click-right" = "${pkgs.swaynotificationcenter}/bin/swaync-client -d -sw";
-    #   "escape" = true;
-    # };
   };
 }

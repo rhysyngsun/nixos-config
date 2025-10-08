@@ -4,6 +4,7 @@
     extraPackages = [ pkgs.lazygit ];
     git = {
       vim-fugitive.enable = true;
+      gitsigns.enable = true;
     };
     lazy.plugins."lazygit.nvim" = {
       package = pkgs.vimPlugins.lazygit-nvim;

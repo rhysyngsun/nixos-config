@@ -1,14 +1,8 @@
 {
   alsa-lib,
-  autoPatchelfHook,
-  buildPackages,
   dbus,
-  dotnet-sdk_6,
-  dotnet-sdk_8,
-  dotnetCorePackages,
   fetchzip,
   fontconfig,
-  installShellFiles,
   lib,
   libdecor,
   libGL,
@@ -23,24 +17,15 @@
   libXrandr,
   libXrender,
   makeWrapper,
-  pkg-config,
-  scons,
   speechd-minimal,
   stdenv,
-  testers,
   udev,
   vulkan-loader,
   wayland,
-  wayland-scanner,
   withDbus ? true,
   withFontconfig ? true,
-  withMono ? false,
-  withPlatform ? "linuxbsd",
-  withPrecision ? "single",
   withPulseaudio ? true,
   withSpeechd ? true,
-  withTarget ? "editor",
-  withTouch ? true,
   withUdev ? true,
   # Wayland in Godot requires X11 until upstream fix is merged
   # https://github.com/godotengine/godot/pull/73504
@@ -49,7 +34,7 @@
 }:
 let
   pname = "godot-voxel";
-  version = "1.3.0";
+  version = "1.5";
   libs =
     [
       alsa-lib
@@ -88,7 +73,7 @@ stdenv.mkDerivation {
 
   src = fetchzip {
     url = "https://github.com/Zylann/godot_voxel/releases/download/v${version}/godot.linuxbsd.editor.x86_64.zip";
-    hash = "sha256-4cfuBrrWE0RAUBiwHIHww6GA8OL3Bqqb6+cBTPFG6G0=";
+    hash = "sha256-qpAe3Ps9jrJED4f30zpGF7yNd13OI37Ymu0RSWQ3UOY=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
