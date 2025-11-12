@@ -12,7 +12,8 @@ with lib;
     ./calendar.nix
     ./chat.nix
     ./eww
-    ./hyprland
+    # ./hyprland
+    ./niri
     ./pls.nix
     ./wayland
   ];

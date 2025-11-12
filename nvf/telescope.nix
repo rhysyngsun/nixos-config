@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ lib, ... }:
 let
-  inherit (inputs.nvf.lib.nvim.binds) mkKeymap;
+  inherit (lib.nvim.binds) mkKeymap;
 in
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     telescope = {
       enable = true;
       setupOpts = {

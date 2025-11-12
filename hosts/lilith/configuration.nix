@@ -44,6 +44,8 @@
     libraries = with pkgs; [stdenv.cc.cc];
   };
 
+  programs.niri.enable = true;
+
   programs.hyprland = {
     enable = true;
     withUWSM  = true;

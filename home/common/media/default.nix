@@ -6,6 +6,7 @@
 
     # audio production
     audacity
+    zrythm
     helm
     lmms
   ];

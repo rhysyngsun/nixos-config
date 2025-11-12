@@ -24,6 +24,7 @@ config.line_height = 0.9
 -- this never redisplays the cursor under hyprland/wayland
 config.hide_mouse_cursor_when_typing = false
 config.use_fancy_tab_bar = false
+-- config.window_decorations = 'RESIZE'
 
 
 config.check_for_updates = false

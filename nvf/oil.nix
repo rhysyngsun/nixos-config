@@ -7,10 +7,10 @@ let
   inherit (lib.generators) mkLuaInline;
 in
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     lazy.plugins = {
       "oil.nvim" = {
-        package = pkgs.unstable.vimPlugins.oil-nvim;
+        package = pkgs.vimPlugins.oil-nvim;
         setupModule = "oil";
         lazy = false;
         setupOpts = {

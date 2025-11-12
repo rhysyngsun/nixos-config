@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     extraPackages = [ pkgs.lazygit ];
     git = {
       vim-fugitive.enable = true;

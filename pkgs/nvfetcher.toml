@@ -1,8 +1,3 @@
-[headlamp]
-src.github = "kubernetes-sigs/headlamp"
-src.prefix = "v"
-fetch.url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v$ver/Headlamp-$ver-linux-x64.AppImage"
-
 [catppuccin-btop]
 src.git = "https://github.com/catppuccin/btop"
 fetch.github = "catppuccin/btop"
@@ -14,3 +9,21 @@ fetch.github = "boranroni/godot-engine"
 [catppuccin-rofi]
 src.git = "https://github.com/catppuccin/rofi"
 fetch.github = "catppuccin/rofi"
+
+[headlamp]
+src.github = "kubernetes-sigs/headlamp"
+src.prefix = "v"
+fetch.url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v$ver/Headlamp-$ver-linux-x64.AppImage"
+
+[pkl-lsp]
+src.github = "apple/pkl-lsp"
+fetch.url = "https://github.com/apple/pkl-lsp/releases/download/$ver/pkl-lsp-$ver.jar"
+
+[pkl-neovim]
+src.git = "https://github.com/apple/pkl-neovim"
+fetch.github = "apple/pkl-neovim"
+
+
+[whichpy-nvim]
+src.git = "https://github.com/neolooong/whichpy.nvim"
+fetch.git = "https://github.com/neolooong/whichpy.nvim"

@@ -12,7 +12,6 @@ let
 in
 {
   modules = [
-    inputs.nvf.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
     # inputs.hyprland.homeManagerModules.default
     ({ modulesPath, ... }: {

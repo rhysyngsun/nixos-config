@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     lazy.plugins.undotree = {
       package = pkgs.vimPlugins.undotree;
       before =

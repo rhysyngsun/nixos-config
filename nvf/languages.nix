@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     languages = {
       enableDAP = true;
       enableExtraDiagnostics = true;
@@ -13,6 +13,7 @@
       lua.enable = true;
       nix.enable = true;
       markdown.enable = true;
+      pkl.enable = true;
       python = {
         enable = true;
         lsp.package = pkgs.unstable.basedpyright;
@@ -64,5 +65,26 @@
 
       cmd = [ "WhichPy" ];
     };
+
+
+    # additionalRuntimePaths = ["${pkgs.vimPlugins.pkl-neovim}"];
+    #
+    # lazy.plugins.pkl-neovim = {
+    #   package = pkgs.vimPlugins.pkl-neovim;
+    #
+    #   ft = ["pkl"];
+    #
+    #   load = 
+    #     # lua
+    #     ''
+    #     vim.g.pkl_neovim = {
+    #       start_command = { "${pkgs.pkl-lsp}/bin/pkl-lsp" },
+    #       pkl_cli_path = "${pkgs.pkl}/bin/pkl",
+    #     }
+    #
+    #     require('pkl-neovim').init()
+    #     '';
+    # };
+
   };
 }

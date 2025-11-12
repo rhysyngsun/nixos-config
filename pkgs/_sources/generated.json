@@ -71,10 +71,46 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-9nt6vYmobElz5+ml0FOTwulxqX5icwQN2G9HCarlOAo=",
+            "sha256": "sha256-ix/gJ0cJ+NxJTYKSa/0Co+g+cxWdq+Zn6atq4L4TkKw=",
             "type": "url",
-            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.35.0/Headlamp-0.35.0-linux-x64.AppImage"
+            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.37.0/Headlamp-0.37.0-linux-x64.AppImage"
         },
-        "version": "0.35.0"
+        "version": "0.37.0"
+    },
+    "pkl-lsp": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "pkl-lsp",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-oI//cGGle4glYjRBGfLZWuDozEqeQQ32HVZ4oM2NKT8=",
+            "type": "url",
+            "url": "https://github.com/apple/pkl-lsp/releases/download/0.5.1/pkl-lsp-0.5.1.jar"
+        },
+        "version": "0.5.1"
+    },
+    "pkl-neovim": {
+        "cargoLocks": null,
+        "date": "2025-11-06",
+        "extract": null,
+        "name": "pkl-neovim",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "apple",
+            "repo": "pkl-neovim",
+            "rev": "512a2bce00f1541ff58e850a74b8671b84976f14",
+            "sha256": "sha256-jMC15yUpfB8j+aeTeNTOimPyOT9qxxD4uYymvhlcBAY=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "512a2bce00f1541ff58e850a74b8671b84976f14"
     }
 }

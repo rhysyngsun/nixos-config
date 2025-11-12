@@ -1,4 +1,5 @@
 args@{
+  config,
   pkgs,
   lib,
   ...
@@ -13,17 +14,18 @@ args@{
     style = import ./style.nix args;
     settings = import ./settings.nix args;
 
-    systemd = {
-      enable = true;
-      target = "hyprland-session.target";
-    };
+    # systemd.enable = true;
   };
 
-  systemd.user.services = {
-    waybar = {
-      Service = {
-        ExecStart = lib.mkForce "${pkgs.waybar}/bin/waybar --log-level debug";
-      };
-    };
-  };
+  # systemd.user.services = {
+  #   waybar = {
+  #     Service = {
+  #       ExecStart = lib.mkForce "${config.programs.waybar.package}/bin/waybar --log-level debug";
+  #       PartOf = ["niri.service"];
+  #       WantedBy = [
+  #         "niri.service"
+  #       ];
+  #     };
+  #   };
+  # };
 }

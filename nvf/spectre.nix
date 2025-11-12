@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     lazy.plugins."nvim-spectre" = {
       package = pkgs.vimPlugins.nvim-spectre;
       setupModule = "spectre";

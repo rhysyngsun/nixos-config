@@ -39,10 +39,30 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.35.0";
+    version = "0.37.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.35.0/Headlamp-0.35.0-linux-x64.AppImage";
-      sha256 = "sha256-9nt6vYmobElz5+ml0FOTwulxqX5icwQN2G9HCarlOAo=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.37.0/Headlamp-0.37.0-linux-x64.AppImage";
+      sha256 = "sha256-ix/gJ0cJ+NxJTYKSa/0Co+g+cxWdq+Zn6atq4L4TkKw=";
     };
+  };
+  pkl-lsp = {
+    pname = "pkl-lsp";
+    version = "0.5.1";
+    src = fetchurl {
+      url = "https://github.com/apple/pkl-lsp/releases/download/0.5.1/pkl-lsp-0.5.1.jar";
+      sha256 = "sha256-oI//cGGle4glYjRBGfLZWuDozEqeQQ32HVZ4oM2NKT8=";
+    };
+  };
+  pkl-neovim = {
+    pname = "pkl-neovim";
+    version = "512a2bce00f1541ff58e850a74b8671b84976f14";
+    src = fetchFromGitHub {
+      owner = "apple";
+      repo = "pkl-neovim";
+      rev = "512a2bce00f1541ff58e850a74b8671b84976f14";
+      fetchSubmodules = false;
+      sha256 = "sha256-jMC15yUpfB8j+aeTeNTOimPyOT9qxxD4uYymvhlcBAY=";
+    };
+    date = "2025-11-06";
   };
 }

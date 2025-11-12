@@ -1,9 +1,8 @@
-{pkgs, ...}: {
+{pkgs, inputs, ...}: {
   imports = [
     ./aliases.nix
     ./git.nix
     ./godot
-    ./nvf
     # ./nodejs
     ./tmux.nix
     ./wezterm
@@ -50,6 +49,15 @@
 
       # concourse cli
       fly
+
+      (inputs.nvf.lib.neovimConfiguration {
+        pkgs = pkgs.unstable;
+
+        modules = [
+          ../../../modules/nvf
+          ../../../nvf
+        ];
+      }).neovim
     ];
     sessionPath = ["$HOME/bin"];
     shellAliases = {

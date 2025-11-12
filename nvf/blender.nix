@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nvf.settings.vim = {
+  config.vim = {
     lazy.plugins."nvim-blender" = {
       package = pkgs.vimUtils.buildVimPlugin {
         version = "2024-10-11";
