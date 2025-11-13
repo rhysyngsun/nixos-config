@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   lib,
   ...
 }: let
@@ -17,7 +18,7 @@
   defaultServer = "pkl-lsp";
   servers = {
     pkl-lsp = {
-      package = pkgs.pkl-lsp;
+      package = pkgs-stable.pkl-lsp;
       lspConfig = ''
         lspconfig.gopls.setup {
           capabilities = capabilities;
@@ -68,7 +69,7 @@ in {
 
     (mkIf cfg.lsp.enable {
       vim.lsp.lspconfig.enable = true;
-      vim.lsp.lspconfig.sources.go-lsp = servers.${cfg.lsp.server}.lspConfig;
+      vim.lsp.lspconfig.sources.pkl-lsp = servers.${cfg.lsp.server}.lspConfig;
     })
   ]);
 }

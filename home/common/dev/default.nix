@@ -54,6 +54,11 @@
         pkgs = pkgs.unstable;
 
         modules = [
+          {
+            _module.args = {
+              pkgs-stable = pkgs;
+            };
+          }
           ../../../modules/nvf
           ../../../nvf
         ];

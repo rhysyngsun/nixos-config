@@ -16,7 +16,7 @@
       pkl.enable = true;
       python = {
         enable = true;
-        lsp.package = pkgs.unstable.basedpyright;
+        lsp.package = pkgs.basedpyright;
       };
       rust.enable = true;
       sql.enable = true;
