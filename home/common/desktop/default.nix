@@ -26,6 +26,7 @@ with lib;
       qpwgraph
       unetbootin
       wtfutil
+      lsof
       file
       nnn
       exiftool

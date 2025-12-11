@@ -50,6 +50,9 @@
   #   softdep nvidia pre: nvidia-drm
   # '';
 
+  boot.kernel.sysctl."fs.inotify.max_user_instances" = 2147483647;
+  boot.kernel.sysctl."fs.inotify.max_user_watches" = 1048576;
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f75907ab-9b04-4d20-83a9-d4900839e29e";
     fsType = "ext4";

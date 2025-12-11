@@ -1,5 +1,11 @@
 # This file defines overlays
 { inputs, ... }:
+let
+  mkVimPlugins = prev: localSources: prev.vimPlugins.extend(_: prev': {
+    nvim-treesitter = prev'.nvim-treesitter.overrideAttrs (_: _: {
+    });
+  });
+in
 {
   # This one brings our custom packages from the 'pkgs' directory
   additions = import ../pkgs;
@@ -10,7 +16,7 @@
   modifications = final: prev: {
     devenv = inputs.devenv.packages.${final.system}.devenv;
     pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-      (finalPy: prevPy: {
+      (_finalPy: prevPy: {
         wheel-inspect = prevPy.wheel-inspect.overridePythonAttrs (oldAttrs: {
           postPatch = ''
             ${oldAttrs.postPatch}
@@ -21,14 +27,28 @@
       })
     ];
     textual = inputs.pinned-textual-nixpkgs.legacyPackages.${prev.system}.python3Packages.textual;
+    vimPlugins = mkVimPlugins prev prev.localSources;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
+  unstable-packages = final: prev: {
     unstable = import inputs.nixpkgs-unstable {
       system = final.system;
       config.allowUnfree = true;
+      overlays = [
+        (_: prev': {
+          vimPlugins = mkVimPlugins prev' prev.localSources;
+          tree-sitter = prev.tree-sitter.override {
+            extraGrammars = {
+              tree-sitter-pkl = prev.tree-sitter.buildGrammar {
+                language = "pkl";
+                inherit (prev.localSources.tree-sitter-pkl) src version;
+              };
+            };
+          };
+        })
+      ];
     };
   };
 }

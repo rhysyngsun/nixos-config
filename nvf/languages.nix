@@ -1,5 +1,7 @@
-{ pkgs, ... }:
-{
+{ config, pkgs, lib, ... }: let
+  inherit (lib.lists) isList;
+  inherit (lib.nvim.lua) expToLua;
+in {
   config.vim = {
     languages = {
       enableDAP = true;
@@ -20,9 +22,30 @@
       };
       rust.enable = true;
       sql.enable = true;
+      templ.enable = true;
       ts.enable = true;
       yaml.enable = true;
       zig.enable = true;
+    };
+
+    lsp.lspconfig.sources = {
+      sql-lsp = let
+        cfg = config.vim.languages.sql;
+      in lib.mkForce /* lua */ ''
+        lspconfig.sqls.setup {
+          on_attach = function(client)
+            client.server_capabilities.execute_command = true
+            on_attach_keymaps(client, bufnr)
+            require'sqls'.setup{}
+          end,
+          cmd = ${
+          if isList cfg.lsp.package
+          then expToLua cfg.lsp.package
+          else ''{ "${cfg.lsp.package}/bin/sqls", "-config", string.format("%s/.sqls.yml", vim.fn.getcwd()) }''
+        }
+        }
+
+      '';
     };
 
     keymaps = [
@@ -65,26 +88,5 @@
 
       cmd = [ "WhichPy" ];
     };
-
-
-    # additionalRuntimePaths = ["${pkgs.vimPlugins.pkl-neovim}"];
-    #
-    # lazy.plugins.pkl-neovim = {
-    #   package = pkgs.vimPlugins.pkl-neovim;
-    #
-    #   ft = ["pkl"];
-    #
-    #   load = 
-    #     # lua
-    #     ''
-    #     vim.g.pkl_neovim = {
-    #       start_command = { "${pkgs.pkl-lsp}/bin/pkl-lsp" },
-    #       pkl_cli_path = "${pkgs.pkl}/bin/pkl",
-    #     }
-    #
-    #     require('pkl-neovim').init()
-    #     '';
-    # };
-
   };
 }

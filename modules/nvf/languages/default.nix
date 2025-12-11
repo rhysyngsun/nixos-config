@@ -1,3 +1,6 @@
 {
-  imports = [./pkl.nix];
+  imports = [
+    ./pkl.nix
+    ./templ.nix
+  ];
 }

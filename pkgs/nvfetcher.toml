@@ -27,3 +27,14 @@ fetch.github = "apple/pkl-neovim"
 [whichpy-nvim]
 src.git = "https://github.com/neolooong/whichpy.nvim"
 fetch.git = "https://github.com/neolooong/whichpy.nvim"
+
+
+[nvim-treesitter]
+src.git = "https://github.com/nvim-treesitter/nvim-treesitter"
+src.branch = "main"
+fetch.git = "https://github.com/nvim-treesitter/nvim-treesitter"
+
+[tree-sitter-pkl]
+src.git = "https://github.com/apple/tree-sitter-pkl"
+fetch.git = "https://github.com/apple/tree-sitter-pkl"
+

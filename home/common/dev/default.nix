@@ -5,6 +5,7 @@
     ./godot
     # ./nodejs
     ./tmux.nix
+    ./vscode.nix
     ./wezterm
     ./yazi.nix
     ./zsh

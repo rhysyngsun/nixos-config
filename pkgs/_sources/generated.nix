@@ -39,11 +39,25 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.37.0";
+    version = "0.38.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.37.0/Headlamp-0.37.0-linux-x64.AppImage";
-      sha256 = "sha256-ix/gJ0cJ+NxJTYKSa/0Co+g+cxWdq+Zn6atq4L4TkKw=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.38.0/Headlamp-0.38.0-linux-x64.AppImage";
+      sha256 = "sha256-WIsr/lG+yAyoKITk7kka9HEw5nr0o2f4rKcIVf+trP4=";
     };
+  };
+  nvim-treesitter = {
+    pname = "nvim-treesitter";
+    version = "c5871d9d870c866fea9f271f1a3b3f29049a4793";
+    src = fetchgit {
+      url = "https://github.com/nvim-treesitter/nvim-treesitter";
+      rev = "c5871d9d870c866fea9f271f1a3b3f29049a4793";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-oXHJxYFDqZ72C/sJGSMFVwkRRCXipVjE+xz+5eeCX30=";
+    };
+    date = "2025-11-25";
   };
   pkl-lsp = {
     pname = "pkl-lsp";
@@ -55,14 +69,42 @@
   };
   pkl-neovim = {
     pname = "pkl-neovim";
-    version = "512a2bce00f1541ff58e850a74b8671b84976f14";
+    version = "fec35f648c21263cf81228cb8978ac0ad86a66da";
     src = fetchFromGitHub {
       owner = "apple";
       repo = "pkl-neovim";
-      rev = "512a2bce00f1541ff58e850a74b8671b84976f14";
+      rev = "fec35f648c21263cf81228cb8978ac0ad86a66da";
       fetchSubmodules = false;
-      sha256 = "sha256-jMC15yUpfB8j+aeTeNTOimPyOT9qxxD4uYymvhlcBAY=";
+      sha256 = "sha256-Qg5ecegUUWnUPjZG5IcS2v1Vfm0ESIrfq6B4/aehzWo=";
     };
-    date = "2025-11-06";
+    date = "2025-11-21";
+  };
+  tree-sitter-pkl = {
+    pname = "tree-sitter-pkl";
+    version = "82f0e990b727374014371681457cc6ea5c3daa97";
+    src = fetchgit {
+      url = "https://github.com/apple/tree-sitter-pkl";
+      rev = "82f0e990b727374014371681457cc6ea5c3daa97";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-USRl2LghA0e+shclJFp6HxDKJf6+txslMZiQ4pCfOvw=";
+    };
+    date = "2025-11-24";
+  };
+  whichpy-nvim = {
+    pname = "whichpy-nvim";
+    version = "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65";
+    src = fetchgit {
+      url = "https://github.com/neolooong/whichpy.nvim";
+      rev = "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-ijeQjh+jAlKQRT4Wl5R0YpGSp/pd1uyXfWrsRCAumMY=";
+    };
+    date = "2025-05-13";
   };
 }

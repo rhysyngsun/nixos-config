@@ -11,4 +11,5 @@ in
   headlamp = prev.callPackage ./headlamp.nix { source = sources.headlamp; };
   pkl-lsp = prev.callPackage ./pkl-lsp.nix { source = sources.pkl-lsp; };
   vimPlugins = prev.vimPlugins // prev.callPackage ./vimPlugins { inherit sources; };
+  localSources = sources;
 }
