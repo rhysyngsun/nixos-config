@@ -26,7 +26,6 @@ in
         });
       })
     ];
-    textual = inputs.pinned-textual-nixpkgs.legacyPackages.${prev.system}.python3Packages.textual;
     vimPlugins = mkVimPlugins prev prev.localSources;
   };
 

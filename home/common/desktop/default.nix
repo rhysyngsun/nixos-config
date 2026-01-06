@@ -15,7 +15,7 @@ with lib;
     # ./hyprland
     ./niri
     ./pls.nix
-    ./wayland
+    # ./wayland
   ];
   home = {
     packages = with pkgs; [
@@ -34,7 +34,6 @@ with lib;
       unzip
       zlib
       gnome-calendar
-      mkchromecast
       nemo-with-extensions
       cosmic-edit
       simple-scan
@@ -55,7 +54,8 @@ with lib;
 
       keybase-gui
 
-      unstable.gimp3-with-plugins
+      gimp-with-plugins
+
       loupe
       inkscape-with-extensions
       shotwell
@@ -65,13 +65,11 @@ with lib;
       hunspell
       hunspellDicts.en_US
 
-      # transmission_4-gtk
-
-      unstable.blender
+      blender
+      yt-dlp
 
       prismlauncher
 
-      # pants
       libxcrypt
 
       glade

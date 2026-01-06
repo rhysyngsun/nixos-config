@@ -1,7 +1,7 @@
-{stdenv, makeWrapper, jdk24_headless, source, ...}:
+{stdenv, makeWrapper, jdk25_headless, source, ...}:
 let
   inherit (source) pname version src;
-  jdk = jdk24_headless;
+  jdk = jdk25_headless;
 in
   stdenv.mkDerivation {
     inherit pname version src;

@@ -26,7 +26,6 @@
       squirrel-sql
 
       # http request cli's
-      http-prompt
       httpie
       unstable.posting
 

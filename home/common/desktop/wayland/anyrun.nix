@@ -1,6 +1,6 @@
 {
   inputs,
-  system,
+  pkgs,
   ...
 }:
 
@@ -8,7 +8,7 @@
   programs.anyrun = {
     enable = true;
     config = {
-      plugins = with inputs.anyrun.packages.${system}; [
+      plugins = with inputs.anyrun.packages.${pkgs.stdenv.hostPlatform.system}; [
         applications
         kidex
         rink

@@ -12,6 +12,11 @@
   };
 
   programs = {
+    difftastic = {
+      enable = true;
+      git.enable = true;
+    };
+
     gh = {
       # github CLI
       enable = true;
@@ -24,10 +29,6 @@
     git = {
       enable = true;
 
-      difftastic = {
-        enable = true;
-        # enableAsDifftool = true;
-      };
       lfs.enable = true;
 
       ignores = [
@@ -38,7 +39,7 @@
         # "flake.lock"
       ];
 
-      extraConfig = {
+      settings = {
         advice.statusHints = false;
 
         alias = {

@@ -1,11 +1,11 @@
 { inputs, pkgs, ... }:
 let
-  wezterm = inputs.wezterm.packages.${pkgs.system}.default;
+  wezterm = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   # note: NOT using home-manager's programs.wezterm.*
   #       because it handles wezterm.lua in not the most extensible way
-  home.packages = [ wezterm ];
+  home.packages = [ pkgs.wezterm ];
 
   xdg.configFile."wezterm/" = {
     source = ./conf;

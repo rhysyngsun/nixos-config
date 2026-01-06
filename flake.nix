@@ -30,10 +30,6 @@
         ];
         config = {
           allowUnfree = true;
-          permittedInsecurePackages = [
-            "electron-25.9.0"
-            "python3.12-youtube-dl-2021.12.17"
-          ];
         };
       };
     };
@@ -51,10 +47,10 @@
     # Acessible through 'nix develop'
     devShells = forEachPkgs (pkgs: import ./shell.nix {inherit pkgs;});
 
-    formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+    formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
 
     checks = forEachPkgs (pkgs: {
-      formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
     });
 
     # Your custom packages and modifications, exported as overlays
@@ -122,16 +118,14 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
     nixpkgs.follows = "nixpkgs-stable";
     # nixpkgs.follows = "nixpkgs-unstable";
 
-    pinned-textual-nixpkgs.url = "github:nixos/nixpkgs/9b008d60392981ad674e04016d25619281550a9d";
-
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
 
     sops-nix.url = "github:Mic92/sops-nix";
 
