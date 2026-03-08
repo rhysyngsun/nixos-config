@@ -1,7 +1,7 @@
 keys:
-  - &nathan age17htyy5xcu7v9muxy8hpkf6azac7v4vy88d8wnc38fd2myrc70ymqmxzs5c
+  - &nathan age17uexz24vml9jvnljxlzqqtshdddhgya3lg4mn744c8xtdnf9eaqq4dwf0p
 creation_rules:
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini|txt)$
     key_groups:
     - age:
       - *nathan

@@ -17,8 +17,8 @@ in
         vim.o.foldenable = true
         vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
-        vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-        vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+        -- vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+        -- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 
         vim.filetype.add({
           extension = {
@@ -27,19 +27,19 @@ in
         })
       '';
 
-    ui.nvim-ufo = {
-      enable = true;
-      setupOpts = {
-        provider_selector =
-          mkLuaInline
-            # lua
-            ''
-              function(bufnr, filetype, buftype)
-                return {'treesitter', 'indent'}
-              end
-            '';
-      };
-    };
+    # ui.nvim-ufo = {
+    #   enable = true;
+    #   setupOpts = {
+    #     provider_selector =
+    #       mkLuaInline
+    #         # lua
+    #         ''
+    #           function(bufnr, filetype, buftype)
+    #             return {'treesitter', 'indent'}
+    #           end
+    #         '';
+    #   };
+    # };
 
     lazy.plugins."statuscol.nvim" = {
       package = pkgs.vimPlugins.statuscol-nvim;

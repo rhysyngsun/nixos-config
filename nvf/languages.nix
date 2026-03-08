@@ -1,6 +1,5 @@
-{ config, pkgs, lib, ... }: let
-  inherit (lib.lists) isList;
-  inherit (lib.nvim.lua) expToLua;
+{ pkgs, lib, ... }: let
+  inherit (lib.generators) mkLuaInline;
 in {
   config.vim = {
     languages = {
@@ -18,7 +17,7 @@ in {
       pkl.enable = true;
       python = {
         enable = true;
-        lsp.package = pkgs.basedpyright;
+        lsp.servers = ["basedpyright"];
       };
       rust.enable = true;
       sql.enable = true;
@@ -27,25 +26,13 @@ in {
       yaml.enable = true;
       zig.enable = true;
     };
-
-    lsp.lspconfig.sources = {
-      sql-lsp = let
-        cfg = config.vim.languages.sql;
-      in lib.mkForce /* lua */ ''
-        lspconfig.sqls.setup {
-          on_attach = function(client)
-            client.server_capabilities.execute_command = true
-            on_attach_keymaps(client, bufnr)
-            require'sqls'.setup{}
-          end,
-          cmd = ${
-          if isList cfg.lsp.package
-          then expToLua cfg.lsp.package
-          else ''{ "${cfg.lsp.package}/bin/sqls", "-config", string.format("%s/.sqls.yml", vim.fn.getcwd()) }''
-        }
-        }
-
-      '';
+    lsp.servers.sqls = {
+      cmd = lib.mkForce ["${pkgs.sqls}/bin/sqls" "-config" ''string.format("%s/.sqls.yml", vim.fn.getcwd())''];
+      on_attach = mkLuaInline /* lua */ ''function() 
+        client.server_capabilities.execute_command = true
+        on_attach_keymaps(client, bufnr)
+        require'sqls'.setup{}
+      end'';
     };
 
     keymaps = [

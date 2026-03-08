@@ -1,5 +1,6 @@
 {pkgs, inputs, ...}: {
   imports = [
+    ./ai.nix
     ./aliases.nix
     ./git.nix
     ./godot

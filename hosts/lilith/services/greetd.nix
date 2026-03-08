@@ -56,7 +56,6 @@ with lib;
         gtk-theme-name=Catppuccin-Lavender-Dark-Compact
       '';
       "greetd/environments".text = ''
-        Hyprland
         zsh
       '';
     };

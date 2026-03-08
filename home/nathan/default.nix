@@ -13,7 +13,6 @@ in
 {
   modules = [
     inputs.stylix.homeManagerModules.stylix
-    # inputs.hyprland.homeManagerModules.default
     ({ modulesPath, ... }: {
       # Important! We disable home-manager's module to avoid option
       # definition collisions
@@ -22,7 +21,10 @@ in
     inputs.walker.homeManagerModules.default
     inputs.anyrun.homeManagerModules.default
     inputs.ags.homeManagerModules.default
+    inputs.sops-nix.homeManagerModules.sops
+    # inputs.agenix.homeManagerModules.default
     inputs.catppuccin.homeModules.catppuccin
+    inputs.charm-nur.homeModules.crush
     outputs.homeManagerModules
     ./home.nix
     ../../themes/stylix.nix

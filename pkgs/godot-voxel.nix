@@ -34,7 +34,7 @@
 }:
 let
   pname = "godot-voxel";
-  version = "1.5";
+  version = "1.6";
   libs =
     [
       alsa-lib
@@ -73,7 +73,7 @@ stdenv.mkDerivation {
 
   src = fetchzip {
     url = "https://github.com/Zylann/godot_voxel/releases/download/v${version}/godot.linuxbsd.editor.x86_64.zip";
-    hash = "sha256-qpAe3Ps9jrJED4f30zpGF7yNd13OI37Ymu0RSWQ3UOY=";
+    hash = "sha256-b5mykTzuEjmmAj0ZcW6oYbC2bA1CgIZYN6lkdpSGgs4=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

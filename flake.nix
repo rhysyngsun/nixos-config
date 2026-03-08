@@ -20,8 +20,6 @@
           # overlays from inputs
           inputs.nix-rice.overlays.default
           # inputs.copier.overlays.default
-          # hyprland
-          inputs.hyprcursor.overlays.default
           inputs.nur.overlays.default
           # from flake outputs
           outputs.overlays.additions
@@ -98,7 +96,6 @@
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
       "copier.cachix.org-1:sVkdQyyNXrgc53qXPCH9zuS91zpt5eBYcg7JQSmTBG4="
       "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
@@ -108,7 +105,6 @@
       "https://cache.nixos.org"
       "https://devenv.cachix.org"
       "https://nixpkgs-wayland.cachix.org"
-      "https://hyprland.cachix.org"
       "https://anyrun.cachix.org"
       "https://copier.cachix.org"
       "https://wezterm.cachix.org"
@@ -119,8 +115,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
     nixpkgs.follows = "nixpkgs-stable";
     # nixpkgs.follows = "nixpkgs-unstable";
 
@@ -128,6 +124,7 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
 
     sops-nix.url = "github:Mic92/sops-nix";
+    agenix.url = "github:yaxitech/ragenix";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -139,32 +136,6 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
-
-  inputs = {
-    # hyprland = {
-    #   url = "github:hyprwm/Hyprland?ref=v0.40.0";
-    # };
-    hyprland = {
-      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-      # url = "git+ssh://git@github.com/hyprwm/Hyprland?submodules=1";
-      # inputs.nixpkgs.follows="nixpkgs-unstable";
-    };
-
-    # hy3 = {
-    #   url = "github:outfoxxed/hy3";
-    #   # or "github:outfoxxed/hy3" to follow the development branch.
-    #   # (you may encounter issues if you dont do the same for hyprland)
-    #   inputs.hyprland.follows = "hyprland";
-    # };
-
-    # hyprspace = {
-    #   url = "github:KZDKM/Hyprspace";
-    #   inputs.hyprland.follows = "hyprland";
-    # };
-
-    hyprpicker.url = "github:hyprwm/hyprpicker";
-    hyprcursor.url = "github:hyprwm/hyprcursor";
   };
 
   inputs = {
@@ -192,11 +163,6 @@
 
     catppuccin.url = "github:catppuccin/nix/release-25.05";
 
-    catppuccin-hyprland = {
-      url = "github:catppuccin/hyprland";
-      flake = false;
-    };
-
     catppcuccin-rofi = {
       url = "github:catppuccin/rofi";
       flake = false;
@@ -212,6 +178,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf.url = "github:notashelf/nvf?rev=ab991a7e57de67ae8e14b2d6a3ad27368ab1d5e3";
+    nvf.url = "github:notashelf/nvf";
+    charm-nur = {
+      url = "github:charmbracelet/nur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

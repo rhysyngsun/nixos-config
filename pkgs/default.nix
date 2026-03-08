@@ -6,7 +6,6 @@ in
   mit = prev.callPackage ./mit {};
   krita-plugins = prev.callPackage ./krita-plugins {};
   easyeffects-presets = prev.callPackage ./easyeffects-presets {};
-  hyprshot = prev.callPackage ./hyprshot.nix {};
   godot-voxel = prev.callPackage ./godot-voxel.nix {};
   headlamp = prev.callPackage ./headlamp.nix { source = sources.headlamp; };
   pkl-lsp = prev.callPackage ./pkl-lsp.nix { source = sources.pkl-lsp; };

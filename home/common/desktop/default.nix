@@ -12,7 +12,6 @@ with lib;
     ./calendar.nix
     ./chat.nix
     ./eww
-    # ./hyprland
     ./niri
     ./pls.nix
     # ./wayland
@@ -75,6 +74,7 @@ with lib;
       glade
 
       obsidian
+      texliveFull
     ];
 
     sessionVariables =

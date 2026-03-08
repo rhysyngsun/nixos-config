@@ -6,7 +6,6 @@
   mainBar = {
     layer = "top";
     position = "top";
-    modules-left = [ "hyprland/workspaces" ];
     modules-center = [
       "cpu"
       "memory"
@@ -21,23 +20,6 @@
       "custom/powermenu"
     ];
 
-    "hyprland/workspaces" = {
-      format = "{icon}";
-      on-click = "activate";
-      sort-by-number = true;
-      format-icons = {
-        "1" = "1";
-        "2" = "2";
-        "3" = "3";
-        "4" = "4";
-        "5" = "5";
-        "6" = "6";
-        "7" = "7";
-        "8" = "8";
-        "9" = "9";
-        "10" = "10";
-      };
-    };
 
     "cpu" = {
       interval = 10;

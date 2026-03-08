@@ -15,6 +15,8 @@
       home-manager
       git
       sops
+      age
+      ragenix
       nvfetcher
     ];
   };

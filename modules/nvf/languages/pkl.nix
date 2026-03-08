@@ -128,7 +128,7 @@ in {
       '';
 
       vim.pluginRC.pkl_treesitter = entryBefore ["treesitter"] /* lua */ ''
-        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        local parser_config = require("nvim-treesitter.parsers")
         parser_config.pkl = {
           install_info = {
             url = "${cfg.treesitter.package}", -- local path or git repo
