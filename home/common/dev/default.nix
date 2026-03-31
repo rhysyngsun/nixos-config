@@ -52,7 +52,7 @@
       fly
 
       (inputs.nvf.lib.neovimConfiguration {
-        pkgs = pkgs.unstable;
+        pkgs = pkgs.nixos-master;
 
         modules = [
           {

@@ -116,6 +116,7 @@
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs";
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
     nixpkgs.follows = "nixpkgs-stable";
     # nixpkgs.follows = "nixpkgs-unstable";

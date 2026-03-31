@@ -23,8 +23,6 @@ in
     viAlias = true;
     vimAlias = true;
 
-    package = pkgs.neovim-unwrapped;
-
     globals = {
       mapleader = ",";
     };

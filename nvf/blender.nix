@@ -3,13 +3,13 @@
   config.vim = {
     lazy.plugins."nvim-blender" = {
       package = pkgs.vimUtils.buildVimPlugin {
-        version = "2024-10-11";
+        version = "2025-10-17";
         pname = "nvim-blender";
         src = pkgs.fetchFromGitHub {
           owner = "b0o";
           repo = "blender.nvim";
-          rev = "3b0ea86bcee052d12be77d26d6cd1518a8e4b47d";
-          hash = "sha256-neq2H1hOtoPsO+pDhvEiHTIUPrBCb/e6hyJ+ySWgxvs=";
+          rev = "f200feac023ba4ab04f7b8dd28505ea9b06ec518";
+          hash = "sha256-G6XKVi4RhACRLEZLwz+0CjYhVb+9clhfD18juEhhtUo=";
         };
         doCheck = false;
       };
