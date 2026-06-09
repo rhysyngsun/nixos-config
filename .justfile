@@ -11,7 +11,7 @@ update-pkgs:
   nvfetcher -c pkgs/nvfetcher.toml -o pkgs/_sources/
 
 switch-user *args='': git-stage
-  home-manager switch --flake ".#$(whoami)" {{args}}
+  home-manager switch -b backup --flake ".#$(whoami)" {{args}}
 
 dry-build-system *args='': git-stage
   sudo nixos-rebuild dry-build --flake ".#lilith" {{args}}

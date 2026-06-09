@@ -14,7 +14,7 @@ in
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    devenv = inputs.devenv.packages.${final.system}.devenv;
+    devenv = inputs.devenv.packages.${final.stdenv.hostPlatform.system}.devenv;
     pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
       (_finalPy: prevPy: {
         wheel-inspect = prevPy.wheel-inspect.overridePythonAttrs (oldAttrs: {
@@ -33,11 +33,11 @@ in
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: prev: {
     nixos-master = import inputs.nixpkgs-master {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
     unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
       overlays = [
         (_: prev': {

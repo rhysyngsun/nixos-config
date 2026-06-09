@@ -71,15 +71,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-WIsr/lG+yAyoKITk7kka9HEw5nr0o2f4rKcIVf+trP4=",
+            "sha256": "sha256-SdadGirmfSfj1gmbxc5IKRdwnHqkI4keSE0BlkKGW4c=",
             "type": "url",
-            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.38.0/Headlamp-0.38.0-linux-x64.AppImage"
+            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.41.0/Headlamp-0.41.0-linux-x64.AppImage"
         },
-        "version": "0.38.0"
+        "version": "0.41.0"
     },
     "nvim-treesitter": {
         "cargoLocks": null,
-        "date": "2025-11-25",
+        "date": "2026-04-03",
         "extract": null,
         "name": "nvim-treesitter",
         "passthru": null,
@@ -89,13 +89,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "c5871d9d870c866fea9f271f1a3b3f29049a4793",
-            "sha256": "sha256-oXHJxYFDqZ72C/sJGSMFVwkRRCXipVjE+xz+5eeCX30=",
+            "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+            "sha256": "sha256-PQR6tFt4lCrAZNQG7BLMD1IiCKja9wDS1S4laGJf/HE=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/nvim-treesitter/nvim-treesitter"
         },
-        "version": "c5871d9d870c866fea9f271f1a3b3f29049a4793"
+        "version": "4916d6592ede8c07973490d9322f187e07dfefac"
     },
     "pkl-lsp": {
         "cargoLocks": null,
@@ -106,15 +106,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-oI//cGGle4glYjRBGfLZWuDozEqeQQ32HVZ4oM2NKT8=",
+            "sha256": "sha256-mCs3j2/E33WQYuOdaJXtnkYznohNB3yqFS745WwXJw8=",
             "type": "url",
-            "url": "https://github.com/apple/pkl-lsp/releases/download/0.5.1/pkl-lsp-0.5.1.jar"
+            "url": "https://github.com/apple/pkl-lsp/releases/download/0.6.0/pkl-lsp-0.6.0.jar"
         },
-        "version": "0.5.1"
+        "version": "0.6.0"
     },
     "pkl-neovim": {
         "cargoLocks": null,
-        "date": "2025-11-21",
+        "date": "2026-04-24",
         "extract": null,
         "name": "pkl-neovim",
         "passthru": null,
@@ -126,16 +126,16 @@
             "name": null,
             "owner": "apple",
             "repo": "pkl-neovim",
-            "rev": "fec35f648c21263cf81228cb8978ac0ad86a66da",
-            "sha256": "sha256-Qg5ecegUUWnUPjZG5IcS2v1Vfm0ESIrfq6B4/aehzWo=",
+            "rev": "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6",
+            "sha256": "sha256-rWG+0o+Y7Mlcq2+NYbyG8h5Hfws2Nq19MsQHUVlB9x4=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "fec35f648c21263cf81228cb8978ac0ad86a66da"
+        "version": "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6"
     },
     "tree-sitter-pkl": {
         "cargoLocks": null,
-        "date": "2025-11-24",
+        "date": "2026-04-29",
         "extract": null,
         "name": "tree-sitter-pkl",
         "passthru": null,
@@ -145,17 +145,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "82f0e990b727374014371681457cc6ea5c3daa97",
-            "sha256": "sha256-USRl2LghA0e+shclJFp6HxDKJf6+txslMZiQ4pCfOvw=",
+            "rev": "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a",
+            "sha256": "sha256-gM/nznwTAV82eWP/MX3/p/EcaPU4GoA2ya9Pn+VgXog=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
-        "version": "82f0e990b727374014371681457cc6ea5c3daa97"
+        "version": "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a"
     },
     "whichpy-nvim": {
         "cargoLocks": null,
-        "date": "2025-05-13",
+        "date": "2026-03-15",
         "extract": null,
         "name": "whichpy-nvim",
         "passthru": null,
@@ -165,12 +165,12 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65",
-            "sha256": "sha256-ijeQjh+jAlKQRT4Wl5R0YpGSp/pd1uyXfWrsRCAumMY=",
+            "rev": "5c317eab2c5af5f2d109c041f835763f9bf647e5",
+            "sha256": "sha256-zrVRRa868Sq0V8THxq9609FDr2w3n6btISFClE1J30c=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/neolooong/whichpy.nvim"
         },
-        "version": "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65"
+        "version": "5c317eab2c5af5f2d109c041f835763f9bf647e5"
     }
 }

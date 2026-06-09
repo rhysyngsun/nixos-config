@@ -5,9 +5,9 @@
     twitch-dl
 
     # audio production
-    audacity
-    zrythm
-    helm
-    lmms
+    # audacity
+    # zrythm
+    # helm
+    # lmms
   ];
 }

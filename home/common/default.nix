@@ -21,4 +21,6 @@
     secrets."llms/anthropic/api_key" = {};
     secrets."llms/openrouter/api_key" = {};
   };
+
+  xdg.userDirs.setSessionVariables = false;
 }

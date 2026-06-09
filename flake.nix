@@ -114,7 +114,7 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs";
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/092b4f17187b623239eae0cb75ea89124c23f5f9";
@@ -122,7 +122,7 @@
     # nixpkgs.follows = "nixpkgs-unstable";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
 
     sops-nix.url = "github:Mic92/sops-nix";
     agenix.url = "github:yaxitech/ragenix";

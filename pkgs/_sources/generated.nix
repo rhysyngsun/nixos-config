@@ -39,72 +39,72 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.38.0";
+    version = "0.41.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.38.0/Headlamp-0.38.0-linux-x64.AppImage";
-      sha256 = "sha256-WIsr/lG+yAyoKITk7kka9HEw5nr0o2f4rKcIVf+trP4=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.41.0/Headlamp-0.41.0-linux-x64.AppImage";
+      sha256 = "sha256-SdadGirmfSfj1gmbxc5IKRdwnHqkI4keSE0BlkKGW4c=";
     };
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "c5871d9d870c866fea9f271f1a3b3f29049a4793";
+    version = "4916d6592ede8c07973490d9322f187e07dfefac";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "c5871d9d870c866fea9f271f1a3b3f29049a4793";
+      rev = "4916d6592ede8c07973490d9322f187e07dfefac";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-oXHJxYFDqZ72C/sJGSMFVwkRRCXipVjE+xz+5eeCX30=";
+      sha256 = "sha256-PQR6tFt4lCrAZNQG7BLMD1IiCKja9wDS1S4laGJf/HE=";
     };
-    date = "2025-11-25";
+    date = "2026-04-03";
   };
   pkl-lsp = {
     pname = "pkl-lsp";
-    version = "0.5.1";
+    version = "0.6.0";
     src = fetchurl {
-      url = "https://github.com/apple/pkl-lsp/releases/download/0.5.1/pkl-lsp-0.5.1.jar";
-      sha256 = "sha256-oI//cGGle4glYjRBGfLZWuDozEqeQQ32HVZ4oM2NKT8=";
+      url = "https://github.com/apple/pkl-lsp/releases/download/0.6.0/pkl-lsp-0.6.0.jar";
+      sha256 = "sha256-mCs3j2/E33WQYuOdaJXtnkYznohNB3yqFS745WwXJw8=";
     };
   };
   pkl-neovim = {
     pname = "pkl-neovim";
-    version = "fec35f648c21263cf81228cb8978ac0ad86a66da";
+    version = "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6";
     src = fetchFromGitHub {
       owner = "apple";
       repo = "pkl-neovim";
-      rev = "fec35f648c21263cf81228cb8978ac0ad86a66da";
+      rev = "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6";
       fetchSubmodules = false;
-      sha256 = "sha256-Qg5ecegUUWnUPjZG5IcS2v1Vfm0ESIrfq6B4/aehzWo=";
+      sha256 = "sha256-rWG+0o+Y7Mlcq2+NYbyG8h5Hfws2Nq19MsQHUVlB9x4=";
     };
-    date = "2025-11-21";
+    date = "2026-04-24";
   };
   tree-sitter-pkl = {
     pname = "tree-sitter-pkl";
-    version = "82f0e990b727374014371681457cc6ea5c3daa97";
+    version = "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a";
     src = fetchgit {
       url = "https://github.com/apple/tree-sitter-pkl";
-      rev = "82f0e990b727374014371681457cc6ea5c3daa97";
+      rev = "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-USRl2LghA0e+shclJFp6HxDKJf6+txslMZiQ4pCfOvw=";
+      sha256 = "sha256-gM/nznwTAV82eWP/MX3/p/EcaPU4GoA2ya9Pn+VgXog=";
     };
-    date = "2025-11-24";
+    date = "2026-04-29";
   };
   whichpy-nvim = {
     pname = "whichpy-nvim";
-    version = "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65";
+    version = "5c317eab2c5af5f2d109c041f835763f9bf647e5";
     src = fetchgit {
       url = "https://github.com/neolooong/whichpy.nvim";
-      rev = "4091361ed224e0e5ae92b2a5c412cb2ca7c26f65";
+      rev = "5c317eab2c5af5f2d109c041f835763f9bf647e5";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-ijeQjh+jAlKQRT4Wl5R0YpGSp/pd1uyXfWrsRCAumMY=";
+      sha256 = "sha256-zrVRRa868Sq0V8THxq9609FDr2w3n6btISFClE1J30c=";
     };
-    date = "2025-05-13";
+    date = "2026-03-15";
   };
 }

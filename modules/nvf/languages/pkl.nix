@@ -11,7 +11,7 @@
   inherit (lib.lists) isList;
   inherit (lib.types) enum either listOf package str;
   inherit (lib.nvim.types) mkGrammarOption;
-  inherit (lib.nvim.lua) expToLua;
+  inherit (lib.nvim.lua) toLuaObject;
   inherit (lib.nvim.dag) entryBefore;
 
   cfg = config.vim.languages.pkl;
@@ -20,6 +20,18 @@
   servers = {
     pkl-lsp = {
       package = pkgs-stable.pkl-lsp;
+      lspConfig =  /* lua */''
+        lspconfig.pkl_lsp.setup {
+          capabilities = capabilities;
+          on_attach = default_on_attach;
+          settings = {
+            ["pkl.cli.path"] = "${pkgs.pkl}/bin/pkl",
+          };
+        }
+      '';
+    };
+    brine = {
+      package = ["/home/nathan/rhysyngsun/brine/brine"];
       lspConfig =  /* lua */''
         lspconfig.pkl_lsp.setup {
           capabilities = capabilities;
@@ -82,7 +94,7 @@ in {
           default_config = {
             cmd = ${
               if isList cfg.lsp.package
-              then expToLua cfg.lsp.package
+              then toLuaObject cfg.lsp.package
               else ''{"${cfg.lsp.package}/bin/pkl-lsp"}''
             },
             filetypes = { "pkl" };
@@ -114,17 +126,6 @@ in {
             };
           };
         }
-
-        -- vim.api.nvim_create_autocmd('LspAttach', {
-        --   callback = function(ev)
-        --     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        --
-        --     if client.name == "pkl_lsp" then
-        --       local buf = vim.api.nvim_get_current_buf()
-        --       client:request("pkl/syncProjects", nil, function() end, buf)
-        --     end
-        --   end
-        -- })
       '';
 
       vim.pluginRC.pkl_treesitter = entryBefore ["treesitter"] /* lua */ ''

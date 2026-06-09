@@ -40,7 +40,9 @@
 
       kubectl
       headlamp
+      kubernetes-helm
       awscli2
+      k6
 
       # virtualization
       lazydocker

@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -9,6 +10,8 @@
   programs = {
     firefox = {
       enable = true;
+      # configPath = "${config.xdg.configHome}/mozilla/firefox";
+      configPath = ".mozilla/firefox";
       profiles = {
         Default = {
           id = 0;
@@ -105,7 +108,4 @@
       };
     };
   };
-
-  # stop asking about this
-  home.file.".mozilla/firefox/Default/search.json.mozlz4".force = lib.mkForce true;
 }

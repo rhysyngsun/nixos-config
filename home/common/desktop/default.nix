@@ -21,7 +21,7 @@ with lib;
       #libsForQt5.kcharselect
       networkmanagerapplet
       pavucontrol
-      helvum
+      crosspipe
       qpwgraph
       unetbootin
       wtfutil

@@ -14,7 +14,10 @@ in {
       lua.enable = true;
       nix.enable = true;
       markdown.enable = true;
-      pkl.enable = true;
+      pkl = {
+        enable = true;
+        lsp.server = "brine";
+      };
       python = {
         enable = true;
         lsp.servers = ["basedpyright"];
@@ -22,7 +25,7 @@ in {
       rust.enable = true;
       sql.enable = true;
       templ.enable = true;
-      ts.enable = true;
+      typescript.enable = true;
       yaml.enable = true;
       zig.enable = true;
     };

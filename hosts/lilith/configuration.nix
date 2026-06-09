@@ -213,6 +213,7 @@
   virtualisation = {
     docker.enable = true;
   };
+  # services.k3s.enable = true;
 
   programs.dconf.enable = true;
 
