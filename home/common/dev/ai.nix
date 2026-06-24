@@ -1,6 +1,6 @@
 {config, pkgs, ...}: {
   home.packages = with pkgs; [
-    unstable.ollama-cuda
+    # pkgs-unstable.ollama-cuda
     pi-coding-agent
     # pkgs.claude-code
     # (pkgs.writeShellScriptBin "crush-configured" ''

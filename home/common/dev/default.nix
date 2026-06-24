@@ -14,7 +14,7 @@
 
   home = {
     packages = with pkgs; [
-      unstable.heroku
+      pkgs-unstable.heroku
       xh
       just
       usql
@@ -28,7 +28,7 @@
 
       # http request cli's
       httpie
-      unstable.posting
+      pkgs-unstable.posting
 
       # jq/xq/yq all-in-one
       yq-go
@@ -54,7 +54,7 @@
       fly
 
       (inputs.nvf.lib.neovimConfiguration {
-        pkgs = pkgs.nixos-master;
+        pkgs = pkgs.pkgs-edge;
 
         modules = [
           {

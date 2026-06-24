@@ -8,7 +8,7 @@ local config = wezterm.config_builder()
 config.enable_wayland = true
 
 config.enable_scroll_bar = true
-config.scrollback_lines = 10000
+config.scrollback_lines = 30000
 
 -- theme
 config.color_scheme = 'Catppuccin Mocha'

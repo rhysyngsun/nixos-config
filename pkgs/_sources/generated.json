@@ -1,6 +1,6 @@
 {
     "catppuccin-btop": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2024-09-23",
         "extract": null,
         "name": "catppuccin-btop",
@@ -21,7 +21,7 @@
         "version": "f437574b600f1c6d932627050b15ff5153b58fa3"
     },
     "catppuccin-godot": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2023-03-14",
         "extract": null,
         "name": "catppuccin-godot",
@@ -42,7 +42,7 @@
         "version": "62f50af79b40f36e00b27ce9d9baaccdf220d8e6"
     },
     "catppuccin-rofi": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2025-07-19",
         "extract": null,
         "name": "catppuccin-rofi",
@@ -63,7 +63,7 @@
         "version": "71fb15577ccb091df2f4fc1f65710edbc61b5a53"
     },
     "headlamp": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "headlamp",
@@ -71,14 +71,14 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-SdadGirmfSfj1gmbxc5IKRdwnHqkI4keSE0BlkKGW4c=",
+            "sha256": "sha256-oXH0Jcc7aLehE3CIp4UWhurTskrbFM5gd7A04cHMEQw=",
             "type": "url",
-            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.41.0/Headlamp-0.41.0-linux-x64.AppImage"
+            "url": "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.43.0/Headlamp-0.43.0-linux-x64.AppImage"
         },
-        "version": "0.41.0"
+        "version": "0.43.0"
     },
     "nvim-treesitter": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2026-04-03",
         "extract": null,
         "name": "nvim-treesitter",
@@ -98,7 +98,7 @@
         "version": "4916d6592ede8c07973490d9322f187e07dfefac"
     },
     "pkl-lsp": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "pkl-lsp",
@@ -106,15 +106,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-mCs3j2/E33WQYuOdaJXtnkYznohNB3yqFS745WwXJw8=",
+            "sha256": "sha256-ToRFBTfBteDt329k/JOub4hP9F7j7UKWtcBh56fH804=",
             "type": "url",
-            "url": "https://github.com/apple/pkl-lsp/releases/download/0.6.0/pkl-lsp-0.6.0.jar"
+            "url": "https://github.com/apple/pkl-lsp/releases/download/0.7.1/pkl-lsp-0.7.1.jar"
         },
-        "version": "0.6.0"
+        "version": "0.7.1"
     },
     "pkl-neovim": {
-        "cargoLocks": null,
-        "date": "2026-04-24",
+        "cargoLock": null,
+        "date": "2026-06-11",
         "extract": null,
         "name": "pkl-neovim",
         "passthru": null,
@@ -126,16 +126,16 @@
             "name": null,
             "owner": "apple",
             "repo": "pkl-neovim",
-            "rev": "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6",
-            "sha256": "sha256-rWG+0o+Y7Mlcq2+NYbyG8h5Hfws2Nq19MsQHUVlB9x4=",
+            "rev": "5b1285db16a83c10dacc53dd4701825c0924ea8f",
+            "sha256": "sha256-rOOmHGt52h4A7XmttKN/x5dCR8JXNW8GRvMdRW1n+nY=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "6067ca1424d851a3ce93b0429e23e3e13a8ee6e6"
+        "version": "5b1285db16a83c10dacc53dd4701825c0924ea8f"
     },
     "tree-sitter-pkl": {
-        "cargoLocks": null,
-        "date": "2026-04-29",
+        "cargoLock": null,
+        "date": "2026-06-11",
         "extract": null,
         "name": "tree-sitter-pkl",
         "passthru": null,
@@ -145,17 +145,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a",
-            "sha256": "sha256-gM/nznwTAV82eWP/MX3/p/EcaPU4GoA2ya9Pn+VgXog=",
+            "rev": "90b64cb6e563bcc96552490ccd40667418c65cdc",
+            "sha256": "sha256-sunORGHH/yzrqKZcByU6hs6PzsLr2rdi3ph4FBceyLk=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
-        "version": "4b0c34dde3fa8a6bb3c3e6118e5cec745f452c9a"
+        "version": "90b64cb6e563bcc96552490ccd40667418c65cdc"
     },
     "whichpy-nvim": {
-        "cargoLocks": null,
-        "date": "2026-03-15",
+        "cargoLock": null,
+        "date": "2026-05-09",
         "extract": null,
         "name": "whichpy-nvim",
         "passthru": null,
@@ -165,12 +165,12 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "5c317eab2c5af5f2d109c041f835763f9bf647e5",
-            "sha256": "sha256-zrVRRa868Sq0V8THxq9609FDr2w3n6btISFClE1J30c=",
+            "rev": "96bc91d36d52fd64f1e5ab358c1b85f313c11628",
+            "sha256": "sha256-a4TqZ7wW5quTvZ1TgTdpzm4K2hM6+fsvLZgVzl8USfU=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/neolooong/whichpy.nvim"
         },
-        "version": "5c317eab2c5af5f2d109c041f835763f9bf647e5"
+        "version": "96bc91d36d52fd64f1e5ab358c1b85f313c11628"
     }
 }
