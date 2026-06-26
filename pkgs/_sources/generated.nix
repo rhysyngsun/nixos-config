@@ -64,6 +64,20 @@
     };
     date = "2026-04-03";
   };
+  odl-agent-kit = {
+    pname = "odl-agent-kit";
+    version = "a67c634487f0f65039e8e6859b104f7faf628763";
+    src = fetchgit {
+      url = "https://github.com/mitodl/agent-kit.git";
+      rev = "a67c634487f0f65039e8e6859b104f7faf628763";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-ETOhV3+gNIV5hv2l/dUgwBRuZuQpEJxl7cTU+pkj9JM=";
+    };
+    date = "2026-06-25";
+  };
   pkl-lsp = {
     pname = "pkl-lsp";
     version = "0.7.1";

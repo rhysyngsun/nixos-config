@@ -38,3 +38,6 @@ fetch.git = "https://github.com/nvim-treesitter/nvim-treesitter"
 src.git = "https://github.com/apple/tree-sitter-pkl"
 fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
+[odl-agent-kit]
+src.git = "https://github.com/mitodl/agent-kit.git"
+fetch.git = "https://github.com/mitodl/agent-kit.git"

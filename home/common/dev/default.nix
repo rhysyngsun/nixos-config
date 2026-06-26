@@ -17,6 +17,7 @@
       pkgs-unstable.heroku
       xh
       just
+      grc
       usql
       gnumake
       git-ignore

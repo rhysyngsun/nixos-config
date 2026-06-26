@@ -1,38 +1,28 @@
-{config, pkgs, ...}: {
+{pkgs, lib, ...}: {
   home.packages = with pkgs; [
-    # pkgs-unstable.ollama-cuda
     pi-coding-agent
-    # pkgs.claude-code
-    # (pkgs.writeShellScriptBin "crush-configured" ''
-    #   export ANTHROPIC_API_KEY="$( cat ${config.sops.secrets."llms/anthropic/api_key".path} )"
-    #   export OPENROUTER_API_KEY="$( cat ${config.sops.secrets."llms/openrouter/api_key".path} )"
-    #
-    #   ${config.programs.crush.package}/bin/crush
-    # '')
   ];
-  programs.claude-code = {
+  programs.claude-code = let
+    mkSkills = category: names: (
+      lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/${category}/${name}")
+    );
+  in {
     enable = true;
+    skills = lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkills ({
+      process = [
+        "create-ol-github-issue"
+        "create-ol-pull-request"
+        "create-ol-rfc-discussion"
+        "generate-standup"
+      ];
+      python = [
+        "uv-python-workflow"
+      ];
+    }));
   };
-  # programs.crush = {
-  #   enable = true;
-  #   settings = {
-  #     providers = {
-  #       ollama = {
-  #         name = "Ollama";
-  #         base_url = "http://localhost:11434/v1/";
-  #         type = "openai-compat";
-  #         models = [
-  #           {
-  #             name = "Qwen 33.";
-  #             id = "qwen3.5";
-  #             context_window = 256000;
-  #             default_max_tokens = 20000;
-  #           }
-  #         ];
-  #       };
-  #     };
-  #   };
-  # };
+
+
+
   # programs.pi-coding-agent = {
   #   enable = true;
   #   configDir = "${config.xdg.configHome}/pi/agent";

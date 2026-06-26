@@ -3,7 +3,7 @@ final: prev: let
 in
 {
   rice = prev.callPackage ./rice.nix {};
-  mit = prev.callPackage ./mit {};
+  mit = prev.callPackage ./mit { inherit sources; };
   krita-plugins = prev.callPackage ./krita-plugins {};
   easyeffects-presets = prev.callPackage ./easyeffects-presets {};
   godot-voxel = prev.callPackage ./godot-voxel.nix {};

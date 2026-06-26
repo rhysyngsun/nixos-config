@@ -31,6 +31,7 @@
 
           search = {
             default = "ddg";
+            force = true;
 
             engines = {
               nix-packages = {
