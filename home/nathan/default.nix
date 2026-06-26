@@ -24,7 +24,7 @@ in
     inputs.sops-nix.homeManagerModules.sops
     # inputs.agenix.homeManagerModules.default
     inputs.catppuccin.homeModules.catppuccin
-    outputs.homeManagerModules
+    outputs.homeManagerModules.default
     ./home.nix
     ../../themes/stylix.nix
     ../common

@@ -1,97 +1,83 @@
 {
   description = "Rhysyngsun's nixos configs";
 
-  outputs = {
-    self,
-    nixpkgs,
-    treefmt-nix,
-    home-manager,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-
-    nix-defaults = {
-      nix = import ./nix-settings.nix {
-        inherit inputs;
-        inherit (nixpkgs) lib;
-      };
-      nixpkgs = {
-        overlays = [
-          # overlays from inputs
-          inputs.nix-rice.overlays.default
-          # inputs.copier.overlays.default
-          inputs.nur.overlays.default
-          # from flake outputs
-          outputs.overlays.additions
-          outputs.overlays.modifications
-          outputs.overlays.unstable-packages
-        ];
-        config = {
-          allowUnfree = true;
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { self, inputs, ... }:
+      let
+        overlays = import ./overlays { inherit inputs; };
+        nix-defaults = {
+          nix = import ./nix-settings.nix {
+            inherit inputs;
+            inherit (inputs.nixpkgs) lib;
+          };
+          nixpkgs = {
+            overlays = [
+              inputs.nix-rice.overlays.default
+              inputs.nur.overlays.default
+              overlays.additions
+              overlays.modifications
+              overlays.unstable-packages
+            ];
+            config.allowUnfree = true;
+          };
         };
-      };
-    };
+      in
+      {
+        systems = [ "x86_64-linux" ];
 
-    forEachSystem = nixpkgs.lib.genAttrs ["x86_64-linux"];
-    forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
+        perSystem =
+          { pkgs, ... }:
+          let
+            treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+          in
+          {
+            devShells = import ./shell.nix { inherit pkgs; };
+            formatter = treefmtEval.config.build.wrapper;
+            checks.formatting = treefmtEval.config.build.check self;
+          };
 
-    # Eval the treefmt modules from ./treefmt.nix
-    treefmtEval = forEachPkgs (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-  in {
-    nixosModules = import ./modules/nixos;
-    homeManagerModules = import ./modules/home-manager;
+        flake = {
+          inherit overlays;
 
-    # Devshell for bootstrapping
-    # Acessible through 'nix develop'
-    devShells = forEachPkgs (pkgs: import ./shell.nix {inherit pkgs;});
+          nixosModules.default = import ./modules/nixos;
+          homeManagerModules.default = import ./modules/home-manager;
 
-    formatter = forEachPkgs (pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
+          nixosConfigurations = {
+            lilith = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs; };
+              modules = [
+                inputs.sops-nix.nixosModules.sops
+                nix-defaults
+                ./hosts/lilith/configuration.nix
+              ];
+            };
+            morrigan = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs; };
+              modules = [
+                inputs.sops-nix.nixosModules.sops
+                nix-defaults
+                ./hosts/morrigan/configuration.nix
+              ];
+            };
+          };
 
-    checks = forEachPkgs (pkgs: {
-      formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
-    });
-
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      lilith = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
+          homeConfigurations = {
+            nathan = inputs.home-manager.lib.homeManagerConfiguration (
+              import ./home/nathan {
+                inherit inputs nix-defaults;
+                outputs = self;
+              }
+            );
+          };
         };
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          nix-defaults
-
-          ./hosts/lilith/configuration.nix
-        ];
-      };
-      morrigan = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          nix-defaults
-
-          ./hosts/morrigan/configuration.nix
-        ];
-      };
-    };
-
-    homeConfigurations = {
-      nathan = home-manager.lib.homeManagerConfiguration (
-        import ./home/nathan {inherit inputs outputs nix-defaults;}
-      );
-    };
-  };
+      }
+    );
 
   nixConfig = {
-    # add binary caches
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
@@ -113,6 +99,8 @@
   };
 
   inputs = {
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     # Nixpkgs
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -129,38 +117,26 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     nix-alien.url = "github:thiagokokada/nix-alien";
-
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-  inputs = {
-    anyrun = {
-      url = "github:Kirottu/anyrun";
-    };
-
+    anyrun.url = "github:Kirottu/anyrun";
     walker.url = "github:abenz1267/walker";
-
     ags.url = "github:Aylur/ags";
-
     wezterm.url = "github:wez/wezterm?dir=nix&rev=7053748e4d899e7fc5e202d6f903b052fc78e759";
 
     networkmanager-dmenu = {
       url = "github:firecat53/networkmanager-dmenu";
       flake = false;
     };
-  };
 
-  # rice
-  inputs = {
+    # rice
     stylix.url = "github:danth/stylix/release-24.11";
-
     nix-rice.url = "github:bertof/nix-rice";
-
     catppuccin.url = "github:catppuccin/nix/release-25.05";
 
     catppcuccin-rofi = {
