@@ -4,11 +4,11 @@
   ];
   programs.claude-code = let
     mkSkills = category: names: (
-      lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/${category}/${name}")
+      lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/skills/${category}/${name}")
     );
   in {
     enable = true;
-    skills = lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkills ({
+    skills = lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkills {
       process = [
         "create-ol-github-issue"
         "create-ol-pull-request"
@@ -18,10 +18,8 @@
       python = [
         "uv-python-workflow"
       ];
-    }));
+    });
   };
-
-
 
   # programs.pi-coding-agent = {
   #   enable = true;
