@@ -35,8 +35,7 @@
         ".direnv/"
         ".envrc"
         ".devenv/"
-        # "flake.nix"
-        # "flake.lock"
+        ".claude/"
       ];
 
       settings = {
