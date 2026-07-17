@@ -131,6 +131,7 @@ with lib;
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      historyWidget.command = "";
     };
 
     go = {

@@ -1,14 +1,18 @@
-{pkgs, lib, ...}: {
+{config, pkgs, lib, ...}: {
   home.packages = with pkgs; [
-    pi-coding-agent
     ollama-vulkan
   ];
-  programs.claude-code = let
+  programs.claude-code = {
+    enable = true;
+  };
+
+  programs.claude-code-personal = let
     mkSkills = category: names: (
       lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/skills/${category}/${name}")
     );
   in {
     enable = true;
+    package = null;
     skills = lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkills {
       process = [
         "create-ol-github-issue"
@@ -37,11 +41,34 @@
   home.shellAliases = {
     claude-personal = ''CLAUDE_CONFIG_DIR=~/.claude-personal claude "$@"'';
   };
-  # programs.pi-coding-agent = {
-  #   enable = true;
-  #   configDir = "${config.xdg.configHome}/pi/agent";
-  #   settings = {
-  #     theme = "dark";
-  #   };
-  # };
+
+  programs.pi-coding-agent = {
+    enable = true;
+    package = pkgs.pkgs-unstable.pi-coding-agent;
+    # configDir = "${config.xdg.configHome}/pi/agent";
+    extraPackages = with pkgs; [
+      nodejs
+      python3
+    ];
+    settings = {
+      theme = "dark";
+      packages = [
+        "npm:@mjasnikovs/pi-task"
+        "npm:@bacnh85/pi-plan"
+      ];
+      providers = {
+        ollama = {
+          baseUrl = "http://localhost:11434/v1";
+          api = "openai-completions";
+          apiKey = "ollama";
+          models = [
+            {
+              id = "qwen3-coder:30b";
+              name = "qwen3-coder";
+            }
+          ];
+        };
+      };
+    };
+  };
 }
