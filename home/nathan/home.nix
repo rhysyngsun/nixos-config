@@ -3,8 +3,6 @@ let
   username = "nathan";
 in
 {
-  imports = [ ./myco.nix ];
-
   home = {
     username = "${username}";
     homeDirectory = "/home/${username}";
