@@ -4,8 +4,18 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, inputs, ... }:
+      {
+        self,
+        inputs,
+        config,
+        lib,
+        ...
+      }:
       let
+        inherit (inputs.nixpkgs.lib.fileset) toList fileFilter;
+        import-tree =
+          path: toList (fileFilter (file: file.hasExt "nix" && !(lib.hasPrefix "_" file.name)) path);
+
         overlays = import ./overlays { inherit inputs; };
         nix-defaults = {
           nix = import ./nix-settings.nix {
@@ -23,9 +33,29 @@
             config.allowUnfree = true;
           };
         };
+
+        system = "x86_64-linux";
+        hostModules = lib.filterAttrs (n: _: lib.hasPrefix "host-" n) config.flake.modules.nixos;
+        homeModules = lib.filterAttrs (n: _: lib.hasPrefix "home-" n) config.flake.modules.homeManager;
       in
       {
-        systems = [ "x86_64-linux" ];
+        systems = [ system ];
+
+        imports = [
+          # Declares `flake.modules.<class>.<name>` as a real, mergeable option so every
+          # self-registering file under ./modules can independently contribute an entry
+          # without colliding (flake-parts' own `flake.*` freeform doesn't deep-merge this).
+          (
+            { lib, ... }:
+            {
+              options.flake.modules = lib.mkOption {
+                type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.raw);
+                default = { };
+              };
+            }
+          )
+        ]
+        ++ import-tree ./modules;
 
         perSystem =
           { pkgs, ... }:
@@ -41,38 +71,45 @@
         flake = {
           inherit overlays;
 
-          nixosModules.default = import ./modules/nixos;
-          homeManagerModules.default = import ./modules/home-manager;
-
-          nixosConfigurations = {
-            lilith = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              specialArgs = { inherit inputs; };
-              modules = [
-                inputs.sops-nix.nixosModules.sops
-                nix-defaults
-                ./hosts/lilith/configuration.nix
-              ];
-            };
-            morrigan = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              specialArgs = { inherit inputs; };
-              modules = [
-                inputs.sops-nix.nixosModules.sops
-                nix-defaults
-                ./hosts/morrigan/configuration.nix
-              ];
-            };
-          };
-
-          homeConfigurations = {
-            nathan = inputs.home-manager.lib.homeManagerConfiguration (
-              import ./home/nathan {
-                inherit inputs nix-defaults;
-                outputs = self;
+          nixosConfigurations = lib.mapAttrs' (
+            name: mod:
+            lib.nameValuePair (lib.removePrefix "host-" name) (
+              inputs.nixpkgs.lib.nixosSystem {
+                inherit system;
+                specialArgs = { inherit inputs; };
+                modules = [
+                  inputs.sops-nix.nixosModules.sops
+                  nix-defaults
+                  mod
+                ];
               }
-            );
-          };
+            )
+          ) hostModules;
+
+          homeConfigurations = lib.mapAttrs' (
+            name: mod:
+            lib.nameValuePair (lib.removePrefix "home-" name) (
+              inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = import inputs.nixpkgs {
+                  inherit system;
+                  inherit (nix-defaults.nixpkgs) config overlays;
+                };
+                extraSpecialArgs = { inherit system inputs; };
+                modules = [
+                  mod
+                  (
+                    { pkgs, ... }:
+                    {
+                      nix = {
+                        package = pkgs.nix;
+                        inherit (nix-defaults.nix) settings;
+                      };
+                    }
+                  )
+                ];
+              }
+            )
+          ) homeModules;
         };
       }
     );

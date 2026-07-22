@@ -1,0 +1,14 @@
+{ ... }:
+{
+  flake.modules.homeManager.programs-niri =
+    { pkgs, ... }:
+    {
+      xdg.configFile."niri/config.kdl".source = ./config.kdl;
+
+      home.packages = with pkgs; [ xwayland-satellite ];
+
+      programs.swaylock = {
+        enable = true;
+      };
+    };
+}

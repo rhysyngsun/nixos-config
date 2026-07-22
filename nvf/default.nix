@@ -17,6 +17,8 @@ in
     ./spectre.nix
     ./telescope.nix
     ./undotree.nix
+    ./languages
+    ./lsp
   ];
 
   config.vim = {

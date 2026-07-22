@@ -1,4 +1,0 @@
-{ ... }:
-{
-  # example = callPackage ./example {};
-}
