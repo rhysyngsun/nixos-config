@@ -14,7 +14,7 @@ let
 in
 {
   # This one brings our custom packages from the 'pkgs' directory
-  additions = import ../pkgs;
+  additions = import ../pkgs { inherit inputs; };
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.

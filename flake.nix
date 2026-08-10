@@ -152,6 +152,24 @@
     sops-nix.url = "github:Mic92/sops-nix";
     agenix.url = "github:yaxitech/ragenix";
 
+    # Python packaging — used by pkgs/mit/witan.nix to build the witan MCP
+    # server hermetically from agent-kit's own uv.lock.
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     nix-alien.url = "github:thiagokokada/nix-alien";

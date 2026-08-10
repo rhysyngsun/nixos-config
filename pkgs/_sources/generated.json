@@ -99,7 +99,7 @@
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-06-25",
+        "date": "2026-08-10",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -109,13 +109,28 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "a67c634487f0f65039e8e6859b104f7faf628763",
-            "sha256": "sha256-ETOhV3+gNIV5hv2l/dUgwBRuZuQpEJxl7cTU+pkj9JM=",
+            "rev": "7eb54d06bffc7a2f7274030e3b86ebcae15c2871",
+            "sha256": "sha256-iNR51cxMC0B6k8wGPDW0gY4gf7s1BMc2pyGtOPIY/Fw=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "a67c634487f0f65039e8e6859b104f7faf628763"
+        "version": "7eb54d06bffc7a2f7274030e3b86ebcae15c2871"
+    },
+    "omnigraph": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "omnigraph",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-wl4rtTWIh+ZOM9MTU3DoDqIVpUYI33I9l9nKxnt/nj4=",
+            "type": "url",
+            "url": "https://github.com/ModernRelay/omnigraph/releases/download/v0.8.1/omnigraph-linux-x86_64.tar.gz"
+        },
+        "version": "0.8.1"
     },
     "pkl-lsp": {
         "cargoLock": null,

@@ -6,9 +6,11 @@
       pkgs,
       lib,
       ...
-    }: let
-      jsonFormat = pkgs.formats.json {};
-    in {
+    }:
+    let
+      jsonFormat = pkgs.formats.json { };
+    in
+    {
       home.packages = with pkgs; [
         lmstudio
       ];
@@ -39,7 +41,10 @@
                   contextWindow = 128000;
                   maxTokens = 32000;
                   reasoning = true;
-                  input = ["text" "image"];
+                  input = [
+                    "text"
+                    "image"
+                  ];
                   cost = {
                     input = 0;
                     output = 0;
@@ -72,7 +77,10 @@
                   contextWindow = 128000;
                   maxTokens = 32000;
                   reasoning = true;
-                  input = ["text" "image"];
+                  input = [
+                    "text"
+                    "image"
+                  ];
                   cost = {
                     input = 0;
                     output = 0;
@@ -84,7 +92,10 @@
                   id = "gemma4:12b";
                   name = "gemma4:12b";
                   reasoning = true;
-                  input = ["text" "image"];
+                  input = [
+                    "text"
+                    "image"
+                  ];
                   contextWindow = 256000;
                   maxTokens = 32000;
                   cost = {
@@ -100,15 +111,33 @@
         };
       };
 
-      home.file."${config.programs.pi-coding-agent.configDir}/pi-plan-mode.json".source = jsonFormat.generate "pi-plan-mode.json" {
-        thinkingLevel = "inherit";
-        defaultPlanTools = ["read" "bash" "grep" "find" "ls"];
-        implementationPlanRetention = "keep";
-        defaultPlanExportPath = "PLAN.md";
-        safeSubcommands = {
-          git = ["status" "log" "rev-parse" "blame"];
-          gh = ["pr view" "pr list" "issue view" "issue list"];
-        };
-      };
+      home.file."${config.programs.pi-coding-agent.configDir}/pi-plan-mode.json".source =
+        jsonFormat.generate "pi-plan-mode.json"
+          {
+            thinkingLevel = "inherit";
+            defaultPlanTools = [
+              "read"
+              "bash"
+              "grep"
+              "find"
+              "ls"
+            ];
+            implementationPlanRetention = "keep";
+            defaultPlanExportPath = "PLAN.md";
+            safeSubcommands = {
+              git = [
+                "status"
+                "log"
+                "rev-parse"
+                "blame"
+              ];
+              gh = [
+                "pr view"
+                "pr list"
+                "issue view"
+                "issue list"
+              ];
+            };
+          };
     };
 }

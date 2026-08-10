@@ -66,17 +66,25 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "a67c634487f0f65039e8e6859b104f7faf628763";
+    version = "7eb54d06bffc7a2f7274030e3b86ebcae15c2871";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "a67c634487f0f65039e8e6859b104f7faf628763";
+      rev = "7eb54d06bffc7a2f7274030e3b86ebcae15c2871";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-ETOhV3+gNIV5hv2l/dUgwBRuZuQpEJxl7cTU+pkj9JM=";
+      sha256 = "sha256-iNR51cxMC0B6k8wGPDW0gY4gf7s1BMc2pyGtOPIY/Fw=";
     };
-    date = "2026-06-25";
+    date = "2026-08-10";
+  };
+  omnigraph = {
+    pname = "omnigraph";
+    version = "0.8.1";
+    src = fetchurl {
+      url = "https://github.com/ModernRelay/omnigraph/releases/download/v0.8.1/omnigraph-linux-x86_64.tar.gz";
+      sha256 = "sha256-wl4rtTWIh+ZOM9MTU3DoDqIVpUYI33I9l9nKxnt/nj4=";
+    };
   };
   pkl-lsp = {
     pname = "pkl-lsp";
