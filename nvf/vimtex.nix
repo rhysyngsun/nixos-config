@@ -5,8 +5,7 @@
       package = pkgs.vimPlugins.vimtex;
       lazy = false;
       after = # lua
-        ''
-        '';
+        "";
     };
   };
 }

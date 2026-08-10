@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   flavor = rec {
     name = "Mocha";
     lower = lib.toLower name;
@@ -11,7 +12,8 @@
     name = "Lavender";
     lower = lib.toLower name;
   };
-in {
+in
+{
   stylix = {
     autoEnable = false;
     image = ./backgrounds/the_valley.png;

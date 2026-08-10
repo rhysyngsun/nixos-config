@@ -1,10 +1,16 @@
 # This file defines overlays
 { inputs, ... }:
 let
-  mkVimPlugins = prev: localSources: prev.vimPlugins.extend(_: prev': {
-    nvim-treesitter = prev'.nvim-treesitter.overrideAttrs (_: _: {
-    });
-  });
+  mkVimPlugins =
+    prev: localSources:
+    prev.vimPlugins.extend (
+      _: prev': {
+        nvim-treesitter = prev'.nvim-treesitter.overrideAttrs (
+          _: _: {
+          }
+        );
+      }
+    );
 in
 {
   # This one brings our custom packages from the 'pkgs' directory

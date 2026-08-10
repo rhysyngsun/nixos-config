@@ -35,38 +35,37 @@
 let
   pname = "godot-voxel";
   version = "1.6";
-  libs =
-    [
-      alsa-lib
-      libGL
-      vulkan-loader
-    ]
-    ++ lib.optionals withX11 [
-      libX11
-      libXcursor
-      libXext
-      libXfixes
-      libXi
-      libXinerama
-      libxkbcommon
-      libXrandr
-      libXrender
-    ]
-    ++ lib.optionals withWayland [
-      libdecor
-      wayland
-    ]
-    ++ lib.optionals withDbus [
-      dbus
-      dbus.lib
-    ]
-    ++ lib.optionals withFontconfig [
-      fontconfig
-      fontconfig.lib
-    ]
-    ++ lib.optionals withPulseaudio [ libpulseaudio ]
-    ++ lib.optionals withSpeechd [ speechd-minimal ]
-    ++ lib.optionals withUdev [ udev ];
+  libs = [
+    alsa-lib
+    libGL
+    vulkan-loader
+  ]
+  ++ lib.optionals withX11 [
+    libX11
+    libXcursor
+    libXext
+    libXfixes
+    libXi
+    libXinerama
+    libxkbcommon
+    libXrandr
+    libXrender
+  ]
+  ++ lib.optionals withWayland [
+    libdecor
+    wayland
+  ]
+  ++ lib.optionals withDbus [
+    dbus
+    dbus.lib
+  ]
+  ++ lib.optionals withFontconfig [
+    fontconfig
+    fontconfig.lib
+  ]
+  ++ lib.optionals withPulseaudio [ libpulseaudio ]
+  ++ lib.optionals withSpeechd [ speechd-minimal ]
+  ++ lib.optionals withUdev [ udev ];
 in
 stdenv.mkDerivation {
   inherit pname version;

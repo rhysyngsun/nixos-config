@@ -3,7 +3,8 @@
   pkgs,
 }:
 with pkgs.nix-rice;
-with lib; let
+with lib;
+let
   flavor = rec {
     name = "Mocha";
     lower = toLower name;
@@ -14,7 +15,7 @@ with lib; let
   };
   theme = kitty-themes.getThemeByName "Catppuccin-${flavor.name}";
   gtk-theme = pkgs.catppuccin-gtk.override {
-    accents = ["${accent.lower}"];
+    accents = [ "${accent.lower}" ];
     size = "compact";
     tweaks = [
       "rimless"
@@ -22,7 +23,8 @@ with lib; let
     ];
     variant = "${flavor.lower}";
   };
-in {
+in
+{
   colors = {
     inherit flavor accent;
   };
@@ -56,7 +58,7 @@ in {
 
   icons = {
     name = "Papirus-Dark";
-    package = pkgs.papirus-icon-theme.override {color = "white";};
+    package = pkgs.papirus-icon-theme.override { color = "white"; };
   };
 
   opacity = 1.0;

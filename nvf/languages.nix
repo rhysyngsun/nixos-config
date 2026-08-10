@@ -1,6 +1,8 @@
-{ pkgs, lib, ... }: let
+{ pkgs, lib, ... }:
+let
   inherit (lib.generators) mkLuaInline;
-in {
+in
+{
   config.vim = {
     languages = {
       enableDAP = true;
@@ -20,7 +22,7 @@ in {
       };
       python = {
         enable = true;
-        lsp.servers = ["basedpyright"];
+        lsp.servers = [ "basedpyright" ];
       };
       rust.enable = true;
       sql.enable = true;
@@ -30,12 +32,17 @@ in {
       zig.enable = true;
     };
     lsp.servers.sqls = {
-      cmd = lib.mkForce ["${pkgs.sqls}/bin/sqls" "-config" ''string.format("%s/.sqls.yml", vim.fn.getcwd())''];
-      on_attach = mkLuaInline /* lua */ ''function() 
-        client.server_capabilities.execute_command = true
-        on_attach_keymaps(client, bufnr)
-        require'sqls'.setup{}
-      end'';
+      cmd = lib.mkForce [
+        "${pkgs.sqls}/bin/sqls"
+        "-config"
+        ''string.format("%s/.sqls.yml", vim.fn.getcwd())''
+      ];
+      on_attach = mkLuaInline /* lua */ ''
+        function() 
+                client.server_capabilities.execute_command = true
+                on_attach_keymaps(client, bufnr)
+                require'sqls'.setup{}
+              end'';
     };
 
     keymaps = [
