@@ -30,6 +30,7 @@
 
           cachix
 
+          k3d
           kubectl
           headlamp
           kubernetes-helm

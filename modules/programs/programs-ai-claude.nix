@@ -20,6 +20,7 @@
           "create-ol-pull-request"
           "create-ol-rfc-discussion"
           "generate-standup"
+          "renovate-security-triage"
         ];
         "skills/python" = [
           "uv-python-workflow"
