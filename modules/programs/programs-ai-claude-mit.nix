@@ -186,21 +186,11 @@
         };
       };
 
-      programs.claude-code-personal = {
-        enable = true;
-        package = null;
-        inherit rules;
-      };
-
       home = {
         # Required, not just convenient: the hooks above shell out to a bare
         # `witan`, so it has to be on PATH for the whole session and not merely
         # reachable as the MCP server's `command`.
         packages = [ pkgs.mit.witan ];
-
-        shellAliases = {
-          claude-personal = ''CLAUDE_CONFIG_DIR=~/.claude-personal claude "$@"'';
-        };
       };
     };
 }

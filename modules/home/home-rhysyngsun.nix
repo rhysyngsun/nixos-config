@@ -1,6 +1,6 @@
 { inputs, ... }@top:
 {
-  flake.modules.homeManager.home-nathan =
+  flake.modules.homeManager.home-rhysyngsun =
     { pkgs, ... }:
     {
       imports = [
@@ -19,6 +19,8 @@
         inputs.sops-nix.homeManagerModules.sops
         inputs.catppuccin.homeModules.catppuccin
 
+        top.config.flake.modules.homeManager.programs-krita
+        top.config.flake.modules.homeManager.programs-claude-code-personal
         top.config.flake.modules.homeManager.programs-neovim
         # programs-eww intentionally not imported: converted, but kept unused
         # programs-wayland intentionally not imported: converted, but kept unused
@@ -34,9 +36,10 @@
         top.config.flake.modules.homeManager.programs-pls
         top.config.flake.modules.homeManager.programs-desktop
 
-        top.config.flake.modules.homeManager.programs-ai-claude-mit
+        top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
+        top.config.flake.modules.homeManager.programs-godot
         top.config.flake.modules.homeManager.programs-tmux
         top.config.flake.modules.homeManager.programs-vscode
         top.config.flake.modules.homeManager.programs-wezterm
