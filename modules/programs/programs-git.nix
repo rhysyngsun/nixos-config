@@ -38,7 +38,6 @@
             ".direnv/"
             ".envrc"
             ".devenv/"
-            ".claude/"
           ];
 
           settings = {

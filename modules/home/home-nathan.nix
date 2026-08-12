@@ -19,6 +19,7 @@
         inputs.sops-nix.homeManagerModules.sops
         inputs.catppuccin.homeModules.catppuccin
 
+        top.config.flake.modules.homeManager.programs-krita
         top.config.flake.modules.homeManager.programs-neovim
         # programs-eww intentionally not imported: converted, but kept unused
         # programs-wayland intentionally not imported: converted, but kept unused
@@ -35,6 +36,7 @@
         top.config.flake.modules.homeManager.programs-desktop
 
         top.config.flake.modules.homeManager.programs-ai-claude-mit
+        top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
         top.config.flake.modules.homeManager.programs-tmux

@@ -20,7 +20,6 @@
         inputs.catppuccin.homeModules.catppuccin
 
         top.config.flake.modules.homeManager.programs-krita
-        top.config.flake.modules.homeManager.programs-claude-code-personal
         top.config.flake.modules.homeManager.programs-neovim
         # programs-eww intentionally not imported: converted, but kept unused
         # programs-wayland intentionally not imported: converted, but kept unused

@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.homeManager.programs-ai-claude =
+  flake.modules.homeManager.programs-ai-claude-mit =
     {
       config,
       pkgs,
@@ -123,6 +123,7 @@
         };
     in
     {
+      programs.git.ignores = [".claude/"];
       programs.claude-code = {
         enable = true;
         inherit rules;
@@ -192,5 +193,6 @@
         # reachable as the MCP server's `command`.
         packages = [ pkgs.mit.witan ];
       };
+
     };
 }
