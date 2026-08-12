@@ -2,6 +2,7 @@
 {
   flake.modules.homeManager.programs-ai-claude =
     {
+      config,
       pkgs,
       lib,
       ...
@@ -14,7 +15,7 @@
         dir: names: lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/${dir}/${name}");
       skillsFrom = dirs: lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkillsFrom dirs);
 
-      skills = skillsFrom {
+      skillDirs = {
         "skills/process" = [
           "create-ol-github-issue"
           "create-ol-pull-request"
@@ -33,7 +34,7 @@
       # witan's skills ship inside the two MCP server packages rather than the
       # shared catalogue. Work profile only: they steer tools the personal
       # profile has no witan server to answer with.
-      witanSkills = skillsFrom {
+      witanSkillDirs = {
         "mcp/servers/witan/witan/skills" = [
           "witan-memory"
           "witan-project-tracker"
@@ -44,6 +45,45 @@
           "witan-code"
         ];
       };
+
+      skills = skillsFrom skillDirs;
+      witanSkills = skillsFrom witanSkillDirs;
+
+      # Skills that ship helpers under scripts/ need every one of them
+      # pre-approved or the skill stalls on a permission prompt mid-run. Read
+      # the names out of the pinned checkout so the lists above stay the single
+      # place a new skill has to be declared. Most skills ship no scripts/ at
+      # all, which pathExists short-circuits.
+      skillScriptNames =
+        subdir:
+        let
+          dir = "${pkgs.mit.agent-kit.src}/${subdir}/scripts";
+        in
+        lib.optionals (builtins.pathExists dir) (
+          lib.filter (lib.hasSuffix ".sh") (
+            lib.attrNames (lib.filterAttrs (_: type: type == "regular") (builtins.readDir dir))
+          )
+        );
+
+      # Claude matches the command it is about to run against these literally,
+      # so each script needs every spelling it can be invoked under: both home
+      # forms for normal sessions, plus the repo-relative one for sessions
+      # started inside the agent-kit checkout itself.
+      skillScriptAllows =
+        dirs:
+        lib.flatten (
+          lib.mapAttrsToList (
+            dir: names:
+            map (
+              name:
+              map (script: [
+                "Bash(~/.claude/skills/${name}/scripts/${script}:*)"
+                "Bash(${config.home.homeDirectory}/.claude/skills/${name}/scripts/${script}:*)"
+                "Bash(./${dir}/${name}/scripts/${script}:*)"
+              ]) (skillScriptNames "${dir}/${name}")
+            ) names
+          ) dirs
+        );
 
       rules = {
         style = ''
@@ -103,22 +143,9 @@
           theme = "auto";
           verbose = true;
 
-          permissions.allow = [
-            "Bash(~/.claude/skills/renovate-security-triage/scripts/active-repos.sh:*)"
-            "Bash(~/.claude/skills/renovate-security-triage/scripts/fetch-renovate-prs.sh:*)"
-            "Bash(~/.claude/skills/renovate-security-triage/scripts/enrich-renovate-prs.sh:*)"
-            "Bash(~/.claude/skills/renovate-security-triage/scripts/advisory-lookup.sh:*)"
-            "Bash(~/.claude/skills/renovate-security-triage/scripts/classify-renovate-prs.sh:*)"
-            "Bash(./skills/process/renovate-security-triage/scripts/active-repos.sh:*)"
-            "Bash(./skills/process/renovate-security-triage/scripts/fetch-renovate-prs.sh:*)"
-            "Bash(./skills/process/renovate-security-triage/scripts/enrich-renovate-prs.sh:*)"
-            "Bash(./skills/process/renovate-security-triage/scripts/advisory-lookup.sh:*)"
-            "Bash(./skills/process/renovate-security-triage/scripts/classify-renovate-prs.sh:*)"
-            "Bash(/home/nathan/.claude/skills/renovate-security-triage/scripts/active-repos.sh:*)"
-            "Bash(/home/nathan/.claude/skills/renovate-security-triage/scripts/fetch-renovate-prs.sh:*)"
-            "Bash(/home/nathan/.claude/skills/renovate-security-triage/scripts/enrich-renovate-prs.sh:*)"
-            "Bash(/home/nathan/.claude/skills/renovate-security-triage/scripts/advisory-lookup.sh:*)"
-            "Bash(/home/nathan/.claude/skills/renovate-security-triage/scripts/classify-renovate-prs.sh:*)"
+          # Derived from the skills installed above; the witan dirs go through
+          # the same generator so they are covered if they ever grow scripts.
+          permissions.allow = skillScriptAllows (skillDirs // witanSkillDirs) ++ [
             "Read(//home/nathan/.cache/renovate-security-triage/**)"
           ];
 
@@ -162,7 +189,7 @@
       programs.claude-code-personal = {
         enable = true;
         package = null;
-        inherit skills rules;
+        inherit rules;
       };
 
       home = {
