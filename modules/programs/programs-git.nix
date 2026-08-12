@@ -11,6 +11,7 @@
         packages = with pkgs; [
           gita
           pre-commit
+          prek
         ];
       };
 

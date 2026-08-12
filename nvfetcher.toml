@@ -40,6 +40,7 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
+src.branch = "nl/standup-use-editor"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the

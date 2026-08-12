@@ -66,17 +66,17 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "5a984a581e37f4d509e8cbb0b3370dc056dd64b9";
+    version = "4ffb0e8b43baba0858cb60fb89d73e756dc216eb";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "5a984a581e37f4d509e8cbb0b3370dc056dd64b9";
+      rev = "4ffb0e8b43baba0858cb60fb89d73e756dc216eb";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-161vErsMRNmnJsW8+3GYA2L6rl7E0xLn7nKFsmhN7mo=";
+      sha256 = "sha256-OTPsqes2NUBSOgh7g7TuFHWLhdv/fQJiXeS2syxkIKE=";
     };
-    date = "2026-08-11";
+    date = "2026-08-12";
   };
   omnigraph = {
     pname = "omnigraph";

@@ -46,6 +46,9 @@
       };
 
       rules = {
+        style = ''
+          Don't ever use emdashes in descriptive text - it's ok if it's necessary in code.
+        '';
         tools = ''
           # CLI tools
           Rules:
@@ -56,7 +59,7 @@
           - `ls` is aliased to `pls` - run `pls -h` to see example usages
         '';
         guardrails = ''
-          If you do not have connection information for a database or service ask for the credentials do not connect to one you find.
+          - If you do not have connection information for a database or service ask for the credentials do not connect to one you find.
         '';
       };
 
