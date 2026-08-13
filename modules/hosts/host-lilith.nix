@@ -94,8 +94,6 @@
         lshw
         nvtopPackages.full
 
-        wineWowPackages.stable
-
         dig
 
         # Theme

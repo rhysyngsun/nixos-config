@@ -87,7 +87,8 @@
 
       rules = {
         style = ''
-          Don't ever use emdashes in descriptive text - it's ok if it's necessary in code.
+          Rules:
+          - Use a single dash (`-`) instead of emdash unless emdash is semantically significant to code
         '';
         tools = ''
           # CLI tools
