@@ -15,3 +15,11 @@
 127.0.0.1   preview.openedx.odl.local
 127.0.0.1   meilisearch.openedx.odl.local
 127.0.0.1   apps.openedx.odl.local
+# ol-infrastructure/local-dev
+127.0.0.1  api.learn.mit.dev
+127.0.0.1  learn.mit.dev
+127.0.0.1  ai.learn.mit.dev
+127.0.0.1  mitxonline.mit.dev
+127.0.0.1  video.odl.mit.dev
+127.0.0.1  sso.ol.mit.dev
+127.0.0.1  mail.mit.dev
