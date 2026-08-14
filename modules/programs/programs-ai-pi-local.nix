@@ -14,7 +14,7 @@
         lmstudio
       ];
 
-      programs.git.ignores = [".agents/"];
+      programs.git.ignores = [ ".agents/" ];
       programs.pi-coding-agent = {
         enable = true;
         package = pkgs.pkgs-unstable.pi-coding-agent;

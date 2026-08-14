@@ -180,8 +180,8 @@ or commit plaintext derived from it.** Adding a secret is interactive - the user
 runs `sops secrets/secrets.yaml`, then the module declares
 `sops.secrets."path" = { };`.
 
-`agenix`/`ragenix` is a flake input and is in the devShell, but is unused;
-`secrets/secrets.nix` is an empty stub. Do not build on either.
+`agenix`/`ragenix` is a flake input and is in the devShell, but no module uses
+it. sops-nix is the only secrets mechanism here - do not reach for agenix.
 
 ## Gotchas
 

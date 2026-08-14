@@ -124,7 +124,7 @@
         };
     in
     {
-      programs.git.ignores = [".claude/"];
+      programs.git.ignores = [ ".claude/" ];
       programs.claude-code = {
         enable = true;
         inherit rules;
