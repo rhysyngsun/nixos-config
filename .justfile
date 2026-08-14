@@ -7,8 +7,8 @@ git-stage:
 update:
   nix flake update
 
-update-pkgs:
-  nvfetcher -c nvfetcher.toml -o pkgs/_sources/
+update-pkgs *args='':
+  nvfetcher -c nvfetcher.toml -o pkgs/_sources/ {{args}}
 
 switch-user *args='': git-stage
   home-manager switch -b backup --flake ".#$(whoami)" {{args}}

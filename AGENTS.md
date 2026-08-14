@@ -43,8 +43,15 @@ Run from the repo root. The justfile is `.justfile` - note the leading dot.
 | apply home config | `just switch-user` |
 | update flake inputs | `just update` |
 | repin package sources | `just update-pkgs` (nvfetcher) |
+| repin one source | `just update-pkgs -f <regex>` |
 
 `.envrc` is `use flake . --impure` - the `--impure` matters.
+
+`update-pkgs` forwards any extra arguments straight to `nvfetcher`. Bare, it
+repins **every** entry in `nvfetcher.toml`, so an unrelated branch-tracking source
+will drift into your diff. Scope it with `-f <regex>` when you only meant to touch
+one. `--keep-going` is the other useful one: it lets the run finish when a single
+source fails to resolve, instead of aborting before anything is written.
 
 **Stop at `nix flake check` and `just dry-build-system`.** The `switch-*` and
 `boot-*` recipes mutate the running machine and need sudo; propose them and let
@@ -138,7 +145,7 @@ not invent an options layer.
   (`pkgs/default.nix`): `rice`, `mit/` (cacert, agent-kit, witan via uv2nix),
   `krita-plugins`, `vimPlugins`, `localSources`. **`pkgs/_sources/` is
   nvfetcher-generated - never hand-edit it**; change `nvfetcher.toml` and run
-  `just update-pkgs`.
+  `just update-pkgs -f <name>`.
 - `overlays/default.nix` - `additions`, `modifications`, `unstable-packages`.
   Cross-channel packages are `pkgs.pkgs-unstable.<x>` and `pkgs.pkgs-edge.<x>`
   (**not** `pkgs.unstable`).
@@ -158,8 +165,9 @@ the skeleton above, then add
 edit to `flake.nix`. Note `.justfile` hardcodes `.#lilith`.
 
 **Add a package.** If it needs a pinned upstream source, add it to
-`nvfetcher.toml` and run `just update-pkgs`. Then write `pkgs/<name>.nix` and add
-a `callPackage` line to `pkgs/default.nix`.
+`nvfetcher.toml` and run `just update-pkgs -f <name>` - scoping it keeps the diff
+to the source you just added. Then write `pkgs/<name>.nix` and add a
+`callPackage` line to `pkgs/default.nix`.
 
 ## Conventions
 
