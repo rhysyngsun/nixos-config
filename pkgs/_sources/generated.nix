@@ -50,33 +50,41 @@
       sha256 = "sha256-w0wMChMAkQrZroWQqH5tKhJH4z2ecMdS7ALxohJmEiw=";
     };
   };
+  lean-ctx = {
+    pname = "lean-ctx";
+    version = "3.9.18";
+    src = fetchurl {
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.9.18/lean-ctx-3.9.18-source.tar.gz";
+      sha256 = "sha256-EpJ3b5VJMHzz/q3pXXVBG6b84kqfltSgetYUaIRoY1A=";
+    };
+  };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2";
+    version = "a1bcffc8095c142ad1f7a9671a4ae180333f9209";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2";
+      rev = "a1bcffc8095c142ad1f7a9671a4ae180333f9209";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-+FD0elB9KI+NfjeDImbTUvFSOMW/vUoV4hKTARgb/RM=";
+      sha256 = "sha256-v52UOEN9ortmX0FMyGaRPLzHBk19iUn4+3QE16FxDAM=";
     };
-    date = "2026-08-08";
+    date = "2026-08-13";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "4ffb0e8b43baba0858cb60fb89d73e756dc216eb";
+    version = "2b5cc6826296a3f634cf00d7211c482c9d0c4075";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "4ffb0e8b43baba0858cb60fb89d73e756dc216eb";
+      rev = "2b5cc6826296a3f634cf00d7211c482c9d0c4075";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-OTPsqes2NUBSOgh7g7TuFHWLhdv/fQJiXeS2syxkIKE=";
+      sha256 = "sha256-jeSFEa1ePfdo/LO4mC4bBh925WO+hgqNVJFCdeNTWKM=";
     };
-    date = "2026-08-12";
+    date = "2026-08-13";
   };
   omnigraph = {
     pname = "omnigraph";

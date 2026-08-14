@@ -170,11 +170,18 @@
         extraPackages = with pkgs; [
           nodejs
           python3
+          # pi-lean-ctx shells out to the engine and resolves it from PATH -
+          # its fallback chain probes ~/.cargo/bin, ~/.local/bin and
+          # /usr/local/bin before giving up on a bare "lean-ctx", and none of
+          # those exist here. extraPackages rather than home.packages so the
+          # binary is found however pi was launched.
+          lean-ctx
         ];
         settings = {
           theme = "dark";
           packages = [
             "npm:@bacnh85/pi-plan"
+            "npm:pi-lean-ctx"
             "npm:pi-lmstudio"
             "npm:pi-subagents"
             "npm:pi-subdir-context"

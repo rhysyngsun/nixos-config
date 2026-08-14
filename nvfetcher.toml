@@ -15,6 +15,16 @@ src.github = "kubernetes-sigs/headlamp"
 src.prefix = "v"
 fetch.url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v$ver/Headlamp-$ver-linux-x64.AppImage"
 
+# The engine is a Rust workspace under `rust/`. Track the release *source*
+# tarball rather than the git repo: the checkout is ~185M of docs, SDKs and
+# marketing, plus an `ssh://aur@...` submodule a sandboxed fetch cannot reach.
+# The tarball is 13M and carries the same rust/ tree and its Cargo.lock.
+# `pi-lean-ctx` on npm ships in lockstep with this version - bump both together.
+[lean-ctx]
+src.github = "yvgude/lean-ctx"
+src.prefix = "v"
+fetch.url = "https://github.com/yvgude/lean-ctx/releases/download/v$ver/lean-ctx-$ver-source.tar.gz"
+
 [pkl-lsp]
 src.github = "apple/pkl-lsp"
 fetch.url = "https://github.com/apple/pkl-lsp/releases/download/$ver/pkl-lsp-$ver.jar"
@@ -40,7 +50,7 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-src.branch = "nl/standup-use-editor"
+# src.branch = "nl/standup-use-editor"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the
