@@ -49,7 +49,7 @@
         top.config.flake.modules.homeManager.programs-media
         top.config.flake.modules.homeManager.theme-rofi
 
-        ../../home/nathan/home.nix
+        ../../home/rhysyngsun/home.nix
         ../../themes/stylix.nix
       ];
 

@@ -1,0 +1,29 @@
+{ ... }:
+let
+  username = "rhysyngsun";
+in
+{
+  home = {
+    username = "${username}";
+    homeDirectory = "/home/${username}";
+    stateVersion = "26.05";
+  };
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+  };
+
+  # Nicely reload system units when changing configs
+  systemd.user.startServices = "sd-switch";
+
+  xdg = {
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
+  };
+}
