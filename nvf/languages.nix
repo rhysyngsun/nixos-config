@@ -10,6 +10,7 @@ in
       enableFormat = true;
       enableTreesitter = true;
 
+      bash.enable = true;
       go.enable = true;
       html.enable = true;
       java.enable = true;
