@@ -60,7 +60,7 @@
       ];
 
       sops = {
-        age.keyFile = "/home/nathan/.config/sops/age/keys.txt";
+        age.keyFile = "/home/rhysyngsun/.config/sops/age/keys.txt";
         defaultSopsFile = ../../secrets/secrets.yaml;
         secrets."llms/anthropic/api_key" = { };
         secrets."llms/openrouter/api_key" = { };
