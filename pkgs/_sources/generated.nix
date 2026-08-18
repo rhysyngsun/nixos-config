@@ -60,31 +60,31 @@
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "a1bcffc8095c142ad1f7a9671a4ae180333f9209";
+    version = "074aa4422bf029908338e855d0c0f71470a971bb";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "a1bcffc8095c142ad1f7a9671a4ae180333f9209";
+      rev = "074aa4422bf029908338e855d0c0f71470a971bb";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-v52UOEN9ortmX0FMyGaRPLzHBk19iUn4+3QE16FxDAM=";
+      sha256 = "sha256-gfysRZAwKXSLZpO8AhO1o3O93OwnzJTTbXhhdbbOJ7M=";
     };
-    date = "2026-08-13";
+    date = "2026-08-15";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "2b5cc6826296a3f634cf00d7211c482c9d0c4075";
+    version = "cfd79d478d1cea6cba30f775ade1138df3ab7b13";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "2b5cc6826296a3f634cf00d7211c482c9d0c4075";
+      rev = "cfd79d478d1cea6cba30f775ade1138df3ab7b13";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-jeSFEa1ePfdo/LO4mC4bBh925WO+hgqNVJFCdeNTWKM=";
+      sha256 = "sha256-eLW8tPqboM2UEi/kxRtGSslrred6JYwmTgiFYbZNrZo=";
     };
-    date = "2026-08-13";
+    date = "2026-08-17";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -116,17 +116,25 @@
   };
   tree-sitter-pkl = {
     pname = "tree-sitter-pkl";
-    version = "3486521eb1c2fcb3c9a5e88300215930ee515693";
+    version = "65f4483b9e8a5960a4d8948421ef3a8992013517";
     src = fetchgit {
       url = "https://github.com/apple/tree-sitter-pkl";
-      rev = "3486521eb1c2fcb3c9a5e88300215930ee515693";
+      rev = "65f4483b9e8a5960a4d8948421ef3a8992013517";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-bQNSSDVVi0kmsIlpmI+7LWf8/SrXylAyEju/DAahqzg=";
+      sha256 = "sha256-+SjtOZBSaVrH2FdWmc+ciG8c/TNT6G3XEalYy3F+SQ8=";
     };
-    date = "2026-07-14";
+    date = "2026-08-17";
+  };
+  unsloth-studio = {
+    pname = "unsloth-studio";
+    version = "0.1.800-beta/Unsloth-Desktop-0_1_800_beta";
+    src = fetchurl {
+      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.800-beta/Unsloth-Desktop-0_1_800_beta-Linux.AppImage";
+      sha256 = "sha256-GpqzGpMUz0raNDcUEYZFNxe5a29SqPJ4eD0EGaq+/K0=";
+    };
   };
   whichpy-nvim = {
     pname = "whichpy-nvim";

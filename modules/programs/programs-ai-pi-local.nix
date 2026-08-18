@@ -9,6 +9,7 @@
     }:
     let
       cfg = config.programs.pi-coding-agent;
+      jsonFormat = pkgs.formats.json { };
 
       # `settings.packages` is the declarative source of truth for which pi
       # extensions should exist. Writing it to settings.json only *declares*
@@ -161,6 +162,7 @@
         # Exposed so the reconcile can be rerun by hand, e.g. after being
         # offline during a switch.
         syncScript
+        lean-ctx
       ];
 
       programs.git.ignores = [ ".agents/" ];
@@ -180,7 +182,8 @@
         settings = {
           theme = "dark";
           packages = [
-            "npm:@bacnh85/pi-plan"
+            "npm:@narumitw/pi-plan-mode"
+            # "npm:@bacnh85/pi-plan"
             "npm:pi-lean-ctx"
             "npm:pi-lmstudio"
             "npm:pi-subagents"
@@ -200,6 +203,47 @@
       # Runs after writeBoundary so settings.json is already linked into place.
       home.activation.piSyncExtensions = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run ${lib.getExe syncScript}
+      '';
+
+      home.file."~/.pi/agent/extensions/pi-lean-ctx/config.json".source =
+        jsonFormat.generate "pi-lean-ctx-config.json"
+          {
+            mode = "replace";
+            enableMcp = true;
+            toolProfile = "power";
+            binary = "${pkgs.lean-ctx}/bin/lean-ctx";
+            env = {
+              LEAN_CTX_COMPRESSION = "aggressive";
+            };
+          };
+
+      home.sessionVariables = {
+        LEAN_CTX_BIN = "${pkgs.lean-ctx}/bin/lean-ctx";
+      };
+
+      home.file.".pi/agent/pi-plan-mode-src.json".source = jsonFormat.generate "pi-plan-mode.json" {
+        defaultPlanTools = [
+          "ctx_search"
+          "ctx_read"
+          "ctx_grep"
+          "ctx_ls"
+          "ctx_shell"
+          "ctx_session"
+          "ctx_knowledge"
+          "ctx_semantic_search"
+          "ctx_overview"
+          "ctx_compress"
+          "ctx_metrics"
+          "ctx_multi_read"
+          "ctx_search"
+          "ctx_tree"
+          "write"
+        ];
+      };
+
+      # copy the pi-plan-mode.json
+      home.activation.piPlanModeConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        cp -f ~/.pi/agent/pi-plan-mode-src.json ~/.pi/agent/pi-plan-mode.json
       '';
     };
 }

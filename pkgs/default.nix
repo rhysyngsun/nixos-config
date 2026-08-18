@@ -13,6 +13,7 @@ in
   lean-ctx = prev.callPackage ./lean-ctx.nix { source = sources.lean-ctx; };
   omnigraph = prev.callPackage ./omnigraph.nix { source = sources.omnigraph; };
   pkl-lsp = prev.callPackage ./pkl-lsp.nix { source = sources.pkl-lsp; };
+  unsloth-studio = prev.callPackage ./unsloth-studio.nix { source = sources.unsloth-studio; };
   vimPlugins = prev.vimPlugins // prev.callPackage ./vimPlugins { inherit sources; };
   localSources = sources;
 }

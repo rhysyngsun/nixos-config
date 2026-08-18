@@ -94,7 +94,7 @@
     },
     "nvim-treesitter": {
         "cargoLock": null,
-        "date": "2026-08-13",
+        "date": "2026-08-15",
         "extract": null,
         "name": "nvim-treesitter",
         "passthru": null,
@@ -104,17 +104,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "a1bcffc8095c142ad1f7a9671a4ae180333f9209",
-            "sha256": "sha256-v52UOEN9ortmX0FMyGaRPLzHBk19iUn4+3QE16FxDAM=",
+            "rev": "074aa4422bf029908338e855d0c0f71470a971bb",
+            "sha256": "sha256-gfysRZAwKXSLZpO8AhO1o3O93OwnzJTTbXhhdbbOJ7M=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/nvim-treesitter/nvim-treesitter"
         },
-        "version": "a1bcffc8095c142ad1f7a9671a4ae180333f9209"
+        "version": "074aa4422bf029908338e855d0c0f71470a971bb"
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-08-13",
+        "date": "2026-08-17",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -124,13 +124,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "2b5cc6826296a3f634cf00d7211c482c9d0c4075",
-            "sha256": "sha256-jeSFEa1ePfdo/LO4mC4bBh925WO+hgqNVJFCdeNTWKM=",
+            "rev": "cfd79d478d1cea6cba30f775ade1138df3ab7b13",
+            "sha256": "sha256-eLW8tPqboM2UEi/kxRtGSslrred6JYwmTgiFYbZNrZo=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "2b5cc6826296a3f634cf00d7211c482c9d0c4075"
+        "version": "cfd79d478d1cea6cba30f775ade1138df3ab7b13"
     },
     "omnigraph": {
         "cargoLock": null,
@@ -185,7 +185,7 @@
     },
     "tree-sitter-pkl": {
         "cargoLock": null,
-        "date": "2026-07-14",
+        "date": "2026-08-17",
         "extract": null,
         "name": "tree-sitter-pkl",
         "passthru": null,
@@ -195,13 +195,28 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "3486521eb1c2fcb3c9a5e88300215930ee515693",
-            "sha256": "sha256-bQNSSDVVi0kmsIlpmI+7LWf8/SrXylAyEju/DAahqzg=",
+            "rev": "65f4483b9e8a5960a4d8948421ef3a8992013517",
+            "sha256": "sha256-+SjtOZBSaVrH2FdWmc+ciG8c/TNT6G3XEalYy3F+SQ8=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
-        "version": "3486521eb1c2fcb3c9a5e88300215930ee515693"
+        "version": "65f4483b9e8a5960a4d8948421ef3a8992013517"
+    },
+    "unsloth-studio": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "unsloth-studio",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-GpqzGpMUz0raNDcUEYZFNxe5a29SqPJ4eD0EGaq+/K0=",
+            "type": "url",
+            "url": "https://github.com/unslothai/unsloth/releases/download/v0.1.800-beta/Unsloth-Desktop-0_1_800_beta-Linux.AppImage"
+        },
+        "version": "0.1.800-beta/Unsloth-Desktop-0_1_800_beta"
     },
     "whichpy-nvim": {
         "cargoLock": null,

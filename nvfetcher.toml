@@ -53,6 +53,19 @@ src.git = "https://github.com/mitodl/agent-kit.git"
 # src.branch = "nl/standup-use-editor"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
+# The release tag and the asset filename spell the version differently -
+# `v0.1.800-beta` vs `Unsloth-Desktop-0_1_800_beta-Linux.AppImage` - and
+# nvfetcher only substitutes a single `$ver`, so neither spelling alone can
+# build the download URL. Track a *composite* version that carries both halves
+# ("0.1.800-beta/Unsloth-Desktop-0_1_800_beta"), scraped straight out of the
+# release JSON's own download URL, and split the real version back out in
+# pkgs/unsloth.nix. Do not "simplify" this to src.github + prefix: it cannot
+# produce the underscored filename.
+[unsloth-studio]
+src.webpage = "https://api.github.com/repos/unslothai/unsloth/releases/latest"
+src.regex = "([0-9.]+-beta/Unsloth-Desktop-[0-9_]+_beta)"
+fetch.url = "https://github.com/unslothai/unsloth/releases/download/v$ver-Linux.AppImage"
+
 # Pinned manually, not tracked: witan shells out to this binary and expects the
 # exact release named by `_OMNIGRAPH_VERSION` in
 # packages/witan-core/witan_core/omnigraph_install.py. Bump the two together.

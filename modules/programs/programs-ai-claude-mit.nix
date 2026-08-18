@@ -141,6 +141,16 @@
           env.WITAN_AUTHOR = "Nathan Levesque";
         };
 
+        mcpServers.lean-ctx = {
+          args = [
+            "mcp"
+          ];
+          command = "${pkgs.lean-ctx}/bin/lean-ctx";
+          tools = [
+            "*"
+          ];
+        };
+
         settings = {
           theme = "auto";
           verbose = true;

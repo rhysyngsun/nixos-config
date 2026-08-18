@@ -89,16 +89,7 @@
       };
 
       programs = {
-        bash = {
-          initExtra = ''
-            jwtd() {
-                if [[ -x $(command -v jq) ]]; then
-                     ${pkgs.jq}/bin/jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "${1}"
-                     echo "Signature: $(echo "${1}" | ${pkgs.gawk}/bin/awk -F'.' '{print $3}')"
-                fi
-            }
-          '';
-        };
+        bash.enable = true;
         broot = {
           enable = true;
           enableZshIntegration = true;
