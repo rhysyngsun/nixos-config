@@ -42,6 +42,9 @@ in
         ".sqls.yml"
       ];
     };
+    lsp.presets = {
+      rust-analyzer.enable = true;
+    };
 
     treesitter.queries = [
       {

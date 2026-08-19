@@ -42,6 +42,7 @@
           vagrant
 
           bytecode-viewer
+          zensical
 
           # concourse cli
           fly
