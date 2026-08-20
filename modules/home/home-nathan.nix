@@ -24,7 +24,6 @@
         # programs-eww intentionally not imported: converted, but kept unused
         # programs-wayland intentionally not imported: converted, but kept unused
         # programs-productivity intentionally not imported: converted, but kept unused (orphaned/empty)
-        # programs-virtualization intentionally not imported: converted, but kept unused (orphaned)
 
         top.config.flake.modules.homeManager.programs-accounts
         top.config.flake.modules.homeManager.programs-browsers

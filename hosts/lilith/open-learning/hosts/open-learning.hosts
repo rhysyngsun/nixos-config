@@ -24,3 +24,7 @@
 127.0.0.1  sso.ol.mit.dev
 127.0.0.1  mail.mit.dev
 127.0.0.1  grafana.mit.dev
+127.0.0.1  lms.mit.dev
+127.0.0.1  studio.mit.dev
+127.0.0.1  preview.lms.mit.dev
+127.0.0.1  apps.lms.mit.dev

@@ -203,7 +203,7 @@ it. sops-nix is the only secrets mechanism here - do not reach for agenix.
   anyrun case in `modules/home/home-nathan.nix:8-15`.
 - Several modules are registered but intentionally not imported: `programs-eww`,
   `programs-wayland`, `programs-ags`, `programs-bin`, `programs-productivity`,
-  `programs-virtualization`, `theme-gtk`, `theme-cursors`, `services-greetd`. Do
+  `theme-gtk`, `theme-cursors`, `services-greetd`. Do
   not wire them in as cleanup. `programs-bin` references a `../../bin` that does
   not exist and would fail if imported.
 - `sops.age.keyFile` is an absolute per-user path spelled out in each home
