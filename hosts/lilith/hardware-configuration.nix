@@ -76,6 +76,8 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp9s0f0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  # Intentionally no `nixpkgs.hostPlatform` here: flake.nix uses
+  # `nixpkgs.nixosModules.readOnlyPkgs`, which makes that option read-only and
+  # derives it from `nixpkgs.pkgs`. Do not re-add it from nixos-generate-config.
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

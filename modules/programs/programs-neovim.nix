@@ -3,11 +3,16 @@
 { ... }:
 {
   flake.modules.homeManager.programs-neovim =
-    { inputs, pkgs, ... }:
+    {
+      inputs,
+      pkgs,
+      pkgs-edge,
+      ...
+    }:
     {
       home.packages = [
         (inputs.nvf.lib.neovimConfiguration {
-          pkgs = pkgs.pkgs-edge;
+          pkgs = pkgs-edge;
           modules = [
             {
               _module.args = {

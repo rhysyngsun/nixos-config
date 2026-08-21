@@ -35,29 +35,20 @@ in
     vimPlugins = mkVimPlugins prev prev.localSources;
   };
 
-  # When applied, the unstable nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.unstable'
-  unstable-packages = final: prev: {
-    pkgs-edge = import inputs.nixpkgs-master {
-      system = final.stdenv.hostPlatform.system;
-      config.allowUnfree = true;
-    };
-    pkgs-unstable = import inputs.nixpkgs-unstable {
-      system = final.stdenv.hostPlatform.system;
-      config.allowUnfree = true;
-      overlays = [
-        (_: prev': {
-          vimPlugins = mkVimPlugins prev' prev.localSources;
-          tree-sitter = prev.tree-sitter.override {
-            extraGrammars = {
-              tree-sitter-pkl = prev.tree-sitter.buildGrammar {
-                language = "pkl";
-                inherit (prev.localSources.tree-sitter-pkl) src version;
-              };
-            };
-          };
-        })
-      ];
+  # Channel-crossing tweaks applied to the nixpkgs-unstable instance. Curried on
+  # the stable set because `localSources` and the pkl grammar only exist there
+  # (`additions` is not applied to unstable). Consumed by
+  # modules/pkgs-instances.nix; not exported through `flake.overlays`, which
+  # only accepts plain two-argument overlays.
+  unstable-extras = pkgs-stable: _: prev': {
+    vimPlugins = mkVimPlugins prev' pkgs-stable.localSources;
+    tree-sitter = pkgs-stable.tree-sitter.override {
+      extraGrammars = {
+        tree-sitter-pkl = pkgs-stable.tree-sitter.buildGrammar {
+          language = "pkl";
+          inherit (pkgs-stable.localSources.tree-sitter-pkl) src version;
+        };
+      };
     };
   };
 }

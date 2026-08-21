@@ -113,7 +113,9 @@
         fzf = {
           enable = true;
           enableZshIntegration = true;
-          historyWidget.command = "";
+          # No `historyWidget.command` here: 26.05 removed the option outright.
+          # atuin's zsh integration is sourced after fzf's and owns Ctrl-R
+          # anyway, which is what setting it to "" used to arrange on 26.11.
         };
 
         go = {

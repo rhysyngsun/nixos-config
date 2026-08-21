@@ -4,6 +4,7 @@
     {
       config,
       pkgs,
+      pkgs-unstable,
       lib,
       ...
     }:
@@ -168,7 +169,7 @@
       programs.git.ignores = [ ".agents/" ];
       programs.pi-coding-agent = {
         enable = true;
-        package = pkgs.pkgs-unstable.pi-coding-agent;
+        package = pkgs-unstable.pi-coding-agent;
         extraPackages = with pkgs; [
           nodejs
           python3

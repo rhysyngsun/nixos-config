@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.modules.homeManager.programs-devtools =
-    { pkgs, ... }:
+    { pkgs, pkgs-unstable, ... }:
     {
       home = {
         packages = with pkgs; [

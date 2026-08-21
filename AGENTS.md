@@ -139,16 +139,30 @@ not invent an options layer.
   `home/<user>/home.nix` carries per-user identity (username, homeDirectory,
   stateVersion) and is imported by that user's roll-up. `home/wayland/` is
   reached through `modules/programs/programs-wayland.nix`.
-- `nvf/` - Neovim in nvf's own `vim.*` schema, built against `pkgs.pkgs-edge` by
-  `modules/programs/programs-neovim.nix`.
+- `home/vendor/` - verbatim copies of home-manager modules that the pinned
+  release does not ship. Currently `pi-coding-agent.nix`, imported by both
+  `modules/home/home-*.nix` roll-ups. Each file carries a header with its
+  upstream rev - **do not edit them**, re-copy instead.
+- `nvf/` - Neovim in nvf's own `vim.*` schema, built against the `pkgs-edge`
+  module argument by `modules/programs/programs-neovim.nix`, which smuggles the
+  stable set back in as `pkgs-stable` for anything from `additions`.
 - `pkgs/` - custom packages exported as the `additions` overlay
   (`pkgs/default.nix`): `rice`, `mit/` (cacert, agent-kit, witan via uv2nix),
   `krita-plugins`, `vimPlugins`, `localSources`. **`pkgs/_sources/` is
   nvfetcher-generated - never hand-edit it**; change `nvfetcher.toml` and run
   `just update-pkgs -f <name>`.
-- `overlays/default.nix` - `additions`, `modifications`, `unstable-packages`.
-  Cross-channel packages are `pkgs.pkgs-unstable.<x>` and `pkgs.pkgs-edge.<x>`
-  (**not** `pkgs.unstable`).
+- `overlays/default.nix` - `additions`, `modifications`, and `unstable-extras`.
+  It no longer imports nixpkgs itself. `unstable-extras` is curried on the
+  stable set (`pkgs-stable: final: prev:`) because the pkl grammar and the
+  custom `vimPlugins` live in `additions`, which is stable-only; that shape is
+  also why it is not exported through `flake.overlays`, which only accepts
+  plain two-argument overlays.
+- `modules/pkgs-instances.nix` - **the only place nixpkgs is instantiated.**
+  Builds `pkgs`, `pkgs-unstable`, and `pkgs-edge` once each in `perSystem` as
+  `_module.args`; `flake.nix` pipes them into both `nixosConfigurations` and
+  `homeConfigurations` with `withSystem`. Cross-channel packages are reached by
+  naming `pkgs-unstable` / `pkgs-edge` in a module argument list - there is no
+  `pkgs.pkgs-unstable` and no `pkgs.unstable`.
 - `themes/` - stylix config and wallpapers (`wallpaper.mp4` is git-lfs).
 - `nix-settings.nix`, `nixpkgs.nix`, `shell.nix`, `treefmt.nix`, `treefmt.toml`.
 
@@ -196,9 +210,24 @@ it. sops-nix is the only secrets mechanism here - do not reach for agenix.
 - Untracked files are invisible to the flake. Worth repeating - it is the most
   common first-try failure.
 - Inputs are pinned on purpose and intentionally mismatched: `nixpkgs` follows
-  **unstable**; `nixpkgs-stable` (26.05) is declared but unused; stylix is on
+  **`nixpkgs-stable`** (26.05); `nixpkgs-unstable` backs `pkgs-unstable` and
+  `nixpkgs-master` backs `pkgs-edge` (note the name mismatch); stylix is on
   `release-24.11`, catppuccin on `release-25.05`, wezterm on a fixed rev. Do not
   bump these opportunistically.
+- home-manager is pinned to `release-26.05` to match `nixpkgs`; tracking master
+  trips home-manager's own version-mismatch warning. The cost is that
+  26.11-only modules must be vendored into `home/vendor/`, and 26.11-only
+  option spellings do not work - `programs.fzf.historyWidget.command` is
+  removed in 26.05, which is why `programs-desktop.nix` no longer sets it
+  (atuin owns Ctrl-R there regardless).
+- **NixOS modules cannot set `nixpkgs.*`.** `flake.nix` passes
+  `nixpkgs.nixosModules.readOnlyPkgs`, which disables the usual nixpkgs module,
+  so `nixpkgs.config`, `nixpkgs.overlays` and `nixpkgs.hostPlatform` are
+  read-only (derived from `nixpkgs.pkgs`) and `nixpkgs.system` no longer
+  exists. That is also why `nixosSystem` is called with `system = null`:
+  a non-null value would make `eval-config.nix` define the missing
+  `nixpkgs.system`. Set overlays and `allowUnfree` in
+  `modules/pkgs-instances.nix` instead.
 - home-manager option collisions are resolved with `disabledModules` - see the
   anyrun case in `modules/home/home-nathan.nix:8-15`.
 - Several modules are registered but intentionally not imported: `programs-eww`,

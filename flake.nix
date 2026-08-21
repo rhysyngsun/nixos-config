@@ -9,6 +9,7 @@
         inputs,
         config,
         lib,
+        withSystem,
         ...
       }:
       let
@@ -16,22 +17,9 @@
         import-tree =
           path: toList (fileFilter (file: file.hasExt "nix" && !(lib.hasPrefix "_" file.name)) path);
 
-        overlays = import ./overlays { inherit inputs; };
-        nix-defaults = {
-          nix = import ./nix-settings.nix {
-            inherit inputs;
-            inherit (inputs.nixpkgs) lib;
-          };
-          nixpkgs = {
-            overlays = [
-              inputs.nix-rice.overlays.default
-              inputs.nur.overlays.default
-              overlays.additions
-              overlays.modifications
-              overlays.unstable-packages
-            ];
-            config.allowUnfree = true;
-          };
+        nixSettings = import ./nix-settings.nix {
+          inherit inputs;
+          inherit (inputs.nixpkgs) lib;
         };
 
         system = "x86_64-linux";
@@ -69,45 +57,72 @@
           };
 
         flake = {
-          inherit overlays;
-
           nixosConfigurations = lib.mapAttrs' (
             name: mod:
             lib.nameValuePair (lib.removePrefix "host-" name) (
-              inputs.nixpkgs.lib.nixosSystem {
-                inherit system;
-                specialArgs = { inherit inputs; };
-                modules = [
-                  inputs.sops-nix.nixosModules.sops
-                  nix-defaults
-                  mod
-                ];
-              }
+              withSystem system (
+                {
+                  pkgs,
+                  pkgs-unstable,
+                  pkgs-edge,
+                  ...
+                }:
+                inputs.nixpkgs.lib.nixosSystem {
+                  # Must be null rather than `system`: eval-config.nix turns a
+                  # non-null argument into `nixpkgs.system = mkDefault ...`, and
+                  # readOnlyPkgs disables the module that declares that option.
+                  system = null;
+                  specialArgs = { inherit inputs pkgs-unstable pkgs-edge; };
+                  modules = [
+                    inputs.sops-nix.nixosModules.sops
+                    inputs.nixpkgs.nixosModules.readOnlyPkgs
+                    {
+                      nixpkgs.pkgs = pkgs;
+                      nix = nixSettings;
+                    }
+                    mod
+                  ];
+                }
+              )
             )
           ) hostModules;
 
           homeConfigurations = lib.mapAttrs' (
             name: mod:
             lib.nameValuePair (lib.removePrefix "home-" name) (
-              inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = import inputs.nixpkgs {
-                  inherit system;
-                  inherit (nix-defaults.nixpkgs) config overlays;
-                };
-                extraSpecialArgs = { inherit system inputs; };
-                modules = [
-                  mod
-                  (
-                    { pkgs, ... }:
+              withSystem system (
+                {
+                  pkgs,
+                  pkgs-unstable,
+                  pkgs-edge,
+                  ...
+                }:
+                inputs.home-manager.lib.homeManagerConfiguration {
+                  inherit pkgs;
+                  extraSpecialArgs = {
+                    inherit
+                      system
+                      inputs
+                      pkgs-unstable
+                      pkgs-edge
+                      ;
+                  };
+                  modules = [
+                    mod
                     {
                       nix = {
                         package = pkgs.nix;
-                        inherit (nix-defaults.nix) settings;
+                        inherit (nixSettings) settings;
                       };
+
+                      # No nushell here, and stable's fzf is too old for
+                      # home-manager's nushell-integration assertion. Every
+                      # per-program `enableNushellIntegration` defaults to this.
+                      home.shell.enableNushellIntegration = false;
                     }
-                  )
-                ];
-              }
+                  ];
+                }
+              )
             )
           ) homeModules;
         };
@@ -146,8 +161,9 @@
     # nixpkgs.follows = "nixpkgs-master";
 
     # Home manager
-    # home-manager.url = "github:nix-community/home-manager/release-26.05";
-    home-manager.url = "github:nix-community/home-manager";
+    # Pinned to the release matching `nixpkgs` (26.05). Tracking master instead
+    # trips home-manager's own version-mismatch warning on every eval.
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
 
     sops-nix.url = "github:Mic92/sops-nix";
     agenix.url = "github:yaxitech/ragenix";

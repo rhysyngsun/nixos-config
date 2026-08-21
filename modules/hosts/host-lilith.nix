@@ -194,7 +194,6 @@
         ];
       };
 
-      nixpkgs.config.allowUnfree = true;
       nix.settings.download-buffer-size = 524288000;
 
       security = {

@@ -49,6 +49,9 @@
         top.config.flake.modules.homeManager.theme-rofi
 
         ../../home/rhysyngsun/home.nix
+        # Declares `programs.pi-coding-agent`, which the pinned home-manager
+        # (26.05) does not ship - see the header in that file.
+        ../../home/vendor/pi-coding-agent.nix
         ../../themes/stylix.nix
       ];
 
