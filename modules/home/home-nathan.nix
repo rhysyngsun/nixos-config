@@ -36,7 +36,7 @@
 
         top.config.flake.modules.homeManager.programs-ai-claude-mit
         top.config.flake.modules.homeManager.programs-ai-pi-local
-        top.config.flake.modules.homeManager.programs-ai-unsloth
+        # top.config.flake.modules.homeManager.programs-ai-unsloth
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
         top.config.flake.modules.homeManager.programs-tmux

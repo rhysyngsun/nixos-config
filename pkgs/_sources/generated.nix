@@ -44,47 +44,47 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.44.0";
+    version = "0.45.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.44.0/Headlamp-0.44.0-linux-x64.AppImage";
-      sha256 = "sha256-w0wMChMAkQrZroWQqH5tKhJH4z2ecMdS7ALxohJmEiw=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.45.0/Headlamp-0.45.0-linux-x64.AppImage";
+      sha256 = "sha256-PFAQK5n/7V6AJTMYffNFjv6GJ97V55D0kOVL4bQJR2U=";
     };
   };
   lean-ctx = {
     pname = "lean-ctx";
-    version = "3.9.18";
+    version = "3.9.19";
     src = fetchurl {
-      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.9.18/lean-ctx-3.9.18-source.tar.gz";
-      sha256 = "sha256-EpJ3b5VJMHzz/q3pXXVBG6b84kqfltSgetYUaIRoY1A=";
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.9.19/lean-ctx-3.9.19-source.tar.gz";
+      sha256 = "sha256-h4hJT02ssugQXx1gCwq86dmsuf3/fxBNoZiVIwQZ/4E=";
     };
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "074aa4422bf029908338e855d0c0f71470a971bb";
+    version = "8b98b4470eb326f1c7b50dae79f8c963568e5720";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "074aa4422bf029908338e855d0c0f71470a971bb";
+      rev = "8b98b4470eb326f1c7b50dae79f8c963568e5720";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-gfysRZAwKXSLZpO8AhO1o3O93OwnzJTTbXhhdbbOJ7M=";
+      sha256 = "sha256-u+ESawp6hRUPYmgY+VVW3KpxhymC0Cy9ehgamRGXWSo=";
     };
-    date = "2026-08-15";
+    date = "2026-08-23";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "cfd79d478d1cea6cba30f775ade1138df3ab7b13";
+    version = "848bed00d8be470a3e7af62a24316ad554346b2c";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "cfd79d478d1cea6cba30f775ade1138df3ab7b13";
+      rev = "848bed00d8be470a3e7af62a24316ad554346b2c";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-eLW8tPqboM2UEi/kxRtGSslrred6JYwmTgiFYbZNrZo=";
+      sha256 = "sha256-TRZ85sNP48RBLifbEfdyVLO/TMp/yibyKoBPhFSeGjo=";
     };
-    date = "2026-08-17";
+    date = "2026-08-25";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -130,10 +130,10 @@
   };
   unsloth-studio = {
     pname = "unsloth-studio";
-    version = "0.1.800-beta/Unsloth-Desktop-0_1_800_beta";
+    version = "0.1.803-beta/Unsloth-Desktop-0_1_803_beta";
     src = fetchurl {
-      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.800-beta/Unsloth-Desktop-0_1_800_beta-Linux.AppImage";
-      sha256 = "sha256-GpqzGpMUz0raNDcUEYZFNxe5a29SqPJ4eD0EGaq+/K0=";
+      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.803-beta/Unsloth-Desktop-0_1_803_beta-Linux.AppImage";
+      sha256 = "sha256-xSMxWPXlDhOHQzH0DDAGGaWw4q3ib8nAku/Ze8lDhkA=";
     };
   };
   whichpy-nvim = {

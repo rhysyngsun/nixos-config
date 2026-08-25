@@ -24,6 +24,7 @@
           "renovate-security-triage"
         ];
         "skills/python" = [
+          "drf-api-performance"
           "uv-python-workflow"
         ];
         "skills/workflow" = [
