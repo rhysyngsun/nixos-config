@@ -1,5 +1,5 @@
 { inputs }:
-final: prev:
+_final: prev:
 let
   sources = prev.callPackage ./_sources/generated.nix { };
 in
@@ -13,7 +13,8 @@ in
   lean-ctx = prev.callPackage ./lean-ctx.nix { source = sources.lean-ctx; };
   omnigraph = prev.callPackage ./omnigraph.nix { source = sources.omnigraph; };
   pkl-lsp = prev.callPackage ./pkl-lsp.nix { source = sources.pkl-lsp; };
-  unsloth-studio = prev.callPackage ./unsloth-studio.nix { source = sources.unsloth-studio; };
+  tree-sitter-peg = prev.callPackage ./tree-sitter-peg.nix { source = sources.tree-sitter-peg; };
+  tree-sitter-noy = prev.callPackage ./tree-sitter-noy.nix { source = sources.tree-sitter-noy; };
   vimPlugins = prev.vimPlugins // prev.callPackage ./vimPlugins { inherit sources; };
   localSources = sources;
 }

@@ -52,39 +52,45 @@
   };
   lean-ctx = {
     pname = "lean-ctx";
-    version = "3.9.19";
+    version = "3.10.1";
     src = fetchurl {
-      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.9.19/lean-ctx-3.9.19-source.tar.gz";
-      sha256 = "sha256-h4hJT02ssugQXx1gCwq86dmsuf3/fxBNoZiVIwQZ/4E=";
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.10.1/lean-ctx-3.10.1-source.tar.gz";
+      sha256 = "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc/wRdNuEqy4L4oJE=";
+    };
+    cargoLock."rust/Cargo.lock" = {
+      lockFile = ./. + "/sha256-IkNn8wi15Jrlto0joXgYymSX8VXc_wRdNuEqy4L4oJE=/rust/Cargo.lock";
+      outputHashes = {
+        
+      };
     };
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "8b98b4470eb326f1c7b50dae79f8c963568e5720";
+    version = "5cb0114e6242625db56dd6440e945ed1ece10bc7";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "8b98b4470eb326f1c7b50dae79f8c963568e5720";
+      rev = "5cb0114e6242625db56dd6440e945ed1ece10bc7";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-u+ESawp6hRUPYmgY+VVW3KpxhymC0Cy9ehgamRGXWSo=";
+      sha256 = "sha256-iOT3hIhE/2J3YMT62/T7+ZfvCtBpvv8Z4nP9IymzLcY=";
     };
-    date = "2026-08-23";
+    date = "2026-09-07";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "848bed00d8be470a3e7af62a24316ad554346b2c";
+    version = "8c1a6f3e8e925bd38b439df41e5397b131d61031";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "848bed00d8be470a3e7af62a24316ad554346b2c";
+      rev = "8c1a6f3e8e925bd38b439df41e5397b131d61031";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-TRZ85sNP48RBLifbEfdyVLO/TMp/yibyKoBPhFSeGjo=";
+      sha256 = "sha256-TAspi3ez+MRMkZd4aYIBmB1KeeHHxjVq2A4bma+0HeA=";
     };
-    date = "2026-08-25";
+    date = "2026-09-04";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -114,6 +120,30 @@
     };
     date = "2026-07-09";
   };
+  tree-sitter-noy = {
+    pname = "tree-sitter-noy";
+    version = "df445156a8f06c33cff40509a84c92087b14a53d";
+    src = fetchFromGitHub {
+      owner = "noy-lang";
+      repo = "tree-sitter-noy";
+      rev = "df445156a8f06c33cff40509a84c92087b14a53d";
+      fetchSubmodules = false;
+      sha256 = "sha256-vCn03AL7A+RDhb9Y2Iv6ncNcf3jG5R0f33EoO8v2zvQ=";
+    };
+    date = "2026-09-08";
+  };
+  tree-sitter-peg = {
+    pname = "tree-sitter-peg";
+    version = "b2dd45a585ff9d49f162b57eb6e00c60d4e3f5bb";
+    src = fetchFromGitHub {
+      owner = "gnames";
+      repo = "tree-sitter-peg";
+      rev = "b2dd45a585ff9d49f162b57eb6e00c60d4e3f5bb";
+      fetchSubmodules = false;
+      sha256 = "sha256-t5e75+6Fozk0durXMOK0BoiMnsTPFn2Y2Y78WDodiQo=";
+    };
+    date = "2026-07-16";
+  };
   tree-sitter-pkl = {
     pname = "tree-sitter-pkl";
     version = "65f4483b9e8a5960a4d8948421ef3a8992013517";
@@ -127,14 +157,6 @@
       sha256 = "sha256-+SjtOZBSaVrH2FdWmc+ciG8c/TNT6G3XEalYy3F+SQ8=";
     };
     date = "2026-08-17";
-  };
-  unsloth-studio = {
-    pname = "unsloth-studio";
-    version = "0.1.803-beta/Unsloth-Desktop-0_1_803_beta";
-    src = fetchurl {
-      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.803-beta/Unsloth-Desktop-0_1_803_beta-Linux.AppImage";
-      sha256 = "sha256-xSMxWPXlDhOHQzH0DDAGGaWw4q3ib8nAku/Ze8lDhkA=";
-    };
   };
   whichpy-nvim = {
     pname = "whichpy-nvim";

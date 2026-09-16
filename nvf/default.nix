@@ -37,6 +37,7 @@ in
     extraPackages = with pkgs; [
       # neovim autodetects wl-copy
       wl-clipboard
+      tree-sitter
     ];
 
     lsp = {

@@ -16,11 +16,13 @@ in
       java.enable = true;
       lua.enable = true;
       nix.enable = true;
+      peg.enable = true;
       markdown.enable = true;
       pkl = {
         enable = true;
         lsp.server = "brine";
       };
+      noy.enable = true;
       python = {
         enable = true;
         lsp.servers = [ "basedpyright" ];

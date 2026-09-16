@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.modules.homeManager.programs-zsh =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      pkgs-edge,
+      ...
+    }:
     {
       home = {
         packages = with pkgs; [ starship ];
@@ -24,6 +29,7 @@
       programs = {
         atuin = {
           enable = true;
+          package = pkgs-edge.atuin;
           enableZshIntegration = true;
           settings = {
             filter_mode = "session";

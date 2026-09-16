@@ -189,6 +189,7 @@
             "npm:pi-lmstudio"
             "npm:pi-subagents"
             "npm:pi-subdir-context"
+            "npm:@juicesharp/rpiv-ask-user-question"
           ];
         };
         models = {

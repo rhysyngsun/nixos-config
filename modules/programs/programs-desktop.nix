@@ -113,23 +113,10 @@
         fzf = {
           enable = true;
           enableZshIntegration = true;
-          # No `historyWidget.command` here: 26.05 removed the option outright.
-          # atuin's zsh integration is sourced after fzf's and owns Ctrl-R
-          # anyway, which is what setting it to "" used to arrange on 26.11.
         };
 
         go = {
           enable = true;
-          packages = {
-            "github.com/danielgtaylor/restish" = builtins.fetchGit {
-              url = "https://github.com/danielgtaylor/restish";
-              rev = "ee2e1ae6cbd6ae2f96b7b4ab3e277e926d224701";
-            };
-            "github.com/shihanng/gig" = builtins.fetchGit {
-              url = "https://github.com/shihanng/gig";
-              rev = "52dadde2b1d858ede8a1f46da29bceec1e8bfe75";
-            };
-          };
         };
 
         krita = {

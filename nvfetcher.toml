@@ -24,6 +24,7 @@ fetch.url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v$ver
 src.github = "yvgude/lean-ctx"
 src.prefix = "v"
 fetch.url = "https://github.com/yvgude/lean-ctx/releases/download/v$ver/lean-ctx-$ver-source.tar.gz"
+cargo_lock = ["rust/Cargo.lock"]
 
 [pkl-lsp]
 src.github = "apple/pkl-lsp"
@@ -50,21 +51,8 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-# src.branch = "nl/standup-use-editor"
+# src.branch = "nl/pr-template-implementation-details"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
-
-# The release tag and the asset filename spell the version differently -
-# `v0.1.800-beta` vs `Unsloth-Desktop-0_1_800_beta-Linux.AppImage` - and
-# nvfetcher only substitutes a single `$ver`, so neither spelling alone can
-# build the download URL. Track a *composite* version that carries both halves
-# ("0.1.800-beta/Unsloth-Desktop-0_1_800_beta"), scraped straight out of the
-# release JSON's own download URL, and split the real version back out in
-# pkgs/unsloth.nix. Do not "simplify" this to src.github + prefix: it cannot
-# produce the underscored filename.
-[unsloth-studio]
-src.webpage = "https://api.github.com/repos/unslothai/unsloth/releases/latest"
-src.regex = "([0-9.]+-beta/Unsloth-Desktop-[0-9_]+_beta)"
-fetch.url = "https://github.com/unslothai/unsloth/releases/download/v$ver-Linux.AppImage"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the
 # exact release named by `_OMNIGRAPH_VERSION` in
@@ -72,3 +60,12 @@ fetch.url = "https://github.com/unslothai/unsloth/releases/download/v$ver-Linux.
 [omnigraph]
 src.manual = "0.8.1"
 fetch.url = "https://github.com/ModernRelay/omnigraph/releases/download/v$ver/omnigraph-linux-x86_64.tar.gz"
+
+
+[tree-sitter-peg]
+src.git = "https://github.com/gnames/tree-sitter-peg"
+fetch.github = "gnames/tree-sitter-peg"
+
+[tree-sitter-noy]
+src.git = "https://github.com/noy-lang/tree-sitter-noy.git"
+fetch.github = "noy-lang/tree-sitter-noy"

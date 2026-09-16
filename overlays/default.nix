@@ -32,7 +32,7 @@ in
         });
       })
     ];
-    vimPlugins = mkVimPlugins prev prev.localSources;
+    # vimPlugins = mkVimPlugins prev prev.localSources;
   };
 
   # Channel-crossing tweaks applied to the nixpkgs-unstable instance. Curried on
@@ -41,14 +41,6 @@ in
   # modules/pkgs-instances.nix; not exported through `flake.overlays`, which
   # only accepts plain two-argument overlays.
   unstable-extras = pkgs-stable: _: prev': {
-    vimPlugins = mkVimPlugins prev' pkgs-stable.localSources;
-    tree-sitter = pkgs-stable.tree-sitter.override {
-      extraGrammars = {
-        tree-sitter-pkl = pkgs-stable.tree-sitter.buildGrammar {
-          language = "pkl";
-          inherit (pkgs-stable.localSources.tree-sitter-pkl) src version;
-        };
-      };
-    };
+    # vimPlugins = mkVimPlugins prev' pkgs-stable.localSources;
   };
 }

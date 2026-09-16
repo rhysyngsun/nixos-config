@@ -226,6 +226,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf.url = "github:notashelf/nvf?tag=v26.07";
+    nvf.url = "github:notashelf/nvf";
   };
 }

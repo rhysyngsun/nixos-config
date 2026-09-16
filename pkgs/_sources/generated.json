@@ -78,7 +78,12 @@
         "version": "0.45.0"
     },
     "lean-ctx": {
-        "cargoLock": null,
+        "cargoLock": {
+            "rust/Cargo.lock": [
+                "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc_wRdNuEqy4L4oJE=/rust/Cargo.lock",
+                {}
+            ]
+        },
         "date": null,
         "extract": null,
         "name": "lean-ctx",
@@ -86,15 +91,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-h4hJT02ssugQXx1gCwq86dmsuf3/fxBNoZiVIwQZ/4E=",
+            "sha256": "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc/wRdNuEqy4L4oJE=",
             "type": "url",
-            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.9.19/lean-ctx-3.9.19-source.tar.gz"
+            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.10.1/lean-ctx-3.10.1-source.tar.gz"
         },
-        "version": "3.9.19"
+        "version": "3.10.1"
     },
     "nvim-treesitter": {
         "cargoLock": null,
-        "date": "2026-08-23",
+        "date": "2026-09-07",
         "extract": null,
         "name": "nvim-treesitter",
         "passthru": null,
@@ -104,17 +109,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720",
-            "sha256": "sha256-u+ESawp6hRUPYmgY+VVW3KpxhymC0Cy9ehgamRGXWSo=",
+            "rev": "5cb0114e6242625db56dd6440e945ed1ece10bc7",
+            "sha256": "sha256-iOT3hIhE/2J3YMT62/T7+ZfvCtBpvv8Z4nP9IymzLcY=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/nvim-treesitter/nvim-treesitter"
         },
-        "version": "8b98b4470eb326f1c7b50dae79f8c963568e5720"
+        "version": "5cb0114e6242625db56dd6440e945ed1ece10bc7"
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-08-25",
+        "date": "2026-09-04",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -124,13 +129,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "848bed00d8be470a3e7af62a24316ad554346b2c",
-            "sha256": "sha256-TRZ85sNP48RBLifbEfdyVLO/TMp/yibyKoBPhFSeGjo=",
+            "rev": "8c1a6f3e8e925bd38b439df41e5397b131d61031",
+            "sha256": "sha256-TAspi3ez+MRMkZd4aYIBmB1KeeHHxjVq2A4bma+0HeA=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "848bed00d8be470a3e7af62a24316ad554346b2c"
+        "version": "8c1a6f3e8e925bd38b439df41e5397b131d61031"
     },
     "omnigraph": {
         "cargoLock": null,
@@ -183,6 +188,48 @@
         },
         "version": "7907b89958d06fa5a5dc72eeb26d8289605595c3"
     },
+    "tree-sitter-noy": {
+        "cargoLock": null,
+        "date": "2026-09-08",
+        "extract": null,
+        "name": "tree-sitter-noy",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "noy-lang",
+            "repo": "tree-sitter-noy",
+            "rev": "df445156a8f06c33cff40509a84c92087b14a53d",
+            "sha256": "sha256-vCn03AL7A+RDhb9Y2Iv6ncNcf3jG5R0f33EoO8v2zvQ=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "df445156a8f06c33cff40509a84c92087b14a53d"
+    },
+    "tree-sitter-peg": {
+        "cargoLock": null,
+        "date": "2026-07-16",
+        "extract": null,
+        "name": "tree-sitter-peg",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "gnames",
+            "repo": "tree-sitter-peg",
+            "rev": "b2dd45a585ff9d49f162b57eb6e00c60d4e3f5bb",
+            "sha256": "sha256-t5e75+6Fozk0durXMOK0BoiMnsTPFn2Y2Y78WDodiQo=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "b2dd45a585ff9d49f162b57eb6e00c60d4e3f5bb"
+    },
     "tree-sitter-pkl": {
         "cargoLock": null,
         "date": "2026-08-17",
@@ -202,21 +249,6 @@
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
         "version": "65f4483b9e8a5960a4d8948421ef3a8992013517"
-    },
-    "unsloth-studio": {
-        "cargoLock": null,
-        "date": null,
-        "extract": null,
-        "name": "unsloth-studio",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-xSMxWPXlDhOHQzH0DDAGGaWw4q3ib8nAku/Ze8lDhkA=",
-            "type": "url",
-            "url": "https://github.com/unslothai/unsloth/releases/download/v0.1.803-beta/Unsloth-Desktop-0_1_803_beta-Linux.AppImage"
-        },
-        "version": "0.1.803-beta/Unsloth-Desktop-0_1_803_beta"
     },
     "whichpy-nvim": {
         "cargoLock": null,

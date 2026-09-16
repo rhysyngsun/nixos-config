@@ -14,9 +14,11 @@ rustPlatform.buildRustPackage {
   # `lean-ctx` bin, skipping the SDK and grammar-addon members.
   sourceRoot = "${source.pname}-${source.version}/rust";
 
-  # No `source = "git+..."` entries in Cargo.lock, so the vendored registry
-  # hashes to a single value with no per-crate `outputHashes`.
-  cargoHash = "sha256-eqbCyiMnD8XGmuWrS8lemf0jy0x2W2Q0m02kfYE5SRg=";
+  # nvfetcher extracts `rust/Cargo.lock` at repin time (`cargo_lock` in
+  # nvfetcher.toml), so the vendor set is derived from the lock that ships with
+  # `src` instead of a hand-written `cargoHash` that goes stale on every bump.
+  # `outputHashes` is empty because the lock has no `source = "git+..."` entries.
+  cargoLock = source.cargoLock."rust/Cargo.lock";
 
   nativeBuildInputs = [ makeWrapper ];
 
