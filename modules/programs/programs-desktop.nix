@@ -4,6 +4,7 @@
     {
       lib,
       pkgs,
+      pkgs-unstable,
       ...
     }:
     with lib;
@@ -55,7 +56,7 @@
           hunspell
           hunspellDicts.en_US
 
-          blender
+          pkgs-unstable.blender
           yt-dlp
 
           prismlauncher

@@ -38,6 +38,7 @@
         top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
+        top.config.flake.modules.homeManager.programs-godot
         top.config.flake.modules.homeManager.programs-tmux
         top.config.flake.modules.homeManager.programs-vscode
         top.config.flake.modules.homeManager.programs-wezterm
