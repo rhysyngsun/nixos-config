@@ -24,6 +24,7 @@
           "renovate-security-triage"
         ];
         "skills/python" = [
+          "django-api-benchmark"
           "drf-api-performance"
           "uv-python-workflow"
         ];
@@ -166,6 +167,14 @@
             "Bash(docker compose:*)"
             "Bash(uv run:*)"
             "Bash(pls *)"
+            "Bash(grep *)"
+            "Bash(sed *)"
+            "Bash(timeout *)"
+            "Bash(git checkout *)"
+            "Bash(git fetch *)"
+            "Bash(git diff *)"
+            "Bash(pre-commit *)"
+            "Bash(ux ruff *)"
           ];
 
           # Mirrors what `witan setup --agent claude` merges in. Bare command

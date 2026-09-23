@@ -42,6 +42,14 @@
     };
     date = "2025-07-19";
   };
+  godot-voxel = {
+    pname = "godot-voxel";
+    version = "1.7";
+    src = fetchurl {
+      url = "https://github.com/Zylann/godot_voxel/releases/download/v1.7/godot.linuxbsd.editor.x86_64.zip";
+      sha256 = "sha256-NckunyIJ0e2/br1X36Uq8GDsXZ7iqt4QWghOWRFBXeo=";
+    };
+  };
   headlamp = {
     pname = "headlamp";
     version = "0.45.0";
@@ -52,13 +60,13 @@
   };
   lean-ctx = {
     pname = "lean-ctx";
-    version = "3.10.1";
+    version = "3.10.2";
     src = fetchurl {
-      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.10.1/lean-ctx-3.10.1-source.tar.gz";
-      sha256 = "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc/wRdNuEqy4L4oJE=";
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.10.2/lean-ctx-3.10.2-source.tar.gz";
+      sha256 = "sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=";
     };
     cargoLock."rust/Cargo.lock" = {
-      lockFile = ./. + "/sha256-IkNn8wi15Jrlto0joXgYymSX8VXc_wRdNuEqy4L4oJE=/rust/Cargo.lock";
+      lockFile = ./. + "/sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=/rust/Cargo.lock";
       outputHashes = {
         
       };
@@ -66,31 +74,31 @@
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "5cb0114e6242625db56dd6440e945ed1ece10bc7";
+    version = "f603a2f4da48728f80257fb5fbb90145fd1dc173";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "5cb0114e6242625db56dd6440e945ed1ece10bc7";
+      rev = "f603a2f4da48728f80257fb5fbb90145fd1dc173";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-iOT3hIhE/2J3YMT62/T7+ZfvCtBpvv8Z4nP9IymzLcY=";
+      sha256 = "sha256-fXBJhWvjzBGivIiAys9oy2JB9h99CNIk+AdGkGgHgPg=";
     };
-    date = "2026-09-07";
+    date = "2026-09-19";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "8c1a6f3e8e925bd38b439df41e5397b131d61031";
+    version = "bde77a31dc5215c956f5a9a953f74d46bab91b96";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "8c1a6f3e8e925bd38b439df41e5397b131d61031";
+      rev = "bde77a31dc5215c956f5a9a953f74d46bab91b96";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-TAspi3ez+MRMkZd4aYIBmB1KeeHHxjVq2A4bma+0HeA=";
+      sha256 = "sha256-OZE+z+6Hl2H9vVAiY36PcOhbLf82k8vG0CbcPBiPcIo=";
     };
-    date = "2026-09-04";
+    date = "2026-09-22";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -146,17 +154,17 @@
   };
   tree-sitter-pkl = {
     pname = "tree-sitter-pkl";
-    version = "65f4483b9e8a5960a4d8948421ef3a8992013517";
+    version = "9eaf196bb1cb9ce862036ed28b188ab6664a2492";
     src = fetchgit {
       url = "https://github.com/apple/tree-sitter-pkl";
-      rev = "65f4483b9e8a5960a4d8948421ef3a8992013517";
+      rev = "9eaf196bb1cb9ce862036ed28b188ab6664a2492";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-+SjtOZBSaVrH2FdWmc+ciG8c/TNT6G3XEalYy3F+SQ8=";
+      sha256 = "sha256-BG7BLzUOepbhkCI30iCwpw126R7upNDX3wDWp+dvtvs=";
     };
-    date = "2026-08-17";
+    date = "2026-09-17";
   };
   whichpy-nvim = {
     pname = "whichpy-nvim";

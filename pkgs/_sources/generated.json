@@ -62,6 +62,21 @@
         },
         "version": "71fb15577ccb091df2f4fc1f65710edbc61b5a53"
     },
+    "godot-voxel": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "godot-voxel",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-NckunyIJ0e2/br1X36Uq8GDsXZ7iqt4QWghOWRFBXeo=",
+            "type": "url",
+            "url": "https://github.com/Zylann/godot_voxel/releases/download/v1.7/godot.linuxbsd.editor.x86_64.zip"
+        },
+        "version": "1.7"
+    },
     "headlamp": {
         "cargoLock": null,
         "date": null,
@@ -80,7 +95,7 @@
     "lean-ctx": {
         "cargoLock": {
             "rust/Cargo.lock": [
-                "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc_wRdNuEqy4L4oJE=/rust/Cargo.lock",
+                "sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=/rust/Cargo.lock",
                 {}
             ]
         },
@@ -91,15 +106,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-IkNn8wi15Jrlto0joXgYymSX8VXc/wRdNuEqy4L4oJE=",
+            "sha256": "sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=",
             "type": "url",
-            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.10.1/lean-ctx-3.10.1-source.tar.gz"
+            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.10.2/lean-ctx-3.10.2-source.tar.gz"
         },
-        "version": "3.10.1"
+        "version": "3.10.2"
     },
     "nvim-treesitter": {
         "cargoLock": null,
-        "date": "2026-09-07",
+        "date": "2026-09-19",
         "extract": null,
         "name": "nvim-treesitter",
         "passthru": null,
@@ -109,17 +124,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "5cb0114e6242625db56dd6440e945ed1ece10bc7",
-            "sha256": "sha256-iOT3hIhE/2J3YMT62/T7+ZfvCtBpvv8Z4nP9IymzLcY=",
+            "rev": "f603a2f4da48728f80257fb5fbb90145fd1dc173",
+            "sha256": "sha256-fXBJhWvjzBGivIiAys9oy2JB9h99CNIk+AdGkGgHgPg=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/nvim-treesitter/nvim-treesitter"
         },
-        "version": "5cb0114e6242625db56dd6440e945ed1ece10bc7"
+        "version": "f603a2f4da48728f80257fb5fbb90145fd1dc173"
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-09-04",
+        "date": "2026-09-22",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -129,13 +144,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "8c1a6f3e8e925bd38b439df41e5397b131d61031",
-            "sha256": "sha256-TAspi3ez+MRMkZd4aYIBmB1KeeHHxjVq2A4bma+0HeA=",
+            "rev": "bde77a31dc5215c956f5a9a953f74d46bab91b96",
+            "sha256": "sha256-OZE+z+6Hl2H9vVAiY36PcOhbLf82k8vG0CbcPBiPcIo=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "8c1a6f3e8e925bd38b439df41e5397b131d61031"
+        "version": "bde77a31dc5215c956f5a9a953f74d46bab91b96"
     },
     "omnigraph": {
         "cargoLock": null,
@@ -232,7 +247,7 @@
     },
     "tree-sitter-pkl": {
         "cargoLock": null,
-        "date": "2026-08-17",
+        "date": "2026-09-17",
         "extract": null,
         "name": "tree-sitter-pkl",
         "passthru": null,
@@ -242,13 +257,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "65f4483b9e8a5960a4d8948421ef3a8992013517",
-            "sha256": "sha256-+SjtOZBSaVrH2FdWmc+ciG8c/TNT6G3XEalYy3F+SQ8=",
+            "rev": "9eaf196bb1cb9ce862036ed28b188ab6664a2492",
+            "sha256": "sha256-BG7BLzUOepbhkCI30iCwpw126R7upNDX3wDWp+dvtvs=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
-        "version": "65f4483b9e8a5960a4d8948421ef3a8992013517"
+        "version": "9eaf196bb1cb9ce862036ed28b188ab6664a2492"
     },
     "whichpy-nvim": {
         "cargoLock": null,

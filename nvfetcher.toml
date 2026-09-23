@@ -51,7 +51,7 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-# src.branch = "nl/pr-template-implementation-details"
+src.branch = "skill/django-api-benchmark"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the
@@ -69,3 +69,11 @@ fetch.github = "gnames/tree-sitter-peg"
 [tree-sitter-noy]
 src.git = "https://github.com/noy-lang/tree-sitter-noy.git"
 fetch.github = "noy-lang/tree-sitter-noy"
+
+[godot-voxel]
+src.github = "Zylann/godot_voxel"
+src.prefix = "v"
+# `fetch.url`, not `fetch.tarball`: the latter emits `builtins.fetchTarball`,
+# which cannot extract a zip, so its recorded hash never matches. Unpacked in
+# pkgs/godot-voxel.nix instead.
+fetch.url = "https://github.com/Zylann/godot_voxel/releases/download/v$ver/godot.linuxbsd.editor.x86_64.zip"

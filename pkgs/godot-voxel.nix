@@ -1,7 +1,7 @@
 {
+  source,
   alsa-lib,
   dbus,
-  fetchzip,
   fontconfig,
   lib,
   libdecor,
@@ -20,6 +20,7 @@
   speechd-minimal,
   stdenv,
   udev,
+  unzip,
   vulkan-loader,
   wayland,
   withDbus ? true,
@@ -33,8 +34,6 @@
   withX11 ? true,
 }:
 let
-  pname = "godot-voxel";
-  version = "1.6";
   libs = [
     alsa-lib
     libGL
@@ -68,14 +67,16 @@ let
   ++ lib.optionals withUdev [ udev ];
 in
 stdenv.mkDerivation {
-  inherit pname version;
+  inherit (source) src pname version;
 
-  src = fetchzip {
-    url = "https://github.com/Zylann/godot_voxel/releases/download/v${version}/godot.linuxbsd.editor.x86_64.zip";
-    hash = "sha256-b5mykTzuEjmmAj0ZcW6oYbC2bA1CgIZYN6lkdpSGgs4=";
-  };
+  # The release zip holds the bare editor binary with no enclosing directory,
+  # so the usual single-root sourceRoot detection has nothing to find.
+  sourceRoot = ".";
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [
+    makeWrapper
+    unzip
+  ];
 
   installPhase = ''
     install -m755 -D godot.linuxbsd.editor.x86_64 $out/bin/godot-voxel
