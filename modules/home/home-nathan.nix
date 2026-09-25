@@ -58,8 +58,9 @@
 
       news.display = "silent";
 
-      home.packages = with inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}; [
-        nix-alien
+      home.packages = [
+        inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
+        pkgs.dagger
       ];
 
       sops = {

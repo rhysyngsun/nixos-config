@@ -62,6 +62,27 @@
         },
         "version": "71fb15577ccb091df2f4fc1f65710edbc61b5a53"
     },
+    "dagger": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "dagger",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "dagger",
+            "repo": "dagger",
+            "rev": "v0.21.9",
+            "sha256": "sha256-ZI9R0fp0qFGQljfNgrwKj071a10ZVpNMmEKHDFNUW3c=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v0.21.9"
+    },
     "godot-voxel": {
         "cargoLock": null,
         "date": null,
@@ -134,7 +155,7 @@
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-09-22",
+        "date": "2026-09-24",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -144,13 +165,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "bde77a31dc5215c956f5a9a953f74d46bab91b96",
-            "sha256": "sha256-OZE+z+6Hl2H9vVAiY36PcOhbLf82k8vG0CbcPBiPcIo=",
+            "rev": "1609f4e4bd69a65a6d7992c9cffa868d080d2786",
+            "sha256": "sha256-dBSNqO1tia1WJGSG//kWcfQK90lqGVuYm9W/RIHG/lQ=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "bde77a31dc5215c956f5a9a953f74d46bab91b96"
+        "version": "1609f4e4bd69a65a6d7992c9cffa868d080d2786"
     },
     "omnigraph": {
         "cargoLock": null,

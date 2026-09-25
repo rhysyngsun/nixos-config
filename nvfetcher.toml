@@ -77,3 +77,11 @@ src.prefix = "v"
 # which cannot extract a zip, so its recorded hash never matches. Unpacked in
 # pkgs/godot-voxel.nix instead.
 fetch.url = "https://github.com/Zylann/godot_voxel/releases/download/v$ver/godot.linuxbsd.editor.x86_64.zip"
+
+# The Dagger CLI, built from the monorepo's `cmd/dagger`. No `src.prefix`
+# here on purpose: stripping the `v` would leave `fetch.github` resolving a
+# bare `0.21.9` rev, and the tags are `v0.21.9`. The version therefore carries
+# the `v`, which pkgs/dagger.nix strips back off.
+[dagger]
+src.github = "dagger/dagger"
+fetch.github = "dagger/dagger"

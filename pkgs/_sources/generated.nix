@@ -42,6 +42,17 @@
     };
     date = "2025-07-19";
   };
+  dagger = {
+    pname = "dagger";
+    version = "v0.21.9";
+    src = fetchFromGitHub {
+      owner = "dagger";
+      repo = "dagger";
+      rev = "v0.21.9";
+      fetchSubmodules = false;
+      sha256 = "sha256-ZI9R0fp0qFGQljfNgrwKj071a10ZVpNMmEKHDFNUW3c=";
+    };
+  };
   godot-voxel = {
     pname = "godot-voxel";
     version = "1.7";
@@ -68,7 +79,7 @@
     cargoLock."rust/Cargo.lock" = {
       lockFile = ./. + "/sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=/rust/Cargo.lock";
       outputHashes = {
-        
+
       };
     };
   };
@@ -88,17 +99,17 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "bde77a31dc5215c956f5a9a953f74d46bab91b96";
+    version = "1609f4e4bd69a65a6d7992c9cffa868d080d2786";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "bde77a31dc5215c956f5a9a953f74d46bab91b96";
+      rev = "1609f4e4bd69a65a6d7992c9cffa868d080d2786";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-OZE+z+6Hl2H9vVAiY36PcOhbLf82k8vG0CbcPBiPcIo=";
+      sha256 = "sha256-dBSNqO1tia1WJGSG//kWcfQK90lqGVuYm9W/RIHG/lQ=";
     };
-    date = "2026-09-22";
+    date = "2026-09-24";
   };
   omnigraph = {
     pname = "omnigraph";
