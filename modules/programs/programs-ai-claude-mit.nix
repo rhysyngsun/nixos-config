@@ -178,6 +178,55 @@
           env.WITAN_AUTHOR = "Nathan Levesque";
         };
 
+        # ToolHive SWE: remote and hosted, one installation per environment
+        # tier - nothing to build, package or run locally, just an endpoint
+        # plus the Keycloak OAuth 2.1 consent flow Claude Code drives on first
+        # connect. `/mcp` is where you authenticate, once per tier.
+        #
+        # Streamable HTTP only, which is what `type = "http"` selects - the
+        # server speaks neither stdio nor SSE.
+        #
+        # The `oauth` block is required, not optional. These realms do not
+        # permit anonymous Dynamic Client Registration: Keycloak's Trusted
+        # Hosts policy rejects the attempt with "Host not trusted." (that is
+        # `verifyHost`, keyed on the *source IP* of the registration request -
+        # distinct from the redirect-URI check, which fails with "URI doesn't
+        # match any trusted host"). So there is nothing to self-register from
+        # here; instead every install shares one Pulumi-managed public client.
+        #
+        # `toolhive-swe-cli` is a public identifier, not a secret - the client
+        # has no client_secret, which is why none of this needs sops. The vMCP
+        # validates only tokens minted for that client.
+        #
+        # callbackPort 8080 is fixed for everyone and must not be varied per
+        # tier or per machine: it is registered verbatim as the client's
+        # redirect URI, and RFC 8252 loopback redirects are matched exactly
+        # rather than negotiated. Claude Code otherwise picks a random port,
+        # which Keycloak would then reject. Both tiers can share it because
+        # authentication is one browser flow at a time.
+        #
+        # Upstream declares this in agent-config.toml for `agent-kit apply`;
+        # the shape here is what its claude adapter passes through verbatim.
+        # The `ci` tier is deliberately omitted - a tier without Keycloak
+        # access just sits failed in `/mcp`.
+        mcpServers.toolhive-swe-prod = {
+          type = "http";
+          url = "https://toolhive-swe.ol.mit.edu/mcp";
+          oauth = {
+            clientId = "toolhive-swe-cli";
+            callbackPort = 8080;
+          };
+        };
+
+        mcpServers.toolhive-swe-qa = {
+          type = "http";
+          url = "https://toolhive-swe.qa.ol.mit.edu/mcp";
+          oauth = {
+            clientId = "toolhive-swe-cli";
+            callbackPort = 8080;
+          };
+        };
+
         mcpServers.lean-ctx = {
           args = [
             "mcp"
@@ -232,6 +281,8 @@
               "Bash(git diff *)"
               "Bash(pre-commit *)"
               "Bash(echo \"EXIT=$?\")"
+              "Bash(rg:*)"
+              "Bash(find:*)"
             ];
 
           # sed gets the opposite treatment from git checkout above, on purpose:
@@ -247,15 +298,34 @@
 
           # Mirrors what `witan setup --agent claude` merges in. Bare command
           # names on purpose: witan-code's hooks are mounted as `witan code …`,
-          # so only `witan` has to be on PATH. The 15s prompt-path timeouts are
-          # upstream's — a hung git or store read must degrade to no context
-          # rather than stall the session.
+          # so only `witan` has to be on PATH.
+          #
+          # Every timeout here is upstream's, and the two families genuinely
+          # differ — do not flatten them back to one number. All four were 15s
+          # until agent-kit#349, which found that 15 sat *inside* the cost
+          # distribution of the work it was timing rather than above it: the
+          # hook was killed mid-read, the user paid the full wait, and the
+          # output was thrown away. Worse on a read path, because the cold read
+          # is what populates the on-disk cache — kill it and every later
+          # prompt is cold too.
+          #
+          # `witan inject-context` is a read against the council graph,
+          # measured at 16-23s cold on a graph with 19 active projects and 184
+          # ready tasks, so 45s (upstream's INJECT_CONTEXT_TIMEOUT_SECONDS) is
+          # headroom for a bigger graph, not a budget anything should use.
+          # `witan session-checkpoint` is a WRITE (`workflow_session_end`),
+          # measured at up to 51s against a deployment; killing it does not
+          # drop a context block, it leaves the session open with no handoff
+          # summary — invisible until someone resumes and finds nothing.
+          #
+          # The `witan code` pair stays at 15: the code graph is per-repo and
+          # local, and its own cold read is ~10s.
           hooks = {
             SessionStart = [ (mkHook { command = "witan code session-init"; }) ];
             UserPromptSubmit = [
               (mkHook {
                 command = "witan inject-context";
-                timeout = 15;
+                timeout = 45;
               })
               (mkHook {
                 command = "witan code inject-context";
@@ -271,7 +341,7 @@
             Stop = [
               (mkHook {
                 command = "witan session-checkpoint";
-                timeout = 15;
+                timeout = 60;
               })
               (mkHook {
                 command = "witan code checkpoint";
