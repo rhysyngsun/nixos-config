@@ -8,58 +8,63 @@
       ...
     }:
     let
-      # Skills are read straight out of the vendored agent-kit checkout rather
-      # than copied in: the attr name becomes the directory under
-      # ~/.claude/skills/, the value the store path holding its SKILL.md.
-      mkSkillsFrom =
-        dir: names: lib.attrsets.genAttrs names (name: "${pkgs.mit.agent-kit.src}/${dir}/${name}");
-      skillsFrom = dirs: lib.attrsets.mergeAttrsList (lib.attrsets.mapAttrsToList mkSkillsFrom dirs);
+      src = pkgs.mit.agent-kit.src;
 
-      skillDirs = {
-        "skills/process" = [
-          "create-ol-github-issue"
-          "create-ol-pull-request"
-          "create-ol-rfc-discussion"
-          "generate-standup"
-          "renovate-security-triage"
-        ];
-        "skills/python" = [
-          "django-api-benchmark"
-          "drf-api-performance"
-          "uv-python-workflow"
-        ];
-        "skills/workflow" = [
-          "creating-skills"
-        ];
-      };
+      # Roots holding skill directories, repo-relative. Skills are read straight
+      # out of the vendored agent-kit checkout rather than copied in: the attr
+      # name becomes the directory under ~/.claude/skills/, the value the store
+      # path holding its SKILL.md.
+      #
+      # Nested roots carry a category layer (skills/<category>/<skill>/); the
+      # walk also checks the root itself, so a skill upstream flattens to
+      # skills/<name>/ is still found. witan's skills ship inside the two MCP
+      # server packages rather than the shared catalogue, so they need their own
+      # flat roots.
+      nestedRoots = [ "skills" ];
+      flatRoots = [
+        "mcp/servers/witan/witan/skills"
+        "mcp/servers/witan-code/witan_code/skills"
+      ];
 
-      # witan's skills ship inside the two MCP server packages rather than the
-      # shared catalogue. Work profile only: they steer tools the personal
-      # profile has no witan server to answer with.
-      witanSkillDirs = {
-        "mcp/servers/witan/witan/skills" = [
-          "witan-memory"
-          "witan-project-tracker"
-          "witan-task"
-          "witan-workflow"
-        ];
-        "mcp/servers/witan-code/witan_code/skills" = [
-          "witan-code"
-        ];
-      };
+      # Opt-out, not opt-in: everything upstream ships is installed unless named
+      # here, so picking up a new skill is a repin and no edit to this file.
+      excludedSkills = [ ];
 
-      skills = skillsFrom skillDirs;
-      witanSkills = skillsFrom witanSkillDirs;
+      subdirsOf =
+        rel:
+        lib.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir "${src}/${rel}"));
+      isSkillDir = rel: builtins.pathExists "${src}/${rel}/SKILL.md";
+
+      # Keying on SKILL.md presence is also what skips the README.md that sits
+      # in skills/ and in every category directory.
+      skillsUnder = root: lib.filter isSkillDir (map (n: "${root}/${n}") (subdirsOf root));
+      skillsUnderNested =
+        root: skillsUnder root ++ lib.concatMap skillsUnder (map (c: "${root}/${c}") (subdirsOf root));
+
+      # name -> repo-relative directory. The single source of truth for the
+      # installed skills and both derived allowlists below.
+      skillPaths = lib.removeAttrs (lib.listToAttrs (
+        map (rel: lib.nameValuePair (baseNameOf rel) rel) (
+          lib.concatMap skillsUnderNested nestedRoots ++ lib.concatMap skillsUnder flatRoots
+        )
+      )) excludedSkills;
+
+      skills = lib.mapAttrs (_: rel: "${src}/${rel}") skillPaths;
 
       # Skills that ship helpers under scripts/ need every one of them
-      # pre-approved or the skill stalls on a permission prompt mid-run. Read
-      # the names out of the pinned checkout so the lists above stay the single
-      # place a new skill has to be declared. Most skills ship no scripts/ at
-      # all, which pathExists short-circuits.
+      # pre-approved or the skill stalls on a permission prompt mid-run. Read the
+      # names out of the pinned checkout so discovery stays the single place a new
+      # skill has to appear. Most skills ship no scripts/ at all, which
+      # pathExists short-circuits.
+      #
+      # The .sh filter is deliberate: extract-style-profile and screenshot-pr
+      # ship scripts/*.py instead, and their SKILL.md documents them as
+      # `uv run scripts/<name>.py`, already covered by the Bash(uv run:*) allow
+      # further down.
       skillScriptNames =
-        subdir:
+        rel:
         let
-          dir = "${pkgs.mit.agent-kit.src}/${subdir}/scripts";
+          dir = "${src}/${rel}/scripts";
         in
         lib.optionals (builtins.pathExists dir) (
           lib.filter (lib.hasSuffix ".sh") (
@@ -77,47 +82,39 @@
       # fixed set of wrappers before matching - timeout, time, nice, nohup,
       # stdbuf, command, builtin, noglob - and `bash` is not among them, so
       # `bash <path>` never matches a bare `<path>` rule.
-      skillScriptAllows =
-        dirs:
-        lib.flatten (
-          lib.mapAttrsToList (
-            dir: names:
-            map (
-              name:
-              map (
-                script:
-                lib.concatMap
-                  (prefix: [
-                    "Bash(${prefix}~/.claude/skills/${name}/scripts/${script}:*)"
-                    "Bash(${prefix}${config.home.homeDirectory}/.claude/skills/${name}/scripts/${script}:*)"
-                    "Bash(${prefix}./${dir}/${name}/scripts/${script}:*)"
-                  ])
-                  [
-                    ""
-                    "bash "
-                  ]
-              ) (skillScriptNames "${dir}/${name}")
-            ) names
-          ) dirs
-        );
+      skillScriptAllows = lib.flatten (
+        lib.mapAttrsToList (
+          name: rel:
+          map (
+            script:
+            lib.concatMap
+              (prefix: [
+                "Bash(${prefix}${config.home.homeDirectory}/.claude/skills/${name}/scripts/${script}:*)"
+                "Bash(${prefix}./${rel}/scripts/${script}:*)"
+              ])
+              [
+                ""
+                "bash "
+              ]
+          ) (skillScriptNames rel)
+        ) skillPaths
+      );
 
       # agent-kit skills that retain artifacts put them at a fixed
       # ~/.cache/<skill-name>/ precisely so one allow entry survives across runs
       # (renovate-security-triage/scripts/paths.sh explains the reasoning at
-      # length). Derive the entry from the same skill lists as the script
-      # allows, so a new skill needs no edit here.
+      # length). Derived from discovery, so a new skill needs no edit here.
       #
       # Edit(), not Write(): file rules are only ever checked against Read() and
       # Edit(). A Write() rule is accepted, never consulted, and warned about at
       # startup. Edit() covers the Edit, Write and NotebookEdit tools.
-      skillCacheAllows =
-        dirs:
-        lib.concatMap (name: [
-          "Read(~/.cache/${name}/**)"
-          "Edit(~/.cache/${name}/**)"
-          "Read(/${config.home.homeDirectory}/.cache/${name}/**)"
-          "Edit(/${config.home.homeDirectory}/.cache/${name}/**)"
-        ]) (lib.flatten (lib.attrValues dirs));
+      #
+      # homeDirectory is already absolute - no leading slash of our own, or the
+      # rule comes out as //home/<user>/... and only the ~/ twin ever matches.
+      skillCacheAllows = lib.concatMap (name: [
+        "Read(${config.home.homeDirectory}/.cache/${name}/**)"
+        "Edit(${config.home.homeDirectory}/.cache/${name}/**)"
+      ]) (lib.attrNames skillPaths);
 
       rules = {
         style = ''
@@ -164,8 +161,7 @@
       programs.git.ignores = [ ".claude/" ];
       programs.claude-code = {
         enable = true;
-        inherit rules;
-        skills = skills // witanSkills;
+        inherit rules skills;
 
         # Upstream's snippet runs `uvx --from git+…agent-kit`, re-resolving from
         # git main on every launch; point at the pinned derivation instead.
@@ -241,12 +237,12 @@
           theme = "auto";
           verbose = true;
 
-          # Derived from the skills installed above; the witan dirs go through
-          # the same generators so they are covered if they ever grow scripts
-          # or a cache directory.
+          # Derived from the same discovery as `skills` above, so a skill that
+          # grows a scripts/ directory or a cache directory is covered by the
+          # next repin with no edit here.
           permissions.allow =
-            skillScriptAllows (skillDirs // witanSkillDirs)
-            ++ skillCacheAllows (skillDirs // witanSkillDirs)
+            skillScriptAllows
+            ++ skillCacheAllows
             ++ [
               # generate-standup's session-history step reads one JSONL per
               # session out of ~/.claude/projects/<cwd-slug>/. Read-only, and
