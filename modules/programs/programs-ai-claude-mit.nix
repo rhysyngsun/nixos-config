@@ -348,6 +348,46 @@
         };
       };
 
+      # Deployed witan: point memory, tasks and the code graph at the shared
+      # cluster graph instead of the per-machine
+      # ~/.local/share/witan/graph.omni. Both CLIs and the MCP server read this
+      # one file, so there is nothing to repeat in `mcpServers.witan` above.
+      #
+      # This is the file `witan target add` writes. Declaring it here means
+      # `witan target add/set/remove` can no longer edit it - it is a store
+      # symlink - which is the trade this repo makes everywhere. The imperative
+      # half of the flow still works: `witan login` writes a *separate*
+      # tokens.json (mode 0600) into the same directory, and home-manager
+      # materialises ~/.config/witan/ as a real directory around the symlink.
+      #
+      # `match_orgs` is the whole safety story. The target selects itself only
+      # inside a checkout whose remote org is mitodl, so this repo and anything
+      # else personal keeps using the local store and the honour-system
+      # WITAN_AUTHOR identity. There is deliberately no fallback in the other
+      # direction: inside a mitodl checkout an unreachable or unauthenticated
+      # endpoint hard-fails rather than silently splitting the graph across two
+      # stores, so the first witan call in a mitodl repo on a fresh machine
+      # needs `witan login --target ol` before the hooks stop erroring.
+      #
+      # `code_transport = "mcp"` is what witan-code reads off this same block,
+      # and it is not optional: it defaults to "direct", which would leave
+      # indexed branches on this machine while the memory graph went to the
+      # cluster, and nothing reports that as a failure. witan-council's own
+      # target model ignores the key (pydantic's default extra="ignore"), which
+      # is why one block can drive both servers.
+      #
+      # oidc_client_id is omitted on purpose - both CLIs default to the public
+      # `witan-cli` device-grant client, and DeviceAuth keys its token cache on
+      # (issuer, client_id), so a single login covers witan and witan-code.
+      xdg.configFile."witan/config.toml".text = ''
+        [targets.ol]
+        remote_url = "https://witan.ol.mit.edu/mcp"
+        oidc_issuer = "https://sso.ol.mit.edu/realms/ol-platform-engineering"
+        oidc_audience = "witan"
+        code_transport = "mcp"
+        match_orgs = ["mitodl"]
+      '';
+
       home = {
         # Required, not just convenient: the hooks above shell out to a bare
         # `witan`, so it has to be on PATH for the whole session and not merely
