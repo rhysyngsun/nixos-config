@@ -18,6 +18,9 @@
       age
       ragenix
       nvfetcher
+      # Refreshes the hashes nvfetcher cannot compute - see `just
+      # refresh-hashes` in .justfile.
+      nix-update
     ];
   };
 }

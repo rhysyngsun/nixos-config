@@ -9,6 +9,7 @@ in
   krita-plugins = prev.callPackage ./krita-plugins { };
   easyeffects-presets = prev.callPackage ./easyeffects-presets { };
   dagger = prev.callPackage ./dagger.nix { source = sources.dagger; };
+  godot-48-beta = prev.callPackage ./godot-48-beta.nix { source = sources.godot-48-beta; };
   godot-voxel = prev.callPackage ./godot-voxel.nix { source = sources.godot-voxel; };
   headlamp = prev.callPackage ./headlamp.nix { source = sources.headlamp; };
   lean-ctx = prev.callPackage ./lean-ctx.nix { source = sources.lean-ctx; };

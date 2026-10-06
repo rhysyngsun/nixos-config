@@ -34,6 +34,13 @@ in
       };
     in
     {
+      # Not a general export of `additions` - this exists so `nix-update` has a
+      # flake attribute to point at. Only packages carrying a hand-written
+      # fixed-output hash that nvfetcher cannot derive belong here; see `just
+      # refresh-hashes`. (lean-ctx does not: its vendor set comes from the
+      # `cargo_lock` nvfetcher extracts, so it has no hash to go stale.)
+      packages = { inherit (pkgs) dagger; };
+
       _module.args = {
         inherit pkgs;
 

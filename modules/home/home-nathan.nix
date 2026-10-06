@@ -34,6 +34,7 @@
         top.config.flake.modules.homeManager.programs-pls
         top.config.flake.modules.homeManager.programs-desktop
 
+        top.config.flake.modules.homeManager.programs-ai-claude
         top.config.flake.modules.homeManager.programs-ai-claude-mit
         top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-aliases

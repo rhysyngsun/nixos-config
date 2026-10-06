@@ -10,6 +10,7 @@
       home = {
         packages = with pkgs; [
           gita
+          gitleaks
           pre-commit
           prek
         ];

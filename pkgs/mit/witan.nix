@@ -28,12 +28,42 @@ let
   # — pydantic-core, caio, rpds-py, tree-sitter* — all publish cp313 wheels.
   overlay = workspace.mkPyprojectOverlay { sourcePreference = "wheel"; };
 
+  ui = callPackage ./witan-ui.nix { inherit source; };
+
+  # `witan ui` serves the page out of <site-packages>/witan/ui_dist, and
+  # upstream populates that at build time by running `npm run build` in ui/
+  # before the wheel is built — hatch's artifacts = ["witan/ui_dist/**"] is
+  # what overrides the gitignore and carries it in. uv2nix builds the member
+  # straight from the pinned checkout, which has no ui_dist, so the bundle has
+  # to be put back.
+  #
+  # Grafted onto the built output rather than into the source tree on purpose:
+  # patching the checkout would make witan-council's src a derivation of its
+  # own and take the whole uv workspace with it, for a directory that is pure
+  # build output and that hatchling does nothing to but copy.
+  #
+  # Only the LOCAL store needs this. With a remote target matched, `witan ui`
+  # opens the deployment's own copy of the page and serves nothing from this
+  # machine (witan/cli/ui.py `_open_remote`), which is why the bundle went
+  # missing unnoticed until a personal repo was the one being browsed.
+  uiBundle = final: prev: {
+    witan-council = prev.witan-council.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        cp -r ${ui} $out/${final.python.sitePackages}/witan/ui_dist
+        # Store paths come back r--r--r--, and cp applies the source mode to
+        # the copies; leaving them unwritable makes fixupPhase fail.
+        chmod -R u+w $out/${final.python.sitePackages}/witan/ui_dist
+      '';
+    });
+  };
+
   pythonSet =
     (callPackage inputs.pyproject-nix.build.packages { python = python313; }).overrideScope
       (
         lib.composeManyExtensions [
           inputs.pyproject-build-systems.overlays.default
           overlay
+          uiBundle
         ]
       );
 
@@ -45,7 +75,14 @@ in
 runCommand "witan-${source.version}"
   {
     nativeBuildInputs = [ makeWrapper ];
-    passthru = { inherit venv workspace pythonSet; };
+    passthru = {
+      inherit
+        venv
+        workspace
+        pythonSet
+        ui
+        ;
+    };
     meta = {
       description = "Agent memory, planning and collaboration graph, exposed over MCP";
       homepage = "https://github.com/mitodl/agent-kit/tree/main/mcp/servers/witan";

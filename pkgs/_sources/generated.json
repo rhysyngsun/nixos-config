@@ -76,12 +76,27 @@
             "name": null,
             "owner": "dagger",
             "repo": "dagger",
-            "rev": "v0.21.9",
-            "sha256": "sha256-ZI9R0fp0qFGQljfNgrwKj071a10ZVpNMmEKHDFNUW3c=",
+            "rev": "v0.21.10",
+            "sha256": "sha256-aRWgwGRWJgUVSy4DanmrRBX8cpF86n/YxStaE2C67HA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v0.21.9"
+        "version": "v0.21.10"
+    },
+    "godot-48-beta": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "godot-48-beta",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-1+aURylp1JphB23zSnzInA5DSGKbwGx9uNCUlSzrp3g=",
+            "type": "url",
+            "url": "https://godot-releases.nbg1.your-objectstorage.com/4.8-dev7/Godot_v4.8-dev7_linux.x86_64.zip"
+        },
+        "version": "4.8-dev7"
     },
     "godot-voxel": {
         "cargoLock": null,
@@ -116,7 +131,7 @@
     "lean-ctx": {
         "cargoLock": {
             "rust/Cargo.lock": [
-                "sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=/rust/Cargo.lock",
+                "sha256-MjX93q1WWxe+CnIHecs8o+c6EKoJas2yM+A0j_Y7rZo=/rust/Cargo.lock",
                 {}
             ]
         },
@@ -127,15 +142,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-ciLALig9CVw1tjG11HRKq0xHEV9YhXOiees6OWwgi0E=",
+            "sha256": "sha256-MjX93q1WWxe+CnIHecs8o+c6EKoJas2yM+A0j/Y7rZo=",
             "type": "url",
-            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.10.2/lean-ctx-3.10.2-source.tar.gz"
+            "url": "https://github.com/yvgude/lean-ctx/releases/download/v3.10.5/lean-ctx-3.10.5-source.tar.gz"
         },
-        "version": "3.10.2"
+        "version": "3.10.5"
     },
     "nvim-treesitter": {
         "cargoLock": null,
-        "date": "2026-09-19",
+        "date": "2026-09-30",
         "extract": null,
         "name": "nvim-treesitter",
         "passthru": null,
@@ -145,17 +160,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "f603a2f4da48728f80257fb5fbb90145fd1dc173",
-            "sha256": "sha256-fXBJhWvjzBGivIiAys9oy2JB9h99CNIk+AdGkGgHgPg=",
+            "rev": "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de",
+            "sha256": "sha256-xmwLHE8JeSDyXeFggx1DzOPHc6OcNHngYEyuAcfI/Ck=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/nvim-treesitter/nvim-treesitter"
         },
-        "version": "f603a2f4da48728f80257fb5fbb90145fd1dc173"
+        "version": "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de"
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-09-29",
+        "date": "2026-09-30",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -165,13 +180,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "1e6e05c1f6674a14a0b2fbc28ce3d12827f029ed",
-            "sha256": "sha256-805IopP/HpkRe4SZjgjwVn6Kj6BLx6Ose+A6mvDjtwk=",
+            "rev": "0d9ffb60ed115eaf8b5720575a9fce016dd34c48",
+            "sha256": "sha256-FsWqbxd+Itq9kVoKiEJr60w+FcsRIr/A6wAzTD6dRMk=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "1e6e05c1f6674a14a0b2fbc28ce3d12827f029ed"
+        "version": "0d9ffb60ed115eaf8b5720575a9fce016dd34c48"
     },
     "omnigraph": {
         "cargoLock": null,
@@ -205,7 +220,7 @@
     },
     "pkl-neovim": {
         "cargoLock": null,
-        "date": "2026-07-09",
+        "date": "2026-09-25",
         "extract": null,
         "name": "pkl-neovim",
         "passthru": null,
@@ -217,12 +232,12 @@
             "name": null,
             "owner": "apple",
             "repo": "pkl-neovim",
-            "rev": "7907b89958d06fa5a5dc72eeb26d8289605595c3",
-            "sha256": "sha256-RwBeVi3MK9svEIP4nYechHg9AZ1zygK2xlvjjGEE5EQ=",
+            "rev": "067642e6b917a00a67c2b2ecb2caf2790d796d0d",
+            "sha256": "sha256-rNCJFKCKpfT3f+SHpVuiYkGUEUfOx7DSTi1PmbcVk+8=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "7907b89958d06fa5a5dc72eeb26d8289605595c3"
+        "version": "067642e6b917a00a67c2b2ecb2caf2790d796d0d"
     },
     "tree-sitter-noy": {
         "cargoLock": null,
@@ -268,7 +283,7 @@
     },
     "tree-sitter-pkl": {
         "cargoLock": null,
-        "date": "2026-09-17",
+        "date": "2026-09-25",
         "extract": null,
         "name": "tree-sitter-pkl",
         "passthru": null,
@@ -278,13 +293,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "9eaf196bb1cb9ce862036ed28b188ab6664a2492",
-            "sha256": "sha256-BG7BLzUOepbhkCI30iCwpw126R7upNDX3wDWp+dvtvs=",
+            "rev": "c95d8284940f5e1da2cd0d8f1ee45d7ef9ef75d1",
+            "sha256": "sha256-dnGqTZ7Kga1sIJkzRSbqkhvIrPJMxOEhHnDKJuLyudM=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/apple/tree-sitter-pkl"
         },
-        "version": "9eaf196bb1cb9ce862036ed28b188ab6664a2492"
+        "version": "c95d8284940f5e1da2cd0d8f1ee45d7ef9ef75d1"
     },
     "whichpy-nvim": {
         "cargoLock": null,

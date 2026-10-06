@@ -51,7 +51,7 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-src.branch = "skill/django-api-benchmark-memory"
+# src.branch = "skill/django-api-benchmark-memory"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the
@@ -85,3 +85,20 @@ fetch.url = "https://github.com/Zylann/godot_voxel/releases/download/v$ver/godot
 [dagger]
 src.github = "dagger/dagger"
 fetch.github = "dagger/dagger"
+
+# Godot 4.8 development build. These snapshots are cut from `main`; they carry
+# no git tag and are not GitHub releases, so there is nothing for nvfetcher to
+# poll - `src.manual` pins the version by hand and the URL is spelled out in
+# full rather than interpolated with `$ver` (the publisher splits the version
+# across two path components, `4.8-dev7` and `Godot_v4.8-dev7`).
+#
+# The canonical entry point is the redirector
+# https://downloads.godotengine.org/?version=4.8&flavor=dev7&slug=linux.x86_64.zip&platform=linux.64
+# but its query string cannot be a store path name, so the URL it resolves to
+# is used directly. To bump: follow that redirect with the new flavor and paste
+# the result here alongside the matching `src.manual`.
+#
+# `fetch.url`, not `fetch.tarball` - same reason as godot-voxel above.
+[godot-48-beta]
+src.manual = "4.8-dev7"
+fetch.url = "https://godot-releases.nbg1.your-objectstorage.com/4.8-dev7/Godot_v4.8-dev7_linux.x86_64.zip"
