@@ -170,7 +170,7 @@
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-09-30",
+        "date": "2026-10-06",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -180,13 +180,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "0d9ffb60ed115eaf8b5720575a9fce016dd34c48",
-            "sha256": "sha256-FsWqbxd+Itq9kVoKiEJr60w+FcsRIr/A6wAzTD6dRMk=",
+            "rev": "cdfcc8e0f65b493517a331176a2b05efbd0225ab",
+            "sha256": "sha256-hfJ2AJlNU3oA5zGhm6bb6lMxBqVX8Bi7foLUGa67JB4=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "0d9ffb60ed115eaf8b5720575a9fce016dd34c48"
+        "version": "cdfcc8e0f65b493517a331176a2b05efbd0225ab"
     },
     "omnigraph": {
         "cargoLock": null,

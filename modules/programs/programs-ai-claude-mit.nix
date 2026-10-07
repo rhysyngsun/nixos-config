@@ -281,7 +281,7 @@
               })
               (mkHook {
                 command = "witan code inject-context";
-                timeout = 15;
+                timeout = 30;
               })
             ];
             PostToolUse = [
