@@ -13,6 +13,7 @@
           gitleaks
           pre-commit
           prek
+          shellcheck
         ];
       };
 
@@ -169,7 +170,7 @@
             merge.conflictstyle = "zdiff3";
 
             push = {
-              default = "upstream";
+              default = "current";
               autosetupremote = true;
             };
 

@@ -218,6 +218,19 @@
             skillScriptAllows
             ++ skillCacheAllows
             ++ [
+              # Sibling MIT checkouts. Work routinely spans them - reading
+              # ol-django from a mit-learn session, mitxonline from
+              # ol-infrastructure - and without this each pair gets approved by
+              # hand into that repo's settings.local.json. Read only: edits in
+              # a sibling still prompt.
+              #
+              # One slash of our own on top of an already-absolute
+              # homeDirectory, for a leading // in the rule. That is the
+              # absolute-from-filesystem-root form; a single leading slash
+              # would anchor at the settings source, which for user settings
+              # is ~/.claude/, and never match.
+              "Read(/${config.home.homeDirectory}/open-learnix/repos/**)"
+
               # generate-standup's session-history step reads one JSONL per
               # session out of ~/.claude/projects/<cwd-slug>/. Read-only, and
               # the whole tree rather than one slug, because the slug is

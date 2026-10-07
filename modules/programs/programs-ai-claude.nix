@@ -24,6 +24,7 @@
           - Use ripgrep (`rg`) instead of `grep`
         '';
         guardrails = ''
+          - If you are executing a pre-approved plan and need to change direction in the middle of implementation, don't just implement it, show me a revised plan so I can approve it.
           - If you do not have connection information for a database or service ask for the credentials do not connect to one you find.
           - Ask for confirmation before commiting code or pushing.
           - Ask for confirmation before creating issues, commenting, or anything else that writes to github.
@@ -65,6 +66,8 @@
             "Bash(grep:*)"
             "Bash(sed:*)"
             "Bash(gh repo:*)"
+            "Bash(gh run:*)"
+            "Bash(gh stack:*)"
             "Bash(pre-commit:*)"
             "Bash(prek:*)"
             "Bash(echo \"EXIT=$?\")"
@@ -72,19 +75,20 @@
             "Bash(find:*)"
             "Bash(command -v:*)"
             "Bash(gitleaks:*)"
-          ] ++ (builtins.map (subcmd: "git ${subcmd}:*") [
-              "add"
-              # Deliberately not `git checkout *`: that also covered
-              # `git checkout .` and `git checkout -- <path>`, which discard
-              # uncommitted work without asking - a sharp edge in a repo where
-              # every build recipe runs `git add .`. These two are the
-              # non-destructive intents; `git restore` stays unlisted on purpose.
-              "checkout -b"
-              "diff"
-              "fetch"
-              "switch"
-              "worktree"
-            ]);
+          ]
+          ++ (builtins.map (subcmd: "Bash(git ${subcmd}:*)") [
+            "add"
+            # Deliberately not `git checkout *`: that also covered
+            # `git checkout .` and `git checkout -- <path>`, which discard
+            # uncommitted work without asking - a sharp edge in a repo where
+            # every build recipe runs `git add .`. These two are the
+            # non-destructive intents; `git restore` stays unlisted on purpose.
+            "checkout -b"
+            "diff"
+            "fetch"
+            "switch"
+            "worktree"
+          ]);
 
           # sed gets the opposite treatment from git checkout above, on purpose:
           # its destructive form is a flag rather than a subcommand, and the
