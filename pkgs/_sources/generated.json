@@ -301,6 +301,21 @@
         },
         "version": "c95d8284940f5e1da2cd0d8f1ee45d7ef9ef75d1"
     },
+    "unsloth-studio": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "unsloth-studio",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-KZEygXS2M8M3kugo77unYClyGG3YxlW0st106o5T4R0=",
+            "type": "url",
+            "url": "https://github.com/unslothai/unsloth/releases/download/v0.1.903-beta/Unsloth-Desktop-Linux.AppImage"
+        },
+        "version": "0.1.903-beta"
+    },
     "whichpy-nvim": {
         "cargoLock": null,
         "date": "2026-05-09",

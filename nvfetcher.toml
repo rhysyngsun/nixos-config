@@ -54,6 +54,21 @@ src.git = "https://github.com/mitodl/agent-kit.git"
 # src.branch = "skill/django-api-benchmark-memory"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
+# Not src.github: the release feed interleaves non-desktop releases (e.g.
+# `prebuilt-wheels-cu13`), so "newest tag" is not reliably a desktop build.
+# `releases/latest` is, and the regex pins the match to the Linux AppImage's own
+# download URL - so a release that ships no AppImage fails loudly at
+# `update-pkgs` time rather than silently producing a 404 URL.
+#
+# Upstream used to put the version in the filename too
+# (`Unsloth-Desktop-0_1_800_beta-Linux.AppImage`), which needed a composite
+# `$ver` carrying both spellings. As of v0.1.903-beta the asset is just
+# `Unsloth-Desktop-Linux.AppImage`, so one plain version suffices.
+[unsloth-studio]
+src.webpage = "https://api.github.com/repos/unslothai/unsloth/releases/latest"
+src.regex = '([0-9.]+-beta)/Unsloth-Desktop-Linux'
+fetch.url = "https://github.com/unslothai/unsloth/releases/download/v$ver/Unsloth-Desktop-Linux.AppImage"
+
 # Pinned manually, not tracked: witan shells out to this binary and expects the
 # exact release named by `_OMNIGRAPH_VERSION` in
 # packages/witan-core/witan_core/omnigraph_install.py. Bump the two together.

@@ -17,6 +17,7 @@ in
   pkl-lsp = prev.callPackage ./pkl-lsp.nix { source = sources.pkl-lsp; };
   tree-sitter-peg = prev.callPackage ./tree-sitter-peg.nix { source = sources.tree-sitter-peg; };
   tree-sitter-noy = prev.callPackage ./tree-sitter-noy.nix { source = sources.tree-sitter-noy; };
+  unsloth-studio = prev.callPackage ./unsloth-studio.nix { source = sources.unsloth-studio; };
   vimPlugins = prev.vimPlugins // prev.callPackage ./vimPlugins { inherit sources; };
   localSources = sources;
 }

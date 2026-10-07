@@ -21,6 +21,7 @@
           Some standard CLI tools have been replaced with alternatives:
 
           - `ls` is aliased to `pls` - run `pls -h` to see example usages
+          - Use ripgrep (`rg`) instead of `grep`
         '';
         guardrails = ''
           - If you do not have connection information for a database or service ask for the credentials do not connect to one you find.
@@ -60,26 +61,30 @@
             "Bash(docker compose:*)"
             # Also covers `uv run ruff …`, so ruff needs no entry of its own.
             "Bash(uv run:*)"
-            "Bash(pls *)"
-            "Bash(grep *)"
-            "Bash(sed *)"
-            # Deliberately not `git checkout *`: that also covered
-            # `git checkout .` and `git checkout -- <path>`, which discard
-            # uncommitted work without asking - a sharp edge in a repo where
-            # every build recipe runs `git add .`. These two are the
-            # non-destructive intents; `git restore` stays unlisted on purpose.
-            "Bash(git checkout -b:*)"
-            "Bash(git switch:*)"
-            "Bash(git add:*)"
-            "Bash(git fetch:*)"
-            "Bash(git diff:*)"
+            "Bash(pls:*)"
+            "Bash(grep:*)"
+            "Bash(sed:*)"
             "Bash(gh repo:*)"
             "Bash(pre-commit:*)"
             "Bash(prek:*)"
             "Bash(echo \"EXIT=$?\")"
             "Bash(rg:*)"
             "Bash(find:*)"
-          ];
+            "Bash(command -v:*)"
+            "Bash(gitleaks:*)"
+          ] ++ (builtins.map (subcmd: "git ${subcmd}:*") [
+              "add"
+              # Deliberately not `git checkout *`: that also covered
+              # `git checkout .` and `git checkout -- <path>`, which discard
+              # uncommitted work without asking - a sharp edge in a repo where
+              # every build recipe runs `git add .`. These two are the
+              # non-destructive intents; `git restore` stays unlisted on purpose.
+              "checkout -b"
+              "diff"
+              "fetch"
+              "switch"
+              "worktree"
+            ]);
 
           # sed gets the opposite treatment from git checkout above, on purpose:
           # its destructive form is a flag rather than a subcommand, and the

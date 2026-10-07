@@ -185,6 +185,14 @@
     };
     date = "2026-09-25";
   };
+  unsloth-studio = {
+    pname = "unsloth-studio";
+    version = "0.1.903-beta";
+    src = fetchurl {
+      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.903-beta/Unsloth-Desktop-Linux.AppImage";
+      sha256 = "sha256-KZEygXS2M8M3kugo77unYClyGG3YxlW0st106o5T4R0=";
+    };
+  };
   whichpy-nvim = {
     pname = "whichpy-nvim";
     version = "96bc91d36d52fd64f1e5ab358c1b85f313c11628";
