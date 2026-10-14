@@ -15,8 +15,24 @@
           libnotify
           jq
           coreutils
+          # setsid - the popup has to outlive the hook, see claude-notify.sh.
+          util-linux
+          # Already in this user's closure via programs-wezterm, so naming it
+          # here costs nothing and pins the focus call to a real path.
+          wezterm
+          # KWin scripting is the only way to raise a window under Plasma's
+          # Wayland session; kdotool is a thin wrapper around it.
+          kdotool
         ];
-        runtimeEnv.CLAUDE_NOTIFY_STOP_THRESHOLD = toString stopThresholdSeconds;
+        runtimeEnv = {
+          CLAUDE_NOTIFY_STOP_THRESHOLD = toString stopThresholdSeconds;
+          # notify-send takes an absolute path here. Nothing ships a Claude
+          # mark - not the claude-code npm package, not Breeze - so the repo
+          # carries one. No hicolor wrapper derivation: that would only matter
+          # if the icon were resolved by *name*, which then drags in
+          # XDG_DATA_DIRS and the icon cache.
+          CLAUDE_NOTIFY_ICON = "${./claude.svg}";
+        };
         text = builtins.readFile ./claude-notify.sh;
       };
 
