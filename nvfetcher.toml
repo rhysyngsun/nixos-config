@@ -51,7 +51,7 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-# src.branch = "skill/django-api-benchmark-memory"
+src.branch = "feat/plan-workflow-skills-followup"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
 
 # Not src.github: the release feed interleaves non-desktop releases (e.g.

@@ -218,6 +218,16 @@
             skillScriptAllows
             ++ skillCacheAllows
             ++ [
+              # Every tool on the witan server, with no per-tool suffix: the
+              # bare `mcp__<server>` form is the whole-server rule. The server
+              # name is the one Claude Code derives for an MCP server declared
+              # through a home-manager plugin - `plugin:<plugin>:<server>` with
+              # the colons flattened to underscores - not the `witan` written
+              # above. Deliberately covers the writes (memory_store, task_*,
+              # workflow_*) as well as the reads: they land in the council
+              # graph, not in anything the guardrails are about.
+              "mcp__plugin_claude-code-home-manager_witan"
+
               # Sibling MIT checkouts. Work routinely spans them - reading
               # ol-django from a mit-learn session, mitxonline from
               # ol-infrastructure - and without this each pair gets approved by

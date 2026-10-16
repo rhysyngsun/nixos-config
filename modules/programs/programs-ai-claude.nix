@@ -65,6 +65,7 @@
             "Bash(pls:*)"
             "Bash(grep:*)"
             "Bash(sed:*)"
+            "Bash(gh issue:*)"
             "Bash(gh repo:*)"
             "Bash(gh run:*)"
             "Bash(gh stack:*)"
