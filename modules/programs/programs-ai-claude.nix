@@ -76,6 +76,20 @@
             "Bash(find:*)"
             "Bash(command -v:*)"
             "Bash(gitleaks:*)"
+
+            # Progressive disclosure: a SKILL.md routinely tells the agent to
+            # read a sibling file under its own directory
+            # (references/*.md, assets/, templates/), and without this every
+            # one of those stalls on a prompt mid-skill. Read only, and the
+            # whole skills tree rather than per-skill, so a newly installed
+            # skill needs no edit here.
+            #
+            # One slash of our own on top of an already-absolute
+            # homeDirectory, for a leading // in the rule: that is the
+            # absolute-from-filesystem-root form. A single leading slash would
+            # anchor at the settings source, which for user settings is
+            # ~/.claude/, and never match.
+            "Read(/${config.home.homeDirectory}/.claude/skills/**)"
           ]
           ++ (builtins.map (subcmd: "Bash(git ${subcmd}:*)") [
             "add"

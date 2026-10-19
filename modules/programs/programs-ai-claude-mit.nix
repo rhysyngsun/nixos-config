@@ -116,6 +116,116 @@
         "Edit(${config.home.homeDirectory}/.cache/${name}/**)"
       ]) (lib.attrNames skillPaths);
 
+      # The ToolHive vMCPs aggregate several upstream servers behind one
+      # endpoint, so their tool names carry the origin as a prefix
+      # (`grafana_`, `vantage_`, `sentry_`, `aws_`, `context7_`, `fetch_`).
+      # Server names here are the ones Claude Code derives for a server
+      # declared through a home-manager plugin - `plugin:<plugin>:<server>`
+      # with the colons flattened to underscores.
+      toolhiveServers = [
+        "toolhive-swe-prod"
+        "toolhive-swe-qa"
+      ];
+      mcpServerRule = server: "mcp__plugin_claude-code-home-manager_${server}";
+      mcpToolRule = server: tool: "${mcpServerRule server}__${tool}";
+
+      # Whole-server allow, writes carved back out below. The alternative -
+      # enumerating the ~200 read-only tools - is unmaintainable against a
+      # remote server whose catalogue changes without a repin here, and it
+      # fails closed in the wrong direction: a new read tool would prompt
+      # while a new write tool, equally unlisted, would too. Allowing the
+      # server and naming the mutations keeps the list short and keeps the
+      # default for anything new at "prompt".
+      toolhiveAllows = map mcpServerRule toolhiveServers;
+
+      # Mutating tools on the aggregated Grafana server, present on both
+      # tiers. Deliberately includes `grafana_api_request`: it is an arbitrary
+      # passthrough that can carry POST/PUT/DELETE, so it cannot be
+      # classified as a read. `validate_provisioning_file` and
+      # `generate_deeplink` are omitted - both are pure computation.
+      grafanaWriteTools = map (t: "grafana_${t}") [
+        "add_activity_to_incident"
+        "alerting_manage_routing"
+        "alerting_routing_write"
+        "alerting_rules_write"
+        "alerting_silences_write"
+        "create_annotation"
+        "create_datasource"
+        "create_folder"
+        "create_incident"
+        "create_snapshot"
+        "delete_annotation"
+        "delete_snapshot"
+        "grafana_api_request"
+        "install_plugin"
+        "update_alert_group"
+        "update_annotation"
+        "update_dashboard"
+        "update_datasource"
+        "update_incident"
+      ];
+
+      # Only the prod vMCP fronts Vantage, Sentry and the AWS server; naming
+      # them for qa as well would be inert rather than wrong, but keeping the
+      # split honest documents which tier has what. Vantage's mutations are
+      # uniformly prefixed, so they are matched by verb rather than listed.
+      prodWriteToolPrefixes = [
+        "vantage_create-"
+        "vantage_update-"
+        "vantage_delete-"
+      ];
+      prodWriteTools = [
+        "vantage_add-team-member"
+        "vantage_remove-team-member"
+        "vantage_submit-user-feedback"
+        "sentry_update_issue"
+        # Arbitrary dispatch, like grafana_api_request: the tool it runs is
+        # chosen at call time, so the rule cannot know whether it writes.
+        "sentry_execute_sentry_tool"
+        "aws_aws___run_script"
+      ];
+
+      toolhiveAsks =
+        lib.concatMap (server: map (mcpToolRule server) grafanaWriteTools) toolhiveServers
+        ++ map (mcpToolRule "toolhive-swe-prod") (
+          prodWriteTools
+          ++ lib.concatMap (
+            prefix:
+            map (verb: "${prefix}${verb}") [
+              # Enumerated rather than globbed: MCP permission rules match the
+              # tool name exactly, with no wildcard form, so every Vantage
+              # resource that has a create/update/delete triplet has to be
+              # spelled out once here.
+              "access-policy"
+              "annotation"
+              "billing-rule"
+              "budget"
+              "budget-alert"
+              "canvas"
+              "cost-alert"
+              "cost-report"
+              "dashboard"
+              "dashboard-notification"
+              "dashboard-widget"
+              "financial-commitment-report"
+              "folder"
+              "kubernetes-efficiency-report"
+              "network-flow-report"
+              "recommendation-view"
+              "report-forecast"
+              "report-notification"
+              "resource-report"
+              "saved-filter"
+              "scenario-model"
+              "team"
+              "virtual-tag-config"
+              "virtual-tag-config-value"
+              "workspace"
+              "anomaly"
+            ]
+          ) prodWriteToolPrefixes
+        );
+
       mkHook =
         {
           command,
@@ -217,6 +327,7 @@
           permissions.allow =
             skillScriptAllows
             ++ skillCacheAllows
+            ++ toolhiveAllows
             ++ [
               # Every tool on the witan server, with no per-tool suffix: the
               # bare `mcp__<server>` form is the whole-server rule. The server
@@ -257,6 +368,15 @@
               "Bash(printf:*)"
               ''Bash(rm -f "''${XDG_CACHE_HOME:-$HOME/.cache}/generate-standup/draft.md")''
             ];
+
+          # ask outranks allow, so these survive the whole-server allow above.
+          # The point of allowing the ToolHive servers is the read path -
+          # Prometheus/Loki queries, dashboard and incident lookups, cost
+          # reports - and every one of these writes to a system of record that
+          # is shared and, on the prod tier, live. A rule naming a tool the
+          # server does not expose is inert, which is what keeps the prod-only
+          # families from needing a qa twin.
+          permissions.ask = toolhiveAsks;
 
           # Mirrors what `witan setup --agent claude` merges in. Bare command
           # names on purpose: witan-code's hooks are mounted as `witan code …`,
