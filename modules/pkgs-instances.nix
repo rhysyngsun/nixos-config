@@ -52,12 +52,15 @@ in
           overlays = [ (overlays.unstable-extras pkgs) ];
         };
 
-        # Intentionally unoverlaid. nvf/ evaluates against this and reaches
-        # back into stable via the `pkgs-stable` arg for anything from
-        # `additions` - see modules/programs/programs-neovim.nix.
+        # Deliberately does not get `additions`. nvf/ evaluates against this
+        # and reaches back into stable via the `pkgs-stable` arg for anything
+        # from `additions` - see modules/programs/programs-neovim.nix.
+        # `edge-fixes` is the one exception: master-only build regressions that
+        # would otherwise block the whole home closure.
         pkgs-edge = import inputs.nixpkgs-master {
           inherit system;
           config.allowUnfree = true;
+          overlays = [ overlays.edge-fixes ];
         };
       };
     };
