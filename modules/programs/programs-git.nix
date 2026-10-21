@@ -4,6 +4,7 @@
     {
       config,
       pkgs,
+      pkgs-unstable,
       ...
     }:
     {
@@ -12,7 +13,7 @@
           gita
           gitleaks
           pre-commit
-          prek
+          pkgs-unstable.prek
           shellcheck
         ];
       };
