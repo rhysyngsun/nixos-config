@@ -314,6 +314,14 @@
           # those exist here. extraPackages rather than home.packages so the
           # binary is found however pi was launched.
           lean-ctx
+          # pi shells out for the clipboard rather than linking a library, and
+          # reports "Clipboard unavailable: install `wl-clipboard` (`wl-copy`)"
+          # when it cannot find one. It picks the tool from the session: with
+          # WAYLAND_DISPLAY set it tries wl-copy/wl-paste before any X11
+          # fallback, and wl-paste is also what the image paste shortcut reads.
+          # wl-clipboard was previously only inside the neovim wrapper
+          # (nvf/default.nix), so nothing else on this machine could reach it.
+          wl-clipboard
         ];
         settings = {
           theme = "dark";
@@ -325,6 +333,16 @@
           # interactive prompt".)
           defaultProjectTrust = "ask";
           enableSkillCommands = true;
+
+          # Leave the terminal as pi found it. pi runs fullscreen (the default
+          # tuiMode), so the session itself lives on the alternate screen and
+          # never touches scrollback - but on exit the default "transcript"
+          # switches back to regular mode and repaints the whole conversation
+          # into the main buffer. "resume-hint" skips that: the teardown writes
+          # only the exit-alt-screen sequence, restoring the buffer untouched.
+          # A one-line `To resume this session: ...` hint is still printed, and
+          # a crash still forces the full transcript so diagnostics survive.
+          fullscreenExitOutput = "resume-hint";
 
           # Pinned on purpose. The reconciler above only reinstalls when the
           # recorded version differs from the declared one, so without versions
@@ -341,12 +359,24 @@
             "npm:pi-lmstudio@1.5.0"
             "npm:pi-subagents@0.80.0"
             "npm:pi-subdir-context@1.1.7"
-            "npm:@juicesharp/rpiv-ask-user-question@2.7.1"
+            # 2.12.0 is the floor: before it this package listed typebox in
+            # `dependencies`, and pi warns at startup when an extension names a
+            # host-provided package there rather than in peerDependencies with
+            # a "*" range (dist/core/resource-loader.js:18-55) - an installed
+            # copy can bypass the extension loader and duplicate the runtime
+            # module.
+            "npm:@juicesharp/rpiv-ask-user-question@2.13.9"
             "npm:@gotgenes/pi-permission-system@41.0.0"
             # pi has no WebSearch/WebFetch of its own. Works keyless via Exa;
             # optional provider keys live in ~/.pi/agent/web-search.json, which
             # is deliberately left unmanaged.
             "npm:pi-web-access@0.44.0"
+            # TUI components: editor, message framing, statusline. Configured
+            # interactively with /zentui, which *writes* ~/.pi/agent/zentui.json
+            # - so that file stays unmanaged, the same way auth.json and
+            # trust.json do. Declaring it here would make the store symlink
+            # read-only and /zentui unable to save.
+            "npm:pi-zentui@0.32.0"
           ];
         };
         models = {
