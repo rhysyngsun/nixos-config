@@ -38,6 +38,7 @@
         top.config.flake.modules.homeManager.programs-ai-claude-mit
         top.config.flake.modules.homeManager.programs-ai-claude-notify
         top.config.flake.modules.homeManager.programs-ai-pi-local
+        top.config.flake.modules.homeManager.programs-ai-pi-notify
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
         top.config.flake.modules.homeManager.programs-godot

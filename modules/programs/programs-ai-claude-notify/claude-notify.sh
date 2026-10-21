@@ -22,6 +22,13 @@ threshold="${CLAUDE_NOTIFY_STOP_THRESHOLD:-60}"
 icon="${CLAUDE_NOTIFY_ICON:-dialog-information}"
 state_dir="${XDG_RUNTIME_DIR:-/tmp}/claude-notify"
 
+# The notifying agent's name. Everything else here is agent-agnostic, so a
+# second agent reuses this script with nothing but these two overridden -
+# see modules/programs/programs-ai-pi-notify. app is what Plasma groups and
+# files notification settings under; name is what the popup titles read.
+app="${AGENT_NOTIFY_APP:-Claude Code}"
+name="${AGENT_NOTIFY_NAME:-Claude}"
+
 # No session bus means no notification daemon to talk to - an ssh or
 # systemd-launched session must not turn that into a failing hook.
 [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] || exit 0
@@ -52,7 +59,7 @@ popup() {
   # notification id has to come out on its own fd.
   local chosen
   chosen="$(notify-send \
-    --app-name="Claude Code" \
+    --app-name="$app" \
     --urgency="$urgency" \
     --icon="$icon" \
     --expire-time="$expire" \
@@ -111,10 +118,10 @@ start)
 
 attention)
   message="$(field message)"
-  [ -n "$message" ] || message="Claude Code is waiting on you."
+  [ -n "$message" ] || message="$app is waiting on you."
   # critical survives until dismissed under Plasma, which is the whole point: a
   # permission prompt that times out off-screen is worse than no notification.
-  send critical 0 "Claude needs you - $project" "$message"
+  send critical 0 "$name needs you - $project" "$message"
   ;;
 
 stop)
@@ -130,7 +137,7 @@ stop)
   summary="${summary:0:160}"
   [ -n "$summary" ] || summary="Turn finished."
   send normal 10000 \
-    "Claude finished - $project" \
+    "$name finished - $project" \
     "$(printf '%s\n\n%ss' "$summary" "$elapsed")"
   ;;
 
