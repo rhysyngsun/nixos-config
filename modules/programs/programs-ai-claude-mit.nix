@@ -310,16 +310,6 @@
           };
         };
 
-        mcpServers.lean-ctx = {
-          args = [
-            "mcp"
-          ];
-          command = "${pkgs.lean-ctx}/bin/lean-ctx";
-          tools = [
-            "*"
-          ];
-        };
-
         settings = {
           # Derived from the same discovery as `skills` above, so a skill that
           # grows a scripts/ directory or a cache directory is covered by the
