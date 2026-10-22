@@ -333,6 +333,11 @@
           plan_mode_question = "allow";
           plan_mode_complete = "allow";
 
+          # rpiv-ask-user-question's tool, same reasoning: its whole effect is
+          # showing the user a questionnaire. It was falling through to the "*"
+          # ask, which meant a prompt to show a prompt.
+          ask_user_question = "allow";
+
           # Spelled out rather than left to the "*" fallback so that a later
           # loosening of that fallback cannot silently take writes with it.
           # ctx_edit is also a carve-out from "ctx_*" above.
@@ -482,6 +487,38 @@
       home.file.".pi/agent/extensions/pi-permission-system/config.json".source =
         jsonFormat.generate "pi-permission-system-config.json" permissionConfig;
 
+      # Appended to pi's system prompt as an `<addendum>` section
+      # (system-prompt.js:97-98), in every session, for every model. Kept short
+      # for that reason - it is paid for on every turn.
+      #
+      # Aimed at local models served over `openai-completions`: qwen3.5-9b in
+      # particular emits nested tool arguments as JSON strings and misreads the
+      # resulting validation error. ask_user_question repairs that itself via
+      # `prepareArguments`; plan_mode_question does not, hence the preference.
+      #
+      # Two limits worth knowing before trusting this:
+      #   1. `<addendum>` sits in the system prompt, but pi-plan-mode injects
+      #      its contract as a `role: "custom"` *conversation* message
+      #      (mode-contract.ts:30-38) - so the plan prompt is far more recent
+      #      and still names plan_mode_question. This argues upstream of it.
+      #   2. A trusted project's `.pi/APPEND_SYSTEM.md` REPLACES this file
+      #      rather than merging with it (resource-loader.js:955-965 returns on
+      #      the first hit), silently and with no warning.
+      home.file.".pi/agent/APPEND_SYSTEM.md".text = ''
+        ## Tool-call arguments
+
+        Tool arguments are a JSON object. Never pass a nested array or object as a
+        JSON-encoded string: `{"questions": [{...}]}`, not `{"questions": "[{...}]"}`.
+
+        When a tool call fails validation, read the reported path and keyword and fix
+        exactly that. Do not restructure arguments the error did not name.
+
+        ## Asking the user
+
+        Prefer `ask_user_question` - it works in every mode, including Plan mode.
+        `plan_mode_question` additionally requires a snake_case `id` on every question.
+      '';
+
       home.sessionVariables = {
         LEAN_CTX_BIN = "${pkgs.lean-ctx}/bin/lean-ctx";
       };
@@ -516,6 +553,30 @@
       # once, and a name that disappears fails silently.
       home.file.".pi/agent/pi-plan-mode-src.json".source = jsonFormat.generate "pi-plan-mode.json" {
         defaultPlanTools = [
+          # Not a lean-ctx tool - rpiv-ask-user-question's. Named here so there
+          # is ONE question tool that works both inside and outside Plan mode.
+          #
+          # plan_mode_question cannot be dropped (required-tools.ts
+          # withRequiredPlanModeTools force-appends it whenever Plan mode
+          # starts) and it is the fragile one: its schema requires a per-question
+          # `id`, and it registers no `prepareArguments`. ask_user_question has
+          # no `id` field and ships `prepareQuestionArguments`, which undoes the
+          # double-encoded `questions` array that Qwen-class models emit
+          # (normalize-params.ts, upstream #244) - exactly the failure that makes
+          # plan_mode_question burn two turns before succeeding on qwen3.5-9b.
+          #
+          # Permitted here because classifyPlanModeTool (tool-policy.ts:128-133)
+          # returns "user-opt-in" for any non-builtin, so naming it is the
+          # opt-in. Its only effect is putting a questionnaire in front of the
+          # user, so the stricter bar applied to the lean-ctx entries below -
+          # exclude anything that writes at all - does not apply.
+          #
+          # Caveat: Plan mode's hardcoded prompt still names plan_mode_question,
+          # and `/plan finalize` retries specifically demand plan_mode_question
+          # or plan_mode_complete (finalization-request.ts:4), so this does not
+          # satisfy a pending finalization request.
+          "ask_user_question"
+
           # Registered by the extension itself, shelling out to the lean-ctx
           # CLI. Invisible to an MCP tools/list probe, but real.
           "ctx_read"
