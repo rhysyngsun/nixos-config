@@ -244,11 +244,24 @@
 
         # pi-lean-ctx runs in `replace` mode (see its config below), which
         # suppresses the native read/bash/ls/find/grep in favour of ctx_*. That
-        # hands the shell to ctx_shell, which without this hint would be gated
-        # as a generic extension tool and skip the bash rules entirely.
+        # hands the shell to pi-lean-ctx, which exposes it under TWO names:
+        # `ctx_shell` (the extension's own tool) and `shell` (an alias bridged
+        # from the engine, upstream `registered::shell_alias::ShellAliasTool`).
+        # Both reach the same handler.
+        #
+        # Naming them here is what subjects them to `bashPolicy`; without the
+        # hint they are gated as generic extension tools and skip the bash
+        # rules entirely. `shell` additionally carries no destructiveHint
+        # upstream - it is absent from lean-ctx's DESTRUCTIVE_TOOL_NAMES while
+        # `ctx_shell` is present - so nothing else would catch it either.
         shellTools = {
           ctx_shell = {
             commandArgument = "command";
+            workdirArgument = "cwd";
+          };
+          shell = {
+            commandArgument = "command";
+            workdirArgument = "cwd";
           };
         };
 
@@ -256,18 +269,73 @@
           # Least privilege: anything not named below prompts.
           "*" = "ask";
 
-          # Reads, both the native tools and their ctx_* substitutes.
+          # The native reads. Inert while pi-lean-ctx runs in `replace` mode,
+          # but correct if it is ever softened to `additive`.
           read = "allow";
           ls = "allow";
           find = "allow";
           grep = "allow";
-          ctx_read = "allow";
-          ctx_ls = "allow";
-          ctx_find = "allow";
-          ctx_grep = "allow";
+
+          # pi's lean-ctx surface is two layers and `ctx_*` covers both:
+          #   - 7 tools the extension registers itself, shelling out to the
+          #     lean-ctx CLI: ctx_shell, ctx_read, ctx_ls, ctx_find, ctx_grep,
+          #     lean_ctx, ctx_edit. These are NOT MCP tools, so an MCP
+          #     tools/list probe does not show them - they are real all the
+          #     same, and the four read ones used to be listed here
+          #     individually. Subsumed now; do not re-add them as "missing".
+          #   - 60 bridged from the engine under `toolProfile = "power"`
+          #     (78 public engine tools, less 15 internal, less the 3 the
+          #     extension owns locally).
+          #
+          # Three things make the wildcard safe, and all three are load-bearing:
+          #   1. Surface keys are wildcard-matched, not exact (rule.ts
+          #      ruleMatches -> wildcardMatch(rule.surface, surface)), and
+          #      rules are last-match-wins in key order. builtins.toJSON sorts
+          #      keys and "*" (0x2A) precedes every letter, so "ctx_*" always
+          #      sorts before "ctx_patch" and the carve-outs below win. Same
+          #      invariant as bashPolicy above - check the generated JSON.
+          #   2. A `path` deny still wins: the path gate runs before the tool
+          #      gate and short-circuits, so the secrets denies below hold.
+          #   3. The two shell tools are pre-empted by `shellTools` above,
+          #      which resolves them on the `bash` surface instead of their
+          #      own - so this allow cannot un-gate a shell.
+          #
+          # `lean_ctx` is deliberately not matched here; it falls through to
+          # the "*" ask rather than being guessed at.
+          "ctx_*" = "allow";
+
+          # Carve-outs from "ctx_*". Each writes outside ~/.lean-ctx, runs
+          # arbitrary code, or dispatches to something this allowlist cannot
+          # see. Tools that only persist lean-ctx's own state (ctx_cache,
+          # ctx_index, ctx_memory, ctx_knowledge, ctx_session, ctx_summary,
+          # ctx_ledger, ctx_artifacts, ctx_control, ctx_live_zone,
+          # ctx_compress, ctx_proof, ctx_transcript_compact) are intentionally
+          # left allowed - prompting for those is the friction being removed.
+          ctx_patch = "ask"; # writes files (destructiveHint)
+          ctx_execute = "ask"; # arbitrary code, 11 languages (destructiveHint)
+          ctx_refactor = "ask"; # rename/move/safe_delete/inline rewrite source
+          ctx_checkpoint = "ask"; # `restore` rewrites working-tree files
+          ctx_skillify = "ask"; # `promote` writes .cursor/rules/skillify-*.mdc
+          ctx_rules = "ask"; # `sync` rewrites agent rule files across tools
+          ctx_pack = "ask"; # create/install/export/import/remove write files
+          ctx_package = "ask"; # `save` writes a JSON bundle
+          ctx_multi_repo = "ask"; # add_root/remove_root change reachable dirs
+          ctx_call = "ask"; # invokes any of the 78 engine tools by name
+          ctx_tools = "ask"; # `call` proxies arbitrary downstream MCP tools
+          # Read-only, but reaches Jira/Postgres/REST with stored credentials.
+          # Prompts under the standing "ask before connecting to a database or
+          # service" guardrail, not because it mutates anything.
+          ctx_provider = "ask";
+
+          # Plan mode's clarifying-question tool. It only puts a prompt in
+          # front of the user, so gating it behind a second prompt is pure
+          # friction.
+          plan_mode_question = "allow";
+          plan_mode_complete = "allow";
 
           # Spelled out rather than left to the "*" fallback so that a later
           # loosening of that fallback cannot silently take writes with it.
+          # ctx_edit is also a carve-out from "ctx_*" above.
           write = "ask";
           edit = "ask";
           ctx_edit = "ask";
@@ -298,7 +366,9 @@
         # Exposed so the reconcile can be rerun by hand, e.g. after being
         # offline during a switch.
         syncScript
-        lean-ctx
+        # lean-ctx itself now comes from programs-ai-lean-ctx, which also owns
+        # its daemon unit - it serves Claude Code as well as pi. The
+        # `extraPackages` copy below is a different mechanism, not a duplicate.
       ];
 
       programs.git.ignores = [ ".agents/" ];
@@ -417,33 +487,97 @@
       };
 
       # `defaultPlanTools` *replaces* plan mode's default selection
-      # (read/bash/grep/find/ls), which pi-lean-ctx's `replace` mode suppresses
-      # anyway - hence naming the ctx_* substitutes here rather than leaving it
-      # unset, which would select nothing.
+      # (SAFE_BUILTIN_PLAN_TOOLS = read/bash/powershell/grep/find/ls), which
+      # pi-lean-ctx's `replace` mode suppresses anyway - hence naming the
+      # substitutes here rather than leaving it unset, which would select
+      # nothing.
       #
-      # Only tools that actually exist belong in this list: pi-plan-mode
-      # silently drops unknown names, so a phantom entry looks configured and
-      # does nothing. pi-lean-ctx 3.10.5 registers exactly six tools, and
-      # `toolProfile` does not add any - it only forwards
-      # LEAN_CTX_TOOL_PROFILE to the engine. ctx_edit is left out on purpose:
-      # it writes, and plan mode's blocked-builtin rule only covers the native
-      # `edit`/`write`, so an extension write tool named here would be
-      # selectable.
+      # Matching is exact: pi-plan-mode has no glob support (tool-selection.ts
+      # uses Set.has), and unknown names are dropped from the active policy
+      # and shown in the UI as "pending registration". That listing is the
+      # typo detector for this block - after a switch, an entry still showing
+      # as pending is a name that does not exist.
+      #
+      # The list is the no-repo-write subset of pi's two-layer lean-ctx
+      # surface: the extension's own read tools plus the engine tools bridged
+      # by `toolProfile = "power"`. The bar is stricter than the permission
+      # carve-outs above because plan mode does not inspect arguments for
+      # non-builtin tools - it classifies them "user-opt-in" and trusts them
+      # wholesale - so anything with even one write action is excluded, even
+      # when that write only touches ~/.lean-ctx. That rules out ctx_index
+      # (build), ctx_summary (record), ctx_knowledge (remember), ctx_session
+      # (save), ctx_memory (put/prune), ctx_artifacts (index/reindex/remove),
+      # ctx_cache (clear), ctx_ledger (evict), ctx_live_zone (freeze),
+      # ctx_control (pin/reset), ctx_compress, ctx_proof (write=true),
+      # ctx_compile, ctx_transcript_compact - and everything carved out above.
+      #
+      # RE-DERIVE THIS WHEN lean-ctx IS BUMPED in nvfetcher.toml. pi-lean-ctx
+      # on npm ships in lockstep with that pin, so a bump moves both layers at
+      # once, and a name that disappears fails silently.
       home.file.".pi/agent/pi-plan-mode-src.json".source = jsonFormat.generate "pi-plan-mode.json" {
         defaultPlanTools = [
-          # The read-only substitutes for pi's suppressed builtins.
+          # Registered by the extension itself, shelling out to the lean-ctx
+          # CLI. Invisible to an MCP tools/list probe, but real.
           "ctx_read"
           "ctx_grep"
           "ctx_find"
           "ctx_ls"
-          # The shell substitute. Note that plan mode's safe-command filter
-          # keys off the tool *name*, so it covers `bash` and `powershell`
-          # only - ctx_shell runs unfiltered and is gated by
-          # pi-permission-system's bash rules instead.
-          "ctx_shell"
+
+          # Bridged from the engine. Search, navigation and structure.
+          "ctx_search"
+          "ctx_glob"
+          "ctx_tree"
+          "ctx_outline"
+          "ctx_overview"
+          "ctx_repomap"
+          "ctx_routes"
+          "ctx_architecture"
+          "ctx_callgraph"
+          "ctx_graph"
+          "ctx_impact"
+
+          # Context assembly. ctx_compose carries no readOnlyHint because it
+          # calls record_access(), but that mutates session co-access state
+          # only, never the repo - and it is the primary orientation tool, so
+          # excluding it would gut plan mode.
+          "ctx_compose"
+          "ctx_explore"
+          "ctx_expand"
+          "ctx_retrieve"
+          "ctx_plan"
+          "ctx_fill"
+          "ctx_crush"
+          "ctx_compare"
+          "ctx_delta"
+          "ctx_context"
+
+          # Analysis and review.
+          "ctx_analyze"
+          "ctx_review"
+          "ctx_quality"
+          "ctx_quality_lab"
+          "ctx_smells"
+          "ctx_optimize"
+          "ctx_verify"
+          "ctx_benchmark"
+          "ctx_perf"
+          "ctx_cognitive"
+
+          # Reads that leave the working tree. ctx_git_read clones into a
+          # cache under ~/.lean-ctx; neither writes the repo.
+          "ctx_git_read"
+          "ctx_url_read"
+
+          # The shell substitute. pi exposes it as `shell`; `ctx_shell` is the
+          # same handler under the extension's own name. Note that plan mode's
+          # safe-command filter keys off the tool *name* and covers `bash` and
+          # `powershell` only - `shell` runs unfiltered here and is gated by
+          # pi-permission-system's bash rules instead, via the shellTools
+          # mapping above.
+          "shell"
           # Inert while `replace` mode suppresses it. Named so that softening
           # pi-lean-ctx to `additive` restores the filtered bash rather than
-          # silently leaving plan mode with ctx_shell as its only shell.
+          # silently leaving `shell` as the only shell.
           "bash"
         ];
       };

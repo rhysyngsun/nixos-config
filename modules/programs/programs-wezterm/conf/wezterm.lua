@@ -17,7 +17,15 @@ config.xcursor_theme = 'Catppuccin-Mocha-Lavender'
 -- config.colors.tab_bar.active_tab.bg_color = '#7287fd'
 
 -- font name as it appears in `fc-list`
-config.font = wezterm.font 'Iosevka'
+--
+-- Term, not plain Iosevka. The default Iosevka release draws arrows
+-- (U+2191/U+2193) at a 2-cell advance while letters are 1 cell. Those
+-- codepoints are East-Asian Ambiguous, so wezterm allocates one cell and
+-- squeezes the glyph to fit, leaving it with no side bearing - which is why
+-- the arrows in pi's status line used to touch the next digit. The Term
+-- spacing variant designs those symbols at 1 cell with real bearings.
+-- Installed by modules/hosts/host-lilith.nix.
+config.font = wezterm.font 'IosevkaTerm Nerd Font Mono'
 config.font_size = 11
 config.line_height = 0.9
 

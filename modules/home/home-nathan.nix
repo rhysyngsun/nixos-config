@@ -37,6 +37,7 @@
         top.config.flake.modules.homeManager.programs-ai-claude
         top.config.flake.modules.homeManager.programs-ai-claude-mit
         top.config.flake.modules.homeManager.programs-ai-claude-notify
+        top.config.flake.modules.homeManager.programs-ai-lean-ctx
         top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-ai-pi-notify
         top.config.flake.modules.homeManager.programs-aliases

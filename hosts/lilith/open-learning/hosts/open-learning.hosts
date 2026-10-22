@@ -15,17 +15,26 @@
 127.0.0.1   preview.openedx.odl.local
 127.0.0.1   meilisearch.openedx.odl.local
 127.0.0.1   apps.openedx.odl.local
-# ol-infrastructure/local-dev
-127.0.0.1  api.learn.mit.dev
-127.0.0.1  learn.mit.dev
-127.0.0.1  ai.learn.mit.dev
-127.0.0.1  mitxonline.mit.dev
-127.0.0.1  video.odl.mit.dev
-127.0.0.1  sso.ol.mit.dev
-127.0.0.1  mail.mit.dev
-127.0.0.1  grafana.mit.dev
-127.0.0.1  lms.mit.dev
-127.0.0.1  studio.mit.dev
-127.0.0.1  notes.mit.dev
-127.0.0.1  preview.lms.mit.dev
-127.0.0.1  apps.lms.mit.dev
+
+# BEGIN local-dev local-dev
+127.0.0.1  api.learn.mit.test
+127.0.0.1  learn.mit.test
+127.0.0.1  ai.learn.mit.test
+127.0.0.1  ocw-dev.learn.mit.test
+127.0.0.1  mitxonline.mit.test
+127.0.0.1  api.mitxonline.mit.test
+127.0.0.1  video.odl.mit.test
+127.0.0.1  studio.ocw.mit.test
+127.0.0.1  draft.ocw.mit.test
+127.0.0.1  live.ocw.mit.test
+127.0.0.1  test.ocw.mit.test
+127.0.0.1  concourse.ocw.mit.test
+127.0.0.1  micromasters.mit.test
+127.0.0.1  s3.mit.test
+127.0.0.1  sso.ol.mit.test
+127.0.0.1  mail.mit.test
+127.0.0.1  grafana.mit.test
+127.0.0.1  lms.mit.test
+127.0.0.1  studio.mit.test
+127.0.0.1  notes.mit.test
+# END local-dev local-dev

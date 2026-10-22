@@ -186,6 +186,12 @@
         packages = (map (f: f.package) (builtins.attrValues pkgs.rice.font)) ++ [
           pkgs.nerd-fonts.fira-code
           pkgs.nerd-fonts.fira-mono
+          # Iosevka's default release is quasi-proportional: arrows and
+          # geometric symbols are drawn at a 2-cell advance (U+2191/U+2193
+          # measure 1000/1000 em against 500 for letters). The Term spacing
+          # variant designs them at 1 cell. wezterm uses this - see
+          # programs-wezterm/conf/wezterm.lua.
+          pkgs.nerd-fonts.iosevka-term
           (pkgs.google-fonts.override {
             fonts = [
               "Expletus Sans"

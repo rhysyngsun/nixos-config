@@ -34,6 +34,7 @@
         top.config.flake.modules.homeManager.programs-pls
         top.config.flake.modules.homeManager.programs-desktop
 
+        top.config.flake.modules.homeManager.programs-ai-lean-ctx
         top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
