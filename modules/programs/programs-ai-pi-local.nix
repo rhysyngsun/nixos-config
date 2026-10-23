@@ -16,7 +16,14 @@
       # extensions should exist. Writing it to settings.json only *declares*
       # them - pi resolves each one from <configDir>/npm/node_modules/<name>,
       # so the package still has to be fetched for the extension to load.
-      declaredSources = cfg.settings.packages or [ ];
+      #
+      # A `packages` entry is either a bare source string or the object form
+      # `{ source, skills, ... }`, which filters which of the package's resources
+      # pi loads (settings-schema.js PackageSourceSchema). Only the source half
+      # is npm's business, so flatten to it before anything below looks at the
+      # list - `isNpm` would otherwise be handed an attrset and throw.
+      sourceOf = entry: if lib.isAttrs entry then entry.source else entry;
+      declaredSources = map sourceOf (cfg.settings.packages or [ ]);
 
       isNpm = lib.hasPrefix "npm:";
       npmSpecs = map (lib.removePrefix "npm:") (lib.filter isNpm declaredSources);
@@ -283,9 +290,10 @@
           #     tools/list probe does not show them - they are real all the
           #     same, and the four read ones used to be listed here
           #     individually. Subsumed now; do not re-add them as "missing".
-          #   - 60 bridged from the engine under `toolProfile = "power"`
-          #     (78 public engine tools, less 15 internal, less the 3 the
-          #     extension owns locally).
+          #   - 15 bridged from the engine under `toolProfile = "standard"`
+          #     (17 advertised, less ctx_read and ctx_shell which the extension
+          #     already owns locally). Under the former "power" this layer was
+          #     60 - the wildcard covers whichever profile is set.
           #
           # Three things make the wildcard safe, and all three are load-bearing:
           #   1. Surface keys are wildcard-matched, not exact (rule.ts
@@ -337,6 +345,36 @@
           # showing the user a questionnaire. It was falling through to the "*"
           # ask, which meant a prompt to show a prompt.
           ask_user_question = "allow";
+
+          # Systematic (@fro.bot/systematic) reaches its bundled skills through
+          # TWO independent gates, and both were falling through to the "*"
+          # ask - so loading one skill cost two prompts. Confirmed from
+          # permissionReviewLog, which records them as separate requests:
+          # surface "systematic_skill" (source tool_call, input
+          # {"name":"systematic:using-systematic"}) and surface "skill"
+          # (source skill_input, skillName "using-systematic").
+          #
+          # systematic_delegate, the extension's other tool, is deliberately
+          # left to the "*" ask. It spawns its child session with
+          # `noExtensions: true`, so pi-permission-system does not load in
+          # that child and every tool the child is handed runs UNGATED - the
+          # "unguarded child" this extension's own docs/subagent-integration.md
+          # warns about. The prompt is the only thing between a delegate call
+          # and an unpoliced session; do not promote it to allow.
+          systematic_skill = "allow";
+
+          # Nested pattern map keyed on skill name, like `bash` and `path`
+          # (the surface is `skill`, singular - `skills` is not a surface).
+          # Allowed wholesale because loading a skill only injects its
+          # SKILL.md text into the prompt: it executes nothing by itself, and
+          # every tool the skill subsequently reaches for is still gated by
+          # the rules above. Gating it while `systematic_skill` is allowed
+          # would just prompt twice for the same file read by another name.
+          # Project-scope skills are in range here, but only for a project
+          # `defaultProjectTrust` has already let through.
+          skill = {
+            "*" = "allow";
+          };
 
           # Spelled out rather than left to the "*" fallback so that a later
           # loosening of that fallback cannot silently take writes with it.
@@ -419,6 +457,28 @@
           # a crash still forces the full transcript so diagnostics survive.
           fullscreenExitOutput = "resume-hint";
 
+          # pi installs this as undici's bodyTimeout AND headersTimeout on its
+          # global dispatcher (chunk-66G7ITPS.js:271,
+          # DEFAULT_HTTP_IDLE_TIMEOUT_MS = 3e5), so the default gives up after
+          # five minutes of socket silence. LM Studio emits no SSE bytes while
+          # it buffers a tool call's arguments, and plan_mode_complete's one
+          # argument is the entire plan (completion-tool.ts:6,
+          # PLAN_MODE_MAX_CHARS = 50_000). At the 8-11 t/s this machine gets
+          # from qwen3.5-9b that silent stretch runs past five minutes, undici
+          # aborts the body with `TypeError: terminated`, and pi's auto-retry
+          # replays the identical request twice more before surfacing
+          # "Retry failed after 3 attempts: terminated". Ordinary text replies
+          # stream continuously and never trip it, which is why only plan
+          # finalization crashed.
+          #
+          # 30 min covers a max-length plan with margin while still catching a
+          # genuinely wedged server - which "disabled" would not, and which
+          # matters in -p/json/rpc modes where there is no Esc to abort.
+          #
+          # Must be declared here: settings.json is a read-only store symlink,
+          # so pi's own /settings TUI cannot persist the value.
+          httpIdleTimeoutMs = 1800000;
+
           # Pinned on purpose. The reconciler above only reinstalls when the
           # recorded version differs from the declared one, so without versions
           # here an extension is whatever npm happened to resolve the day it
@@ -452,6 +512,30 @@
             # trust.json do. Declaring it here would make the store symlink
             # read-only and /zentui unable to save.
             "npm:pi-zentui@0.32.0"
+            # 3.25.2 is the current `latest`. Its eight `ce-*` skills carry
+            # Systematic's internal `ce:<name>` identifier in SKILL.md
+            # frontmatter, and pi's native skill loader validates names against
+            # /^[a-z0-9-]+$/ (core/skills.js:66) - so all eight are rejected at
+            # startup with a "name contains invalid characters" diagnostic.
+            # Upstream only translates that namespace in its Claude Code plugin
+            # build, never on the pi path, so this does not age out.
+            #
+            # Hiding them from the native loader costs nothing: the package's
+            # own pi extension (dist/pi.js) registers `systematic_skill`, which
+            # resolves every bundled skill by its internal name - `ce:plan`
+            # included, see dist/lib/bundled-names.d.ts - from these same files.
+            # The native loader is a redundant second path for all 32.
+            #
+            # The pattern is matched against a SKILL.md's parent directory as
+            # well as its own path (package-manager.js matchesAnyPattern), and
+            # with no positive pattern in the list every other skill stays
+            # enabled (applyPatterns, same file). It does not catch
+            # `report-bug-ce`, the only other skill with `ce` in its name.
+            {
+              source = "npm:@fro.bot/systematic@3.25.2";
+              skills = [ "!skills/ce-*" ];
+            }
+            "npm:pi-inspector@0.1.3"
           ];
         };
         models = {
@@ -477,7 +561,26 @@
           {
             mode = "replace";
             enableMcp = true;
-            toolProfile = "power";
+
+            # Was "power" (all 78 engine tools). That put 80 tool definitions
+            # on the wire for a 46,936-token prompt - the prompt was mostly
+            # tool schemas, generation decayed from 11.3 to 8.2 t/s as context
+            # grew, and qwen3.5-9b burned turns on tool-schema validation
+            # failures. "standard" bridges 17.
+            #
+            # Only "minimal", "standard" and "power" take effect. "lean" looks
+            # like a fourth option and is not: resolveToolProfile maps anything
+            # unrecognized to "lean", and config.ts:322-328 then declines to
+            # forward LEAN_CTX_TOOL_PROFILE at all - so the engine falls back
+            # to ~/.config/lean-ctx/config.toml, which is unmanaged here and
+            # says "power". Setting "lean" would silently change nothing.
+            #
+            # Note "standard" also drops ctx_call, power's escape hatch to the
+            # rest of the registry. Tools not bridged are reachable only as
+            # `lean-ctx` subcommands through the shell tool.
+            #
+            # Authoritative listing: LEAN_CTX_TOOL_PROFILE=standard lean-ctx tools
+            toolProfile = "standard";
             binary = "${pkgs.lean-ctx}/bin/lean-ctx";
             env = {
               LEAN_CTX_COMPRESSION = "aggressive";
@@ -537,20 +640,25 @@
       #
       # The list is the no-repo-write subset of pi's two-layer lean-ctx
       # surface: the extension's own read tools plus the engine tools bridged
-      # by `toolProfile = "power"`. The bar is stricter than the permission
+      # by `toolProfile = "standard"`. The bar is stricter than the permission
       # carve-outs above because plan mode does not inspect arguments for
       # non-builtin tools - it classifies them "user-opt-in" and trusts them
       # wholesale - so anything with even one write action is excluded, even
-      # when that write only touches ~/.lean-ctx. That rules out ctx_index
-      # (build), ctx_summary (record), ctx_knowledge (remember), ctx_session
-      # (save), ctx_memory (put/prune), ctx_artifacts (index/reindex/remove),
+      # when that write only touches ~/.lean-ctx. Of the 17 tools `standard`
+      # advertises that rules out ctx_knowledge (remember), ctx_session (save),
+      # ctx_patch (anchored editor) and ctx_execute - plus, were the profile
+      # ever widened again, ctx_index (build), ctx_summary (record),
+      # ctx_memory (put/prune), ctx_artifacts (index/reindex/remove),
       # ctx_cache (clear), ctx_ledger (evict), ctx_live_zone (freeze),
       # ctx_control (pin/reset), ctx_compress, ctx_proof (write=true),
       # ctx_compile, ctx_transcript_compact - and everything carved out above.
       #
-      # RE-DERIVE THIS WHEN lean-ctx IS BUMPED in nvfetcher.toml. pi-lean-ctx
-      # on npm ships in lockstep with that pin, so a bump moves both layers at
-      # once, and a name that disappears fails silently.
+      # RE-DERIVE THIS WHEN lean-ctx IS BUMPED in nvfetcher.toml, OR WHEN
+      # `toolProfile` CHANGES above. pi-lean-ctx on npm ships in lockstep with
+      # that pin, so a bump moves both layers at once, and a name that
+      # disappears fails silently. The authoritative listing for the engine
+      # layer is `LEAN_CTX_TOOL_PROFILE=standard lean-ctx tools`; the
+      # extension layer is profile-independent.
       home.file.".pi/agent/pi-plan-mode-src.json".source = jsonFormat.generate "pi-plan-mode.json" {
         defaultPlanTools = [
           # Not a lean-ctx tool - rpiv-ask-user-question's. Named here so there
@@ -577,6 +685,25 @@
           # satisfy a pending finalization request.
           "ask_user_question"
 
+          # Also not a lean-ctx tool - @fro.bot/systematic's. Registered
+          # unconditionally by its extension, but `defaultPlanTools` REPLACES
+          # plan mode's selection rather than extending it, so omitting it here
+          # is what made it vanish inside Plan mode: pi-plan-mode blocks any
+          # registered tool the policy does not name ("Plan mode blocks tool
+          # 'x' because it is not selected by the Plan policy", dist/index.ts
+          # :1512). It worked fine outside Plan mode the whole time.
+          #
+          # Clears the no-write bar stated below: `execute` resolves the named
+          # skill, reads its SKILL.md, samples a listing of the skill's own
+          # directory and returns that text. It writes nothing anywhere.
+          #
+          # Its sibling systematic_delegate is deliberately absent - it runs a
+          # whole child session, and plan mode does not inspect arguments for
+          # non-builtin tools, so naming it would hand that session plan mode's
+          # trust wholesale. See the permission block above for the other half
+          # of that reasoning.
+          "systematic_skill"
+
           # Registered by the extension itself, shelling out to the lean-ctx
           # CLI. Invisible to an MCP tools/list probe, but real.
           "ctx_read"
@@ -588,14 +715,9 @@
           "ctx_search"
           "ctx_glob"
           "ctx_tree"
-          "ctx_outline"
           "ctx_overview"
-          "ctx_repomap"
-          "ctx_routes"
-          "ctx_architecture"
           "ctx_callgraph"
           "ctx_graph"
-          "ctx_impact"
 
           # Context assembly. ctx_compose carries no readOnlyHint because it
           # calls record_access(), but that mutates session co-access state
@@ -604,29 +726,9 @@
           "ctx_compose"
           "ctx_explore"
           "ctx_expand"
-          "ctx_retrieve"
-          "ctx_plan"
-          "ctx_fill"
-          "ctx_crush"
-          "ctx_compare"
           "ctx_delta"
-          "ctx_context"
 
-          # Analysis and review.
-          "ctx_analyze"
-          "ctx_review"
-          "ctx_quality"
-          "ctx_quality_lab"
-          "ctx_smells"
-          "ctx_optimize"
-          "ctx_verify"
-          "ctx_benchmark"
-          "ctx_perf"
-          "ctx_cognitive"
-
-          # Reads that leave the working tree. ctx_git_read clones into a
-          # cache under ~/.lean-ctx; neither writes the repo.
-          "ctx_git_read"
+          # Reads that leave the working tree without touching the repo.
           "ctx_url_read"
 
           # The shell substitute. pi exposes it as `shell`; `ctx_shell` is the

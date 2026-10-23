@@ -44,13 +44,13 @@
   };
   dagger = {
     pname = "dagger";
-    version = "v0.21.10";
+    version = "v0.21.11";
     src = fetchFromGitHub {
       owner = "dagger";
       repo = "dagger";
-      rev = "v0.21.10";
+      rev = "v0.21.11";
       fetchSubmodules = false;
-      sha256 = "sha256-aRWgwGRWJgUVSy4DanmrRBX8cpF86n/YxStaE2C67HA=";
+      sha256 = "sha256-vE1flfcSZK0GluFORnXRPgaSAh7jjPIn8C1vk17r1Ag=";
     };
   };
   godot-48-beta = {
@@ -71,21 +71,21 @@
   };
   headlamp = {
     pname = "headlamp";
-    version = "0.45.0";
+    version = "0.46.0";
     src = fetchurl {
-      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.45.0/Headlamp-0.45.0-linux-x64.AppImage";
-      sha256 = "sha256-PFAQK5n/7V6AJTMYffNFjv6GJ97V55D0kOVL4bQJR2U=";
+      url = "https://github.com/kubernetes-sigs/headlamp/releases/download/v0.46.0/Headlamp-0.46.0-linux-x64.AppImage";
+      sha256 = "sha256-0KqcpqgNf59AqdOD8yk1AffYimNXP7x1zvB5xAXJfdo=";
     };
   };
   lean-ctx = {
     pname = "lean-ctx";
-    version = "3.10.5";
+    version = "3.11.4";
     src = fetchurl {
-      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.10.5/lean-ctx-3.10.5-source.tar.gz";
-      sha256 = "sha256-MjX93q1WWxe+CnIHecs8o+c6EKoJas2yM+A0j/Y7rZo=";
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.11.4/lean-ctx-3.11.4-source.tar.gz";
+      sha256 = "sha256-QBvx37nB7SaOFCVxe3PjMJdo1UWOj6UqGuU8yaNZK54=";
     };
     cargoLock."rust/Cargo.lock" = {
-      lockFile = ./. + "/sha256-MjX93q1WWxe+CnIHecs8o+c6EKoJas2yM+A0j_Y7rZo=/rust/Cargo.lock";
+      lockFile = ./. + "/sha256-QBvx37nB7SaOFCVxe3PjMJdo1UWOj6UqGuU8yaNZK54=/rust/Cargo.lock";
       outputHashes = {
 
       };
@@ -93,31 +93,31 @@
   };
   nvim-treesitter = {
     pname = "nvim-treesitter";
-    version = "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de";
+    version = "29212d826054bb2948fa9d3a99eca9bf6a050eb2";
     src = fetchgit {
       url = "https://github.com/nvim-treesitter/nvim-treesitter";
-      rev = "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de";
+      rev = "29212d826054bb2948fa9d3a99eca9bf6a050eb2";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-xmwLHE8JeSDyXeFggx1DzOPHc6OcNHngYEyuAcfI/Ck=";
+      sha256 = "sha256-AVEAmYYl94+Llyp63Sq1VRRJDruNBVmJRmKCIU9vorw=";
     };
-    date = "2026-09-30";
+    date = "2026-10-19";
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "cd8a4207e1a5289b5f5b5cd146f0e7fc3fe4bb3c";
+    version = "01a0fd032a9b146ebd29c44dedddfa9f8d20a015";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "cd8a4207e1a5289b5f5b5cd146f0e7fc3fe4bb3c";
+      rev = "01a0fd032a9b146ebd29c44dedddfa9f8d20a015";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-DDo17s7q+14H9RyV82cf9rQdnf2+GyaXEwssFPljyZ0=";
+      sha256 = "sha256-CnqghbisNSH3ipqpXq20xYygCkVvYcxMZBI21FxJqX8=";
     };
-    date = "2026-10-16";
+    date = "2026-10-23";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -137,15 +137,15 @@
   };
   pkl-neovim = {
     pname = "pkl-neovim";
-    version = "067642e6b917a00a67c2b2ecb2caf2790d796d0d";
+    version = "20bfa7232262f36da45470170e7a954e487f4ac6";
     src = fetchFromGitHub {
       owner = "apple";
       repo = "pkl-neovim";
-      rev = "067642e6b917a00a67c2b2ecb2caf2790d796d0d";
+      rev = "20bfa7232262f36da45470170e7a954e487f4ac6";
       fetchSubmodules = false;
-      sha256 = "sha256-rNCJFKCKpfT3f+SHpVuiYkGUEUfOx7DSTi1PmbcVk+8=";
+      sha256 = "sha256-gHq7RL/Y+nDwG07zjmG3QDlEoGlEhjsAK3+TaWwrfIk=";
     };
-    date = "2026-09-25";
+    date = "2026-09-30";
   };
   tree-sitter-noy = {
     pname = "tree-sitter-noy";
@@ -173,25 +173,17 @@
   };
   tree-sitter-pkl = {
     pname = "tree-sitter-pkl";
-    version = "c95d8284940f5e1da2cd0d8f1ee45d7ef9ef75d1";
+    version = "c837eff683d62f3cb5e6309b44c257640f202d4b";
     src = fetchgit {
       url = "https://github.com/apple/tree-sitter-pkl";
-      rev = "c95d8284940f5e1da2cd0d8f1ee45d7ef9ef75d1";
+      rev = "c837eff683d62f3cb5e6309b44c257640f202d4b";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-dnGqTZ7Kga1sIJkzRSbqkhvIrPJMxOEhHnDKJuLyudM=";
+      sha256 = "sha256-wV0UzT1GB/sWlDTGK7Sij/eIBYIu4vM7O5zKf/Qde8g=";
     };
-    date = "2026-09-25";
-  };
-  unsloth-studio = {
-    pname = "unsloth-studio";
-    version = "0.1.903-beta";
-    src = fetchurl {
-      url = "https://github.com/unslothai/unsloth/releases/download/v0.1.903-beta/Unsloth-Desktop-Linux.AppImage";
-      sha256 = "sha256-KZEygXS2M8M3kugo77unYClyGG3YxlW0st106o5T4R0=";
-    };
+    date = "2026-10-01";
   };
   whichpy-nvim = {
     pname = "whichpy-nvim";

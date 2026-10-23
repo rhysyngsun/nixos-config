@@ -46,9 +46,31 @@
             "mcp"
           ];
           command = "${pkgs.lean-ctx}/bin/lean-ctx";
-          tools = [
-            "*"
-          ];
+
+          # Deliberately not `tools = [ "*" ]`, which is what used to be here.
+          # `mcpServers` is typed `attrsOf jsonFormat.type`, so that key was
+          # copied verbatim into the plugin's `.mcp.json`, where Claude Code's
+          # stdio server schema has no `tools` field at all - a silent no-op,
+          # which is why the profile stayed at `power` the whole time.
+          #
+          # `power` exposes all 78 ctx_* tools. Stacked on toolhive-swe-prod,
+          # toolhive-swe-qa and witan, that pushes Claude Code past the point
+          # where it strips every MCP schema out of the tool list and leaves
+          # only tool *names* behind `ToolSearch`. A deferred tool costs an
+          # extra round trip and the built-in `Read` costs nothing, so the
+          # model never reached for one: zero ctx_* calls across ~60 sessions,
+          # against 3099 Bash. `standard` is 17 tools and keeps
+          # read/search/glob/tree/compose/patch - every tool the mapping in the
+          # server's own instructions actually names.
+          #
+          # The env var rather than config.toml because `lean-ctx tools`
+          # reports the var as overriding the file, and
+          # ~/.config/lean-ctx/config.toml is unmanaged here - same reason
+          # programs-ai-pi-local.nix will not write to it.
+          #
+          # RE-DERIVE THE PROFILE CONTENTS WHEN lean-ctx IS BUMPED in
+          # nvfetcher.toml:  LEAN_CTX_TOOL_PROFILE=standard lean-ctx tools
+          env.LEAN_CTX_TOOL_PROFILE = "standard";
         };
 
         settings = {
@@ -59,6 +81,24 @@
           # grows a scripts/ directory or a cache directory is covered by the
           # next repin with no edit here.
           permissions.allow = [
+            # Whole-server allow for the lean-ctx MCP server declared above.
+            # The bare `mcp__<server>` form is the whole-server rule, and the
+            # server name is the one Claude Code derives for a server declared
+            # through a home-manager plugin - `plugin:<plugin>:<server>` with
+            # the colons flattened to underscores - not the `lean-ctx` written
+            # above. The three other servers on this machine are already
+            # allowed this way in programs-ai-claude-mit.nix; lean-ctx was the
+            # only one missing, so a ctx_* call prompted while every Bash
+            # alternative below (rg, grep, find, sed) was pre-approved. That
+            # gradient pointed away from the tools we want used.
+            #
+            # Covers the writes as well as the reads. ctx_patch and ctx_edit
+            # touch the working tree, but they are the compressed path to the
+            # same edits the built-in Edit tool makes unprompted, and
+            # ctx_shell inherits lean-ctx's own 223-command allowlist and path
+            # jail (`lean-ctx doctor`).
+            "mcp__plugin_claude-code-home-manager_lean-ctx"
+
             "Bash(docker compose:*)"
             # Also covers `uv run ruff …`, so ruff needs no entry of its own.
             "Bash(uv run:*)"
@@ -77,19 +117,13 @@
             "Bash(command -v:*)"
             "Bash(gitleaks:*)"
 
-            # Progressive disclosure: a SKILL.md routinely tells the agent to
-            # read a sibling file under its own directory
-            # (references/*.md, assets/, templates/), and without this every
-            # one of those stalls on a prompt mid-skill. Read only, and the
-            # whole skills tree rather than per-skill, so a newly installed
-            # skill needs no edit here.
-            #
-            # One slash of our own on top of an already-absolute
-            # homeDirectory, for a leading // in the rule: that is the
-            # absolute-from-filesystem-root form. A single leading slash would
-            # anchor at the settings source, which for user settings is
-            # ~/.claude/, and never match.
-            "Read(/${config.home.homeDirectory}/.claude/skills/**)"
+            # The ~/.claude/skills/** read allow lives in
+            # programs-ai-claude-mit.nix (`skillTreeAllows`), not here. It is
+            # useless on its own: the skills are home-manager symlinks into the
+            # store, and an allow rule only applies when the requested path and
+            # every path it resolves to match, so the rule has to be emitted
+            # together with the store-path hops - which need the agent-kit
+            # `src` that only that module has.
           ]
           ++ (builtins.map (subcmd: "Bash(git ${subcmd}:*)") [
             "add"
@@ -100,7 +134,10 @@
             # non-destructive intents; `git restore` stays unlisted on purpose.
             "checkout -b"
             "diff"
+            "log"
             "fetch"
+            "rebase"
+            "show"
             "switch"
             "worktree"
           ]);

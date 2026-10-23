@@ -14,7 +14,7 @@ buildGoModule {
   version = lib.removePrefix "v" source.version;
   inherit (source) src;
 
-  vendorHash = "sha256-rMCgDo6CkYQnE+SvvQ0wsH2KtkpTMc6c0mJ9pxu+lAM=";
+  vendorHash = "sha256-8G7CyO9mfrP/tUcmcIuTLIcZkLIa7XZeh8NPzfqXxj4=";
 
   subPackages = [ "cmd/dagger" ];
 

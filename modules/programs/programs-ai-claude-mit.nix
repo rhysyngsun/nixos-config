@@ -109,12 +109,52 @@
       # Edit(). A Write() rule is accepted, never consulted, and warned about at
       # startup. Edit() covers the Edit, Write and NotebookEdit tools.
       #
-      # homeDirectory is already absolute - no leading slash of our own, or the
-      # rule comes out as //home/<user>/... and only the ~/ twin ever matches.
+      # One slash of our own on top of an already-absolute homeDirectory, for a
+      # leading // in the rule - the same absolute-from-filesystem-root form as
+      # the open-learnix and skills rules. These used to be written with a bare
+      # homeDirectory and a comment claiming that was the correct spelling; it
+      # was not. A single leading slash anchors at the settings source, which
+      # for user settings is ~/.claude/, so every one of them expanded to
+      # ~/.claude/home/<user>/.cache/... and matched nothing. Verified against
+      # `claude -p`: reading ~/.cache/generate-standup/draft.md was denied with
+      # the old spelling and is allowed with this one.
+      #
+      # Nothing on this path is a symlink, so unlike the skills tree below a
+      # single rule per spelling is enough.
       skillCacheAllows = lib.concatMap (name: [
-        "Read(${config.home.homeDirectory}/.cache/${name}/**)"
-        "Edit(${config.home.homeDirectory}/.cache/${name}/**)"
+        "Read(/${config.home.homeDirectory}/.cache/${name}/**)"
+        "Edit(/${config.home.homeDirectory}/.cache/${name}/**)"
       ]) (lib.attrNames skillPaths);
+
+      # Progressive disclosure: a SKILL.md routinely tells the agent to read a
+      # sibling file under its own directory (references/*.md, assets/,
+      # templates/), and without this every one of those stalls on a prompt
+      # mid-skill.
+      #
+      # One rule is not enough, because an allow rule for a symlinked path
+      # "applies only when both the requested path and the file it resolves to
+      # match" (Claude Code's permissions docs, "How rules match a symlinked
+      # path"). Here that is a *two-hop* chain, and each hop needs its own rule
+      # or the read is refused even though the ~/.claude/skills/ rule matches:
+      #
+      #   ~/.claude/skills/<name>/references/x.md          <- requested
+      #   /nix/store/<hash>-home-manager-files/.claude/...  <- home-manager link
+      #   /nix/store/<hash>-agent-kit-<rev>/<rel>/...       <- the real file
+      #
+      # Verified by bisection against `claude -p`: with only the first rule the
+      # read is denied; with any two of the three it is still denied.
+      #
+      # The home-manager-files hop is globbed rather than spelled out because
+      # its hash is this generation's own store path, which cannot be named
+      # from inside the module that produces it. `*` stays within one path
+      # segment, so the glob widens to other generations of the same file set
+      # and nothing else. The agent-kit hop is per-skill rather than
+      # `${src}/**`, which would hand over the whole checkout.
+      skillTreeAllows = [
+        "Read(/${config.home.homeDirectory}/.claude/skills/**)"
+        "Read(//nix/store/*-home-manager-files/.claude/skills/**)"
+      ]
+      ++ lib.mapAttrsToList (_: path: "Read(/${path}/**)") skills;
 
       # The ToolHive vMCPs aggregate several upstream servers behind one
       # endpoint, so their tool names carry the origin as a prefix
@@ -317,6 +357,7 @@
           permissions.allow =
             skillScriptAllows
             ++ skillCacheAllows
+            ++ skillTreeAllows
             ++ toolhiveAllows
             ++ [
               # Every tool on the witan server, with no per-tool suffix: the
