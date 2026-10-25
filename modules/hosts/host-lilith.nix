@@ -16,6 +16,8 @@
         inputs.catppuccin.nixosModules.catppuccin
         inputs.nixos-hardware.nixosModules.common-gpu-nvidia
 
+        top.config.flake.modules.nixos.services-swap
+
         ../../hosts/lilith/open-learning
         ../../hosts/lilith/hardware-configuration.nix
       ];

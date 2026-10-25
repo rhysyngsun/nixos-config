@@ -402,10 +402,56 @@
           bash = bashPolicy;
         };
       };
+
+      # LM Studio holds model weights in children of whichever process launched
+      # it - the llmworker node process that carries the weights shares the
+      # launcher's cgroup, and the bwrap FHS wrapper does not unshare it - so
+      # confining the launcher confines the whole tree. Wrapping the binaries
+      # rather than just the .desktop entry means terminal launches and `lms`
+      # are covered too, and it avoids restating upstream's desktop metadata.
+      lmstudioInSlice =
+        let
+          runInSlice = pkgs.writeShellScript "lmstudio-in-slice" ''
+            real="$1"
+            shift
+
+            # Already inside the slice: don't nest a scope within a scope.
+            if [[ -r /proc/self/cgroup && "$(</proc/self/cgroup)" == *lmstudio.slice* ]]; then
+              exec "$real" "$@"
+            fi
+
+            # No reachable user manager - ssh without lingering, a rescue shell.
+            # Run unconfined rather than refusing to start at all.
+            if ! ${pkgs.systemd}/bin/systemctl --user show-environment >/dev/null 2>&1; then
+              exec "$real" "$@"
+            fi
+
+            exec ${pkgs.systemd}/bin/systemd-run --user --quiet --collect \
+              --slice=lmstudio.slice --scope -- "$real" "$@"
+          '';
+          wrap =
+            name:
+            pkgs.writeShellScriptBin name ''
+              exec ${runInSlice} ${pkgs.lmstudio}/bin/${name} "$@"
+            '';
+        in
+        # lndir keeps the first occurrence of each path, so the wrappers shadow
+        # the package's own bin/ entries while icons, share/ and the .desktop
+        # file (whose `Exec=lm-studio` resolves to the wrapper via PATH) still
+        # come from the package.
+        pkgs.symlinkJoin {
+          name = "lmstudio-in-slice-${pkgs.lmstudio.version}";
+          paths = [
+            (wrap "lm-studio")
+            (wrap "lms")
+            pkgs.lmstudio
+          ];
+          meta.mainProgram = "lm-studio";
+        };
     in
     {
       home.packages = with pkgs; [
-        lmstudio
+        lmstudioInSlice
         # Exposed so the reconcile can be rerun by hand, e.g. after being
         # offline during a switch.
         syncScript
@@ -413,6 +459,23 @@
         # its daemon unit - it serves Claude Code as well as pi. The
         # `extraPackages` copy below is a different mechanism, not a duplicate.
       ];
+
+      # LM Studio gets its own cgroup so an oversized model load degrades
+      # inside it instead of letting the kernel OOM killer pick a victim by
+      # RSS - which, under memory pressure, can just as easily be the
+      # compositor. Pairs with the swapfile in services-swap.nix.
+      systemd.user.slices.lmstudio = {
+        Unit.Description = "LM Studio inference workload";
+        Slice = {
+          # Past this the kernel reclaims hard *within the slice*. Model
+          # weights are clean mmap'd file pages, so reclaim is free - they just
+          # page back in from the GGUF. Inference slows down instead of dying.
+          MemoryHigh = "48G";
+          # Hard ceiling, leaving headroom for the rest of the session.
+          MemoryMax = "56G";
+          MemorySwapMax = "64G";
+        };
+      };
 
       programs.git.ignores = [ ".agents/" ];
       programs.pi-coding-agent = {
