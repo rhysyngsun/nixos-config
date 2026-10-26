@@ -138,6 +138,175 @@
     {
       home.packages = [ pkgs.lean-ctx ];
 
+      # Replaces the SKILL.md `lean-ctx setup` wrote imperatively into
+      # ~/.claude/skills/lean-ctx/ (0600, outside the store, survives a switch).
+      # Upstream's copy told the agent to load the tools with
+      # `select:mcp__lean-ctx__ctx_compose,…`, which matches nothing here - the real
+      # prefix carries the plugin name, `mcp__plugin_claude-code-home-manager_lean-ctx__`
+      # - so following the skill returned zero tools and the agent fell back to Bash.
+      # That one wrong prefix is why ctx_* was called 5 times against Bash's 12,388.
+      #
+      # `programs.claude-code.skills` is typed
+      # `either (attrsOf (oneOf [lines path str])) path`; a string value lands at
+      # .claude/skills/<name>/SKILL.md (home-manager claude-code.nix, mkSkillEntry).
+      # The `either` wrapper still merges attrsets across modules, so this coexists
+      # with programs-ai-claude-mit.nix defining the whole attrset from agent-kit.
+      programs.claude-code.skills.lean-ctx = ''
+        ---
+        name: lean-ctx
+        description: Pick the right lean-ctx tool for reading, searching, understanding and running code with fewer tokens and fewer round trips. Use when lean-ctx MCP tools (ctx_*) are available or when a command output, file read or search would be large.
+        ---
+
+        # lean-ctx
+
+        lean-ctx shapes context before it reaches you: cached reads, focused search, a
+        symbol index and a call graph over the current repo. Two rules beat every
+        detail:
+
+        1. **Fewer round trips beat smaller outputs.** One call that answers the
+           question is cheaper than three small ones. Never add a call just to save a
+           few hundred tokens.
+        2. **Never wait by polling.** Do not loop `sleep` + status checks.
+
+        ## Loading the tools
+
+        These tools are deferred - the host lists them by name only. Load what the
+        task needs in **one** call:
+
+            ToolSearch(query="select:mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_callgraph")
+
+        The prefix is `mcp__plugin_claude-code-home-manager_lean-ctx__`. A bare
+        `mcp__lean-ctx__...` selector matches nothing.
+
+        ## Start here - no built-in equivalent
+
+        | You want to... | Call |
+        |---|---|
+        | Understand how something works (unknown location) | `ctx_compose(task)` - ranked files + inline source in one call; use it FIRST instead of search -> read -> read |
+        | Find the exact definition of a symbol | `ctx_search(action="symbol", name=...)` |
+        | Find code by meaning | `ctx_search(action="semantic", query=...)` |
+        | Who calls X / what X calls | `ctx_callgraph(action="callers"\|"callees", symbol=...)` |
+        | A file's shape without its body | `ctx_read(path, mode="signatures"\|"map")` |
+
+        These four are the reason to reach for lean-ctx at all. Everything below
+        overlaps a built-in and is a judgement call.
+
+        ## Overlaps a built-in
+
+        | You want to... | Call |
+        |---|---|
+        | Find a text/regex pattern | `ctx_search(pattern=..., path=...)`, or `Bash(rg ...)` for a known path |
+        | Read a file you will edit | `ctx_read(path, mode="anchored")`, then the native `Edit` tool |
+        | Read a range | `ctx_read(path, mode="lines:N-M")` |
+        | Re-check a file after editing | `ctx_read(path, mode="diff")` |
+        | List files / directory shape | `ctx_glob(pattern)` / `ctx_tree(path, depth)` |
+        | Remember across sessions | `ctx_session(action="finding"\|"decision"\|"task", value=...)`; durable project facts: `ctx_knowledge(action="remember", ...)` |
+
+        **Do not use `ctx_shell`.** Run commands with the native `Bash` tool. The
+        lean-ctx server is allowed whole-server here, so `ctx_shell` would bypass the
+        per-command `Bash(...)` permission gates - including the ones requiring
+        confirmation before a commit or a push. This deliberately contradicts the
+        server's own "Shell/bash -> ctx_shell" instruction.
+
+        Also do not read or search *through* a shell (`cat`, `sed -n`, `grep`): that
+        bypasses the read cache and the symbol index. Use `ctx_read` / `ctx_search`.
+
+        ## Tools not in the list
+
+        The exposed surface is the `standard` profile (~19 tools). A tool named above
+        that your list lacks is still callable:
+
+            ctx_call(name="ctx_knowledge", arguments={...})
+            ctx_call(name="ctx_discover_tools", arguments={"query": "..."})
+
+        ## Long-running commands
+
+        - Prefer the host's own background execution that notifies on completion:
+          `Bash` with `run_in_background`, or `Monitor`. Start it, then continue other
+          work or end the turn - you will be told when it finishes.
+        - Never `sleep` in a loop to poll for a result.
+
+        ## Truncated output
+
+        Compressed or archived output ends with a recovery handle. Fetch only the
+        slice you need - `ctx_expand(id, search=... | head=N | json_path=...)`, or
+        `ctx_read(path, raw=true)` for exact bytes. Do not re-run the command.
+
+        ## Configuration
+
+        This install is declarative, in `modules/programs/programs-ai-lean-ctx.nix` of
+        the nixos flake. Do **not** run `lean-ctx setup`, `lean-ctx bootstrap`,
+        `lean-ctx config set`, or any `curl | bash` installer: the config and this file
+        are read-only store symlinks, so those commands fail - and where they succeed
+        they leave untracked drift. Change the nix module and run `just switch-user`.
+      '';
+
+      # Previously unmanaged: `lean-ctx setup` wrote this file (0600) and, because
+      # ~/.claude/settings.json is a read-only store symlink it could not patch, left
+      # four orphaned PreToolUse scripts in ~/.claude/hooks/ that nothing invokes.
+      # `[setup] manage_hooks`/`auto_update_mcp` are the knobs that did that, so they
+      # are off here and the read-only symlink is the belt to that braces.
+      #
+      # Deliberately NOT registering lean-ctx's own `hook rewrite` as a PreToolUse
+      # hook, which is what those orphans were for: fed a real payload it answers
+      # `permissionDecision: "allow"` for *everything* - `git push`, `git commit`,
+      # `sudo nixos-rebuild switch`, `rm -rf` - and in Claude Code that is a full
+      # bypass of the permission system, voiding the guardrails rule about confirming
+      # before a commit or a push.
+      #
+      # Side effect to live with: `lean-ctx setup`, `bootstrap`, `config set`,
+      # `tools <profile>` and `doctor --fix` can no longer write their config. That is
+      # the trade - this file is edited here now. The daemon itself only reads it.
+      #
+      # `tool_profile` must agree with LEAN_CTX_TOOL_PROFILE in
+      # programs-ai-claude.nix: the file used to say "power" (79 tools) while the env
+      # var held Claude's surface at "standard" (17), so `lean-ctx tools show`
+      # reported a profile no agent was actually seeing.
+      #
+      # Telemetry ships `enabled = true, preference = "default_on"` and was actively
+      # sending (`lean-ctx telemetry status` reported "Sending: active", last sent the
+      # day this was written). `enabled = false` alone stops it; the preference is
+      # pinned alongside so an upgrade that re-reads consent cannot treat the absence
+      # of an explicit choice as "default_on" again.
+      #
+      # Mind the enum. `preference` accepts only `default_on`, `explicitly_enabled`
+      # and `explicitly_disabled` - the obvious `"off"` does not parse, and the
+      # failure mode is silent-but-total: lean-ctx answers "refusing invalid global
+      # config.toml" and falls back to built-in defaults for *everything*, so one typo
+      # here quietly reverts `tool_profile` and both `[setup]` keys too. Verify any
+      # edit against a scratch copy rather than the live file:
+      #
+      #   d=$(mktemp -d); mkdir -p "$d/lean-ctx"
+      #   cp ~/.config/lean-ctx/config.toml "$d/lean-ctx/"   # then edit the copy
+      #   XDG_CONFIG_HOME="$d" lean-ctx tools show
+      #
+      # `tools show` names where the profile came from, so a line reading
+      # `config.toml (tool_profile = "standard")` is proof the file was accepted;
+      # `default` means it was rejected.
+      xdg.configFile."lean-ctx/config.toml".text = ''
+        minimal_overhead = true
+        structure_first = true
+        journal_enabled = true
+        auto_capture = true
+        compression_level = "standard"
+        tool_profile = "standard"
+        shell_allowlist_extra = [ "prek" ]
+        behavior_nudges = "auto"
+
+        # preference is an enum: only default_on | explicitly_enabled |
+        # explicitly_disabled. A bad value voids this whole file - see the nix module.
+        [telemetry]
+        enabled = false
+        preference = "explicitly_disabled"
+
+        [setup]
+        auto_update_mcp = false
+        manage_hooks = false
+
+        [gain]
+        auto_publish = false
+      '';
+
       systemd.user.services.lean-ctx-daemon = {
         Unit = {
           Description = "lean-ctx IPC daemon";

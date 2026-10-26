@@ -13,7 +13,41 @@
           Rules:
           - Use a single dash (`-`) instead of emdash unless emdash is semantically significant to code
         '';
+        # The code-navigation section exists because the lean-ctx MCP tools are
+        # *deferred*: they are not in the loaded tool list and need a ToolSearch
+        # round trip before they are callable, while Read/Bash always are. A rules
+        # file is always in context, so this is the only place the selector can be
+        # stated where it will actually be seen. Because `mcpServers` below is
+        # delivered through home-manager's generated plugin (named
+        # `claude-code-home-manager`) rather than a bare user-level MCP config, the
+        # tool names are `mcp__plugin_<plugin>_<server>__<tool>`, NOT
+        # `mcp__<server>__<tool>`;
+        # getting that wrong makes the ToolSearch return nothing and the agent fall
+        # back to Bash, which is exactly what upstream's own SKILL.md used to do.
+        #
+        # Only the four tools with no built-in equivalent are promoted. The server's
+        # own instructions demand a wholesale Read/Grep/Glob/Bash -> ctx_* swap; that
+        # fight is unwinnable against pre-approved `Bash(rg:*)` and is not attempted
+        # here. The `pls`/`rg` lines stay true and stay last.
         tools = ''
+          # Code navigation
+
+          Before grepping or reading files to understand unfamiliar code, load the
+          lean-ctx tools in one call and start with `ctx_compose`:
+
+              ToolSearch(query="select:mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_callgraph")
+
+          These have no built-in equivalent:
+
+          - `ctx_compose(task)` - ranked files plus inline source for one question, in one call
+          - `ctx_search(action="symbol"|"semantic")` - exact definition, or search by meaning
+          - `ctx_callgraph` - callers and callees
+          - `ctx_read(mode="signatures"|"map")` - a file's shape without its body
+
+          Keep using `Bash` for running commands - not `ctx_shell`. The lean-ctx
+          server is allowed whole-server, so routing commands through `ctx_shell`
+          would sidestep the per-command `Bash(...)` permission gates.
+
           # CLI tools
           Rules:
           - You may execute read-only operations of CLI tools
@@ -21,7 +55,7 @@
           Some standard CLI tools have been replaced with alternatives:
 
           - `ls` is aliased to `pls` - run `pls -h` to see example usages
-          - Use ripgrep (`rg`) instead of `grep`
+          - Use ripgrep (`rg`) instead of `grep`, for known paths and one-off greps
         '';
         guardrails = ''
           - If you are executing a pre-approved plan and need to change direction in the middle of implementation, don't just implement it, show me a revised plan so I can approve it.
