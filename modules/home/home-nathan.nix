@@ -40,6 +40,7 @@
         top.config.flake.modules.homeManager.programs-ai-lean-ctx
         top.config.flake.modules.homeManager.programs-ai-pi-local
         top.config.flake.modules.homeManager.programs-ai-pi-notify
+        top.config.flake.modules.homeManager.programs-ai-unsloth
         top.config.flake.modules.homeManager.programs-aliases
         top.config.flake.modules.homeManager.programs-git
         top.config.flake.modules.homeManager.programs-godot

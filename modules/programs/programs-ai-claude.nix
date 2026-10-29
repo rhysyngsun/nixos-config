@@ -25,24 +25,54 @@
         # getting that wrong makes the ToolSearch return nothing and the agent fall
         # back to Bash, which is exactly what upstream's own SKILL.md used to do.
         #
-        # Only the four tools with no built-in equivalent are promoted. The server's
-        # own instructions demand a wholesale Read/Grep/Glob/Bash -> ctx_* swap; that
-        # fight is unwinnable against pre-approved `Bash(rg:*)` and is not attempted
-        # here. The `pls`/`rg` lines stay true and stay last.
+        # This used to say the Read/Grep/Glob/Bash -> ctx_* swap the server's own
+        # instructions demand was "unwinnable against pre-approved `Bash(rg:*)` and
+        # is not attempted here". It is attempted now, from the permission side
+        # rather than by asking: the deny-only PreToolUse guard in
+        # programs-ai-lean-ctx.nix blocks Grep, Glob and leading-token `rg`/`grep`/
+        # `find` inside a lean-ctx-indexed project. Prose alone never moved the
+        # needle, because a deferred tool loses to a free one no matter what a
+        # rules file says.
+        #
+        # So this section's job changed. It is no longer a plea; it is the recipe
+        # the agent needs *after* the guard denies something, which is why the
+        # selector and the exact replacement calls are both spelled out. Read is
+        # deliberately not gated, so `ctx_read` stays a suggestion.
+        #
+        # `ctx_search(action="regex")` and `ctx_glob` lead because they are the
+        # direct Grep/Glob substitutes. `ctx_callgraph` and `action="symbol"` need
+        # a tree-sitter grammar and do nothing in a nix repo, where every .nix file
+        # indexes as `Kind: text` - hence the explicit caveat rather than a blanket
+        # promise. The `pls`/`rg` lines stay true and stay last.
         tools = ''
           # Code navigation
 
-          Before grepping or reading files to understand unfamiliar code, load the
-          lean-ctx tools in one call and start with `ctx_compose`:
+          In a lean-ctx-indexed project, `Grep`, `Glob` and a bare `rg`/`grep`/`find`
+          are **blocked by a hook** - route code search through lean-ctx instead. The
+          tools are deferred, so load them in one call first:
 
-              ToolSearch(query="select:mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_callgraph")
+              ToolSearch(query="select:mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_glob,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read")
 
-          These have no built-in equivalent:
+          Then:
 
-          - `ctx_compose(task)` - ranked files plus inline source for one question, in one call
-          - `ctx_search(action="symbol"|"semantic")` - exact definition, or search by meaning
+          - `ctx_search(action="regex", pattern=..., path=...)` - replaces `Grep`. Ranked,
+            compressed matches with enclosing-symbol annotations, and it skips credential
+            files by boundary policy rather than reading them.
+          - `ctx_glob(pattern=...)` - replaces `Glob`.
+          - `ctx_compose(task=...)` - ranked files plus inline source for one question, in
+            one call. Best first move in unfamiliar code.
+          - `ctx_read(mode="signatures"|"map")` - a file's shape without its body.
+
+          Needs a tree-sitter grammar, so useless where files index as `Kind: text`
+          (every `.nix` file, for one - check `lean-ctx index status`):
+
+          - `ctx_search(action="symbol")` - exact definition
           - `ctx_callgraph` - callers and callees
-          - `ctx_read(mode="signatures"|"map")` - a file's shape without its body
+
+          Searching *outside* the project - `/nix/store`, a vendored source tree, `/etc` -
+          is not blocked; use `rg` there as normal. If you genuinely need raw search inside
+          the project (binary files, a regex `ctx_search` cannot express), append
+          ` # lean-ctx:bypass` to the shell command.
 
           Keep using `Bash` for running commands - not `ctx_shell`. The lean-ctx
           server is allowed whole-server, so routing commands through `ctx_shell`
@@ -87,20 +117,47 @@
           # stdio server schema has no `tools` field at all - a silent no-op,
           # which is why the profile stayed at `power` the whole time.
           #
-          # `power` exposes all 78 ctx_* tools. Stacked on toolhive-swe-prod,
-          # toolhive-swe-qa and witan, that pushes Claude Code past the point
-          # where it strips every MCP schema out of the tool list and leaves
-          # only tool *names* behind `ToolSearch`. A deferred tool costs an
-          # extra round trip and the built-in `Read` costs nothing, so the
-          # model never reached for one: zero ctx_* calls across ~60 sessions,
-          # against 3099 Bash. `standard` is 17 tools and keeps
-          # read/search/glob/tree/compose/patch - every tool the mapping in the
-          # server's own instructions actually names.
+          # `standard` is 18 tools and keeps read/search/glob/tree/compose/patch -
+          # every tool the mapping in the server's own instructions names. It is
+          # chosen to keep the ToolSearch result set legible, NOT to clear any
+          # threshold.
           #
-          # The env var rather than config.toml because `lean-ctx tools`
-          # reports the var as overriding the file, and
-          # ~/.config/lean-ctx/config.toml is unmanaged here - same reason
-          # programs-ai-pi-local.nix will not write to it.
+          # THE PROFILE SIZE DOES NOT AFFECT DEFERRAL. This comment used to claim
+          # that `power`'s 78 tools, stacked on toolhive-swe-prod/qa and witan,
+          # pushed Claude Code past a tool-count limit past which it strips MCP
+          # schemas and leaves only names behind `ToolSearch`. That is false, and
+          # shrinking the profile was therefore never going to change anything.
+          # Measured on claude-code 2.1.223, by asking a `-p` session to call a
+          # ctx_* tool without a prior ToolSearch:
+          #
+          #   every server (462 tools) ................. deferred
+          #   lean-ctx ALONE, --strict-mcp-config
+          #     (18 MCP tools, 51 total) ............... STILL deferred
+          #
+          # Deferral is unconditional for MCP tools. The only switch is
+          # `ENABLE_TOOL_SEARCH=false` (or the blunter
+          # `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1`, which also strips context
+          # management and structured outputs). Both work - and both are refused
+          # here, because turning deferral off inlines every MCP schema:
+          #
+          #   deferral on (today) ....................... ~47k prompt
+          #   deferral off, every server ................ ~287.6k prompt
+          #   deferral off, toolhive dropped ............ ~107.1k prompt
+          #   deferral off, lean-ctx only ............... ~62.4k prompt
+          #
+          # ~240k of context for tool schemas is not worth it. Note also that
+          # `deniedMcpServers` cannot be used to trim the surface per-repo: it has
+          # no effect on plugin-provided servers in any identifier form
+          # (`plugin:<plugin>:<server>`, bare name, or URL), which all leave every
+          # server connected.
+          #
+          # So the incentive is fixed from the other end instead - the deny-only
+          # PreToolUse guard in programs-ai-lean-ctx.nix. See that file.
+          #
+          # The env var rather than config.toml because `lean-ctx tools` reports
+          # the var as overriding the file. config.toml is managed too, by
+          # programs-ai-lean-ctx.nix, and its `tool_profile` must agree with the
+          # value set here.
           #
           # RE-DERIVE THE PROFILE CONTENTS WHEN lean-ctx IS BUMPED in
           # nvfetcher.toml:  LEAN_CTX_TOOL_PROFILE=standard lean-ctx tools

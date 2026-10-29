@@ -134,6 +134,205 @@
         rm -f ${lib.escapeShellArg "${dataDir}/daemon.pid"}
         exit 0
       '';
+
+      # Claude Code will not reach for a deferred tool on its own. Every MCP tool
+      # schema sits behind a `ToolSearch` round trip while `Grep`, `Glob` and the
+      # pre-approved `Bash(rg:*)`/`Bash(grep:*)` cost nothing, so the model always
+      # takes the free path - zero ctx_* calls against thousands of Bash ones.
+      #
+      # Deferral is NOT tool-count driven. Measured: with lean-ctx as the *only*
+      # MCP server (18 tools, 51 total) ctx_* were still deferred. The only switch
+      # is `ENABLE_TOOL_SEARCH=false`, which inlines every MCP schema and takes the
+      # prompt from 47k to 287.6k - rejected as too expensive. See the comment in
+      # programs-ai-claude.nix for the full measurement table.
+      #
+      # So the incentive is corrected from the other side: deny in-project code
+      # search and tell the model how to redo it through lean-ctx.
+      #
+      # CRITICAL CONTRAST with upstream's `lean-ctx hook rewrite`, refused below:
+      # this script only ever emits `deny`, never `allow`. A PreToolUse `allow` is
+      # a full bypass of the permission system, which is why the upstream hook -
+      # answering `allow` to `git push`, `rm -rf`, everything - cannot be used. A
+      # deny-only guard subtracts from what is permitted and can never add to it,
+      # so every gate in programs-ai-claude.nix still applies, including the
+      # guardrails rule about confirming before a commit or a push.
+      #
+      # Fails open everywhere: bad payload, missing daemon, unreadable index,
+      # subprocess timeout and unknown tool all exit 0 silently, which hands the
+      # call back to the normal permission flow rather than blocking it.
+      searchGuard =
+        pkgs.writers.writePython3Bin "lean-ctx-search-guard"
+          {
+            flakeIgnore = [
+              "E501" # the deny reason and the selector are single long lines
+            ];
+          }
+          ''
+            import json
+            import os
+            import re
+            import shlex
+            import subprocess
+            import sys
+
+            LEAN_CTX = "${pkgs.lean-ctx}/bin/lean-ctx"
+
+            # `find` earns its place: `find . -name '*.nix'` is a ctx_glob in disguise.
+            SEARCH_BINS = {
+                "rg", "grep", "egrep", "fgrep", "ag", "ack", "ack-grep",
+                "fd", "fdfind", "find",
+            }
+
+            BYPASS = "lean-ctx:bypass"
+
+            SELECTOR = (
+                "ToolSearch(query=\"select:"
+                "mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,"
+                "mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,"
+                "mcp__plugin_claude-code-home-manager_lean-ctx__ctx_glob,"
+                "mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read\")"
+            )
+
+            REASON = (
+                "Blocked: this project is lean-ctx-indexed, so route code search through it.\n\n"
+                "Load the tools once (they are deferred, so this round trip is required):\n"
+                f"{SELECTOR}\n\n"
+                "Then:\n"
+                "  - content search -> ctx_search(action=\"regex\", pattern=..., path=...)\n"
+                "  - files by glob  -> ctx_glob(pattern=...)\n"
+                "  - orienting in unfamiliar code -> ctx_compose(task=...) first\n\n"
+                "You get ranked, compressed matches with enclosing-symbol annotations, and "
+                "credential files are skipped by boundary policy rather than read.\n\n"
+                "Genuinely need raw search - a binary file, a non-indexed corpus, a regex "
+                f"ctx_search cannot express? Append ' # {BYPASS}' to the shell command "
+                "and it runs (still subject to the normal Bash permission rules)."
+            )
+
+            ENV_ASSIGN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
+            SPLIT_OPS = re.compile(r"\|\||&&|[|;&\n]")
+
+
+            def silent():
+                sys.exit(0)
+
+
+            def deny():
+                json.dump(
+                    {
+                        "hookSpecificOutput": {
+                            "hookEventName": "PreToolUse",
+                            "permissionDecision": "deny",
+                            "permissionDecisionReason": REASON,
+                        }
+                    },
+                    sys.stdout,
+                )
+                sys.exit(0)
+
+
+            def git_root(path):
+                p = os.path.abspath(path)
+                if not os.path.isdir(p):
+                    p = os.path.dirname(p)
+                while True:
+                    if os.path.exists(os.path.join(p, ".git")):
+                        return p
+                    parent = os.path.dirname(p)
+                    if parent == p:
+                        return None
+                    p = parent
+
+
+            def indexed(root):
+                # ~10ms, and deliberately daemon-independent: `index status` reads
+                # the on-disk index, so a stopped lean-ctx-daemon.service does not
+                # make this lie. That matters because the MCP servers Claude Code
+                # spawns autostart their own daemon anyway - the unit being down
+                # does not mean ctx_search is unavailable, so it must not suppress
+                # the guard. A non-zero exit or a timeout means "no opinion".
+                try:
+                    proc = subprocess.run(
+                        [LEAN_CTX, "index", "status", "--root", root],
+                        capture_output=True,
+                        text=True,
+                        timeout=3,
+                    )
+                except Exception:
+                    return False
+                for line in proc.stdout.splitlines():
+                    if "BM25 Index:" in line and "ready" in line:
+                        return True
+                return False
+
+
+            def leading_command(command):
+                # Only the FIRST command counts. `ls | grep foo` filters command output
+                # and is not code search; `git grep` and `nix search` are not our
+                # binaries either, and both are caught by comparing the leading token.
+                head = SPLIT_OPS.split(command, 1)[0]
+                try:
+                    toks = shlex.split(head)
+                except ValueError:
+                    return None, []
+                i = 0
+                while i < len(toks) and ENV_ASSIGN.match(toks[i]):
+                    i += 1
+                if i >= len(toks):
+                    return None, []
+                return os.path.basename(toks[i]), toks[i + 1:]
+
+
+            def path_args(args, cwd):
+                out = []
+                for a in args:
+                    if a.startswith("-"):
+                        continue
+                    cand = a if os.path.isabs(a) else os.path.join(cwd, a)
+                    if os.path.exists(cand):
+                        out.append(os.path.abspath(cand))
+                return out
+
+
+            def main():
+                if os.environ.get("LEAN_CTX_GUARD_OFF"):
+                    silent()
+
+                try:
+                    payload = json.loads(sys.stdin.read())
+                except Exception:
+                    silent()
+
+                tool = payload.get("tool_name") or ""
+                tool_input = payload.get("tool_input") or {}
+                cwd = payload.get("cwd") or os.getcwd()
+
+                if tool in ("Grep", "Glob"):
+                    target = tool_input.get("path") or cwd
+                    if not os.path.isabs(target):
+                        target = os.path.join(cwd, target)
+                    targets = [target]
+                elif tool == "Bash":
+                    command = tool_input.get("command") or ""
+                    if BYPASS in command:
+                        silent()
+                    binname, args = leading_command(command)
+                    if binname not in SEARCH_BINS:
+                        silent()
+                    # No path argument means the search runs against the cwd.
+                    targets = path_args(args, cwd) or [cwd]
+                else:
+                    silent()
+
+                for target in targets:
+                    root = git_root(target)
+                    if root is not None and indexed(root):
+                        deny()
+                silent()
+
+
+            main()
+          '';
+
     in
     {
       home.packages = [ pkgs.lean-ctx ];
@@ -241,6 +440,33 @@
         they leave untracked drift. Change the nix module and run `just switch-user`.
       '';
 
+      # The deny-only guard defined in the `let` above. `matcher` is a regex over
+      # the tool name, and Bash is in it on purpose: gating only Grep/Glob would
+      # push the model straight to `Bash(rg:*)`, which programs-ai-claude.nix
+      # pre-approves - the exact substitution that produced thousands of Bash
+      # calls and almost no ctx_* ones. The script narrows Bash itself, firing
+      # only when the *leading* token is a search binary aimed at an indexed
+      # project, so `git grep`, `nix search` and `... | grep` are untouched.
+      #
+      # `settings.hooks` lists concatenate across home-manager modules, so this
+      # coexists with the witan entries in programs-ai-claude-mit.nix rather than
+      # replacing them. PreToolUse had no other registrations when this landed.
+      programs.claude-code.settings.hooks.PreToolUse = [
+        {
+          matcher = "Grep|Glob|Bash";
+          hooks = [
+            {
+              type = "command";
+              command = "${searchGuard}/bin/lean-ctx-search-guard";
+              # Generous against a cold daemon; the script's own subprocess
+              # timeout is 3s and it fails open, so this bound is never the
+              # thing that decides an outcome.
+              timeout = 10;
+            }
+          ];
+        }
+      ];
+
       # Previously unmanaged: `lean-ctx setup` wrote this file (0600) and, because
       # ~/.claude/settings.json is a read-only store symlink it could not patch, left
       # four orphaned PreToolUse scripts in ~/.claude/hooks/ that nothing invokes.
@@ -252,7 +478,9 @@
       # `permissionDecision: "allow"` for *everything* - `git push`, `git commit`,
       # `sudo nixos-rebuild switch`, `rm -rf` - and in Claude Code that is a full
       # bypass of the permission system, voiding the guardrails rule about confirming
-      # before a commit or a push.
+      # before a commit or a push. Our own `searchGuard` above is the sanctioned
+      # alternative and is not a contradiction of this: it emits `deny` and never
+      # `allow`, so it can only ever subtract from what is permitted.
       #
       # Side effect to live with: `lean-ctx setup`, `bootstrap`, `config set`,
       # `tools <profile>` and `doctor --fix` can no longer write their config. That is

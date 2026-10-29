@@ -8,7 +8,10 @@
       ...
     }:
     {
-      home.packages = with pkgs; [ ungoogled-chromium ];
+      home.packages = with pkgs; [
+        google-chrome
+        ungoogled-chromium
+      ];
 
       programs = {
         firefox = {

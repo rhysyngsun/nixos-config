@@ -575,29 +575,6 @@
             # trust.json do. Declaring it here would make the store symlink
             # read-only and /zentui unable to save.
             "npm:pi-zentui@0.32.0"
-            # 3.25.2 is the current `latest`. Its eight `ce-*` skills carry
-            # Systematic's internal `ce:<name>` identifier in SKILL.md
-            # frontmatter, and pi's native skill loader validates names against
-            # /^[a-z0-9-]+$/ (core/skills.js:66) - so all eight are rejected at
-            # startup with a "name contains invalid characters" diagnostic.
-            # Upstream only translates that namespace in its Claude Code plugin
-            # build, never on the pi path, so this does not age out.
-            #
-            # Hiding them from the native loader costs nothing: the package's
-            # own pi extension (dist/pi.js) registers `systematic_skill`, which
-            # resolves every bundled skill by its internal name - `ce:plan`
-            # included, see dist/lib/bundled-names.d.ts - from these same files.
-            # The native loader is a redundant second path for all 32.
-            #
-            # The pattern is matched against a SKILL.md's parent directory as
-            # well as its own path (package-manager.js matchesAnyPattern), and
-            # with no positive pattern in the list every other skill stays
-            # enabled (applyPatterns, same file). It does not catch
-            # `report-bug-ce`, the only other skill with `ce` in its name.
-            {
-              source = "npm:@fro.bot/systematic@3.25.2";
-              skills = [ "!skills/ce-*" ];
-            }
             "npm:pi-inspector@0.1.3"
           ];
         };
@@ -747,25 +724,6 @@
           # or plan_mode_complete (finalization-request.ts:4), so this does not
           # satisfy a pending finalization request.
           "ask_user_question"
-
-          # Also not a lean-ctx tool - @fro.bot/systematic's. Registered
-          # unconditionally by its extension, but `defaultPlanTools` REPLACES
-          # plan mode's selection rather than extending it, so omitting it here
-          # is what made it vanish inside Plan mode: pi-plan-mode blocks any
-          # registered tool the policy does not name ("Plan mode blocks tool
-          # 'x' because it is not selected by the Plan policy", dist/index.ts
-          # :1512). It worked fine outside Plan mode the whole time.
-          #
-          # Clears the no-write bar stated below: `execute` resolves the named
-          # skill, reads its SKILL.md, samples a listing of the skill's own
-          # directory and returns that text. It writes nothing anywhere.
-          #
-          # Its sibling systematic_delegate is deliberately absent - it runs a
-          # whole child session, and plan mode does not inspect arguments for
-          # non-builtin tools, so naming it would hand that session plan mode's
-          # trust wholesale. See the permission block above for the other half
-          # of that reasoning.
-          "systematic_skill"
 
           # Registered by the extension itself, shelling out to the lean-ctx
           # CLI. Invisible to an MCP tools/list probe, but real.
