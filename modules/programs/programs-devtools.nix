@@ -17,6 +17,8 @@
           tealdeer
           libtree
           squirrel-sql
+          ripgrep
+          fd
 
           # http request cli's
           httpie

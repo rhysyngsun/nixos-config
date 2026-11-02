@@ -41,6 +41,10 @@
             ".direnv/"
             ".envrc"
             ".devenv/"
+            # lean-ctx drops per-repo overlay state next to the code it indexes
+            # (`.lean-ctx/overlays.json`); everything else it keeps centrally
+            # under `$XDG_DATA_HOME/lean-ctx`.
+            ".lean-ctx/"
           ];
 
           settings = {

@@ -1,4 +1,7 @@
-{ ... }: {
+{
+  ...
+}:
+{
   flake.modules.homeManager.programs-godot =
     { pkgs, ... }:
     {

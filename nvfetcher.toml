@@ -102,3 +102,9 @@ fetch.github = "dagger/dagger"
 [godot-48-beta]
 src.manual = "4.8-dev7"
 fetch.url = "https://godot-releases.nbg1.your-objectstorage.com/4.8-dev7/Godot_v4.8-dev7_linux.x86_64.zip"
+
+# Godlink MCP plugin server for Godot 4.x projects.
+# Uses npm package; the binary is actually `node` with a wrapper script,
+# so it's fetched and extracted via nodejs to run the MCP server over stdio.
+# Godot MCP integration is handled via Godlink plugin and pi-mcp-adapter,
+# not as a separate Nix package. This entry is deprecated.
