@@ -1,8 +1,11 @@
 { ... }:
 {
   flake.modules.homeManager.programs-ai-unsloth =
-    { pkgs-unstable, ... }:
+    { pkgs, pkgs-unstable, ... }:
     {
-      home.packages = [ pkgs-unstable.unsloth-desktop ];
+      home.packages = [
+        pkgs-unstable.unsloth-desktop
+        pkgs.ollama-cuda
+      ];
     };
 }

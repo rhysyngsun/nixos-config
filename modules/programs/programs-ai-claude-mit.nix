@@ -266,6 +266,127 @@
           ) prodWriteToolPrefixes
         );
 
+      # Plan mode is a separate gate from the permission rules above, and the
+      # whole-server allow does not reach it. Claude Code derives an MCP tool's
+      # read-only-ness solely from the server's own `readOnlyHint` annotation
+      # (`isReadOnly() = annotations?.readOnlyHint ?? false`), and in plan mode
+      # it refuses anything it cannot prove read-only - "Cannot call <tool>
+      # while in plan mode" - with allow rules filtered out of the decision
+      # entirely. `witan serve` ships no annotations at all: all 67 tools come
+      # over `tools/list` with `annotations: null`, so every witan call prompts
+      # while planning, which is exactly when the graph is worth reading.
+      #
+      # lean-ctx annotates 13 of its 18 and ToolHive's upstreams annotate too,
+      # so this is a witan-only gap. The durable fix is upstream - annotate the
+      # reads in agent-kit - and this hook is what stands in until then.
+      #
+      # Reads only. programs-ai-lean-ctx.nix refuses upstream's `lean-ctx hook
+      # rewrite` because it answers `allow` to everything, and that objection is
+      # to the blanket, not to the verb: a `permissionDecision: "allow"` keyed on
+      # a closed list of tools that cannot mutate anything is bounded in a way
+      # `allow` for `git push` is not. The 25 writes - memory_store, the task_*
+      # and workflow_* mutations, store_merge, claim_authorship, code_reindex -
+      # are deliberately absent and still stop a plan-mode session, including
+      # `workflow_session_start`.
+      #
+      # RE-DERIVE WHEN witan IS BUMPED in nvfetcher.toml. There is no offline
+      # list command; speak MCP to the server and read the names back:
+      #   witan serve  <- initialize, notifications/initialized, tools/list
+      # A tool added upstream and not added here is gated in plan mode only,
+      # which is the right direction to fail.
+      witanReadTools = [
+        "code_callers"
+        "code_cross_repo_impact"
+        "code_find_definition"
+        "code_find_references"
+        "code_impact"
+        "code_indexed_branches"
+        "code_indexed_repos"
+        "code_interface_consumers"
+        "code_interface_providers"
+        "code_interface_search"
+        "code_precise_edges"
+        "code_repo_dependencies"
+        "code_repo_symbols"
+        "code_search_symbol"
+        "code_store_health"
+        "code_symbols_in_file"
+        "code_unresolved_symbols"
+        "memory_contradictions"
+        "memory_for_contract"
+        "memory_get"
+        "memory_list"
+        "memory_neighbors"
+        "memory_search"
+        "memory_symbols"
+        "recall"
+        "symbol_context"
+        "topic_get"
+        "task_for_branch"
+        "task_get"
+        "task_list"
+        "task_ready"
+        "task_search"
+        "workflow_project_get"
+        "workflow_project_get_blockers"
+        "workflow_project_list"
+        "workflow_project_memories"
+        "workflow_project_search"
+        "workflow_project_status"
+        "workflow_session_list"
+        "workflow_trace_get"
+        "workflow_trace_list"
+        "workflow_trace_mine"
+      ];
+
+      # Fails open: a malformed payload, a name outside the list, anything
+      # unexpected exits 0 with no output and the call goes back to the normal
+      # permission flow. The hook can therefore only widen plan mode, and only
+      # for the names baked in above.
+      witanPlanModeReads =
+        pkgs.writers.writePython3Bin "witan-plan-mode-reads"
+          {
+            flakeIgnore = [
+              "E501" # the generated tool-name set is one long line
+            ];
+          }
+          ''
+            import json
+            import sys
+
+            PREFIX = "${mcpServerRule "witan"}__"
+
+            READ_TOOLS = frozenset({${lib.concatMapStringsSep ", " (t: "\"${t}\"") witanReadTools}})
+
+            REASON = (
+                "witan read tool - it cannot mutate the council graph, so plan mode "
+                "does not need to gate it."
+            )
+
+            try:
+                payload = json.load(sys.stdin)
+            except (ValueError, OSError):
+                sys.exit(0)
+
+            name = payload.get("tool_name") if isinstance(payload, dict) else None
+            if not isinstance(name, str) or not name.startswith(PREFIX):
+                sys.exit(0)
+
+            if name[len(PREFIX):] not in READ_TOOLS:
+                sys.exit(0)
+
+            json.dump(
+                {
+                    "hookSpecificOutput": {
+                        "hookEventName": "PreToolUse",
+                        "permissionDecision": "allow",
+                        "permissionDecisionReason": REASON,
+                    }
+                },
+                sys.stdout,
+            )
+          '';
+
       mkHook =
         {
           command,
@@ -449,6 +570,23 @@
               (mkHook {
                 command = "witan code reindex-hook";
                 matcher = "Edit|Write";
+              })
+            ];
+            # Narrowed to the witan server so the script is not spawned for
+            # anything else. The trailing `.*` is load-bearing: a hook matcher is
+            # a *full-match* regex against the tool name, not a prefix test, so
+            # the bare server prefix matches nothing and the hook never fires -
+            # silently, since a hook that does not run looks exactly like a hook
+            # that chose to stay quiet.
+            #
+            # `settings.hooks` lists concatenate across home-manager modules, so
+            # this coexists with the Grep|Glob|Bash guard registered in
+            # programs-ai-lean-ctx.nix.
+            PreToolUse = [
+              (mkHook {
+                command = "${witanPlanModeReads}/bin/witan-plan-mode-reads";
+                matcher = "${mcpServerRule "witan"}__.*";
+                timeout = 5;
               })
             ];
             Stop = [

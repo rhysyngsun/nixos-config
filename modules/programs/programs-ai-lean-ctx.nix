@@ -135,6 +135,70 @@
         exit 0
       '';
 
+      # The other half of the plan-mode story. Claude Code takes an MCP tool's
+      # read-only-ness from the server's `readOnlyHint` annotation and nothing
+      # else, and in plan mode it blocks whatever it cannot prove read-only -
+      # allow rules are filtered out of that decision, so the whole-server rule
+      # in programs-ai-claude.nix does not reach it.
+      #
+      # lean-ctx annotates most of its surface. Five tools come over
+      # `tools/list` with the hint absent: ctx_compose, ctx_graph, ctx_knowledge,
+      # ctx_session and ctx_call. Only the first two are reads, and ctx_compose
+      # is the one the rules file names as the best first move in unfamiliar
+      # code - blocked at exactly the moment it is most useful. ctx_knowledge
+      # and ctx_session write, and ctx_call dispatches whatever it is handed,
+      # so all three stay gated. ctx_execute, ctx_patch and ctx_shell declare
+      # `readOnlyHint = false` and are correctly gated already.
+      #
+      # This is the `allow` verb the comment below refuses for upstream's
+      # `hook rewrite`, and the distinction is the scope: two named tools that
+      # read, against a hook that answers `allow` to `git push`. A closed list
+      # that cannot mutate anything cannot void a guardrail.
+      #
+      # RE-DERIVE WHEN lean-ctx IS BUMPED in nvfetcher.toml: speak MCP to
+      # `lean-ctx mcp` under LEAN_CTX_TOOL_PROFILE=standard and look for tools
+      # whose `annotations` are null. A read that gains its annotation upstream
+      # makes its entry here redundant, not wrong.
+      #
+      # Fails open: bad payload or an unlisted name exits 0 with no output and
+      # the call returns to the normal permission flow.
+      planModeReads = pkgs.writers.writePython3Bin "lean-ctx-plan-mode-reads" { } ''
+        import json
+        import sys
+
+        PREFIX = "mcp__plugin_claude-code-home-manager_lean-ctx__"
+
+        READ_TOOLS = frozenset({"ctx_compose", "ctx_graph"})
+
+        REASON = (
+            "lean-ctx read tool that ships no readOnlyHint - it does not touch "
+            "the working tree, so plan mode does not need to gate it."
+        )
+
+        try:
+            payload = json.load(sys.stdin)
+        except (ValueError, OSError):
+            sys.exit(0)
+
+        name = payload.get("tool_name") if isinstance(payload, dict) else None
+        if not isinstance(name, str) or not name.startswith(PREFIX):
+            sys.exit(0)
+
+        if name[len(PREFIX):] not in READ_TOOLS:
+            sys.exit(0)
+
+        json.dump(
+            {
+                "hookSpecificOutput": {
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "allow",
+                    "permissionDecisionReason": REASON,
+                }
+            },
+            sys.stdout,
+        )
+      '';
+
       # Claude Code will not reach for a deferred tool on its own. Every MCP tool
       # schema sits behind a `ToolSearch` round trip while `Grep`, `Glob` and the
       # pre-approved `Bash(rg:*)`/`Bash(grep:*)` cost nothing, so the model always
@@ -462,6 +526,18 @@
               # timeout is 3s and it fails open, so this bound is never the
               # thing that decides an outcome.
               timeout = 10;
+            }
+          ];
+        }
+        {
+          # Full-match regex, hence the trailing `.*` - a bare prefix matches
+          # no tool name at all and the hook silently never runs.
+          matcher = "mcp__plugin_claude-code-home-manager_lean-ctx__.*";
+          hooks = [
+            {
+              type = "command";
+              command = "${planModeReads}/bin/lean-ctx-plan-mode-reads";
+              timeout = 5;
             }
           ];
         }
