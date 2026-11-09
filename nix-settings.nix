@@ -23,10 +23,12 @@ in
     allowed-users = [
       "root"
       "nathan"
+      "rhysyngsun"
     ];
     trusted-users = [
       "root"
       "nathan"
+      "rhysyngsun"
     ];
 
     builders-use-substitutes = true;
