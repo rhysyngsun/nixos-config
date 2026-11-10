@@ -79,13 +79,13 @@
   };
   lean-ctx = {
     pname = "lean-ctx";
-    version = "3.11.4";
+    version = "3.12.2";
     src = fetchurl {
-      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.11.4/lean-ctx-3.11.4-source.tar.gz";
-      sha256 = "sha256-QBvx37nB7SaOFCVxe3PjMJdo1UWOj6UqGuU8yaNZK54=";
+      url = "https://github.com/yvgude/lean-ctx/releases/download/v3.12.2/lean-ctx-3.12.2-source.tar.gz";
+      sha256 = "sha256-JgG3G8Kq4A/chLLGNHn6h+1XkTQq6Ypdp35JDmF+rEo=";
     };
     cargoLock."rust/Cargo.lock" = {
-      lockFile = ./. + "/sha256-QBvx37nB7SaOFCVxe3PjMJdo1UWOj6UqGuU8yaNZK54=/rust/Cargo.lock";
+      lockFile = ./. + "/sha256-JgG3G8Kq4A_chLLGNHn6h+1XkTQq6Ypdp35JDmF+rEo=/rust/Cargo.lock";
       outputHashes = {
 
       };
@@ -107,17 +107,17 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "a78fc93e3260f5564ca425d8c24321fbe807c2ba";
+    version = "2cb12c20215fd2b3e2bef8eda81ac789cea78b6a";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "a78fc93e3260f5564ca425d8c24321fbe807c2ba";
+      rev = "2cb12c20215fd2b3e2bef8eda81ac789cea78b6a";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-34k++9fv0eRjp+g4TkA43+J0kTnWfcrafeZrYEcQ7EI=";
+      sha256 = "sha256-hGGOfsUonY+I34Qrok9U+Wzktv3i4TuInPjC/L8jBRA=";
     };
-    date = "2026-11-03";
+    date = "2026-11-10";
   };
   omnigraph = {
     pname = "omnigraph";
