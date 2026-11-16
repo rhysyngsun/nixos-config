@@ -43,7 +43,7 @@
           coreutils-full
           less
 
-          keybase-gui
+          # keybase-gui
 
           gimp-with-plugins
 

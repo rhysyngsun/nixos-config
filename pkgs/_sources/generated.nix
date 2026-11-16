@@ -87,7 +87,7 @@
     cargoLock."rust/Cargo.lock" = {
       lockFile = ./. + "/sha256-JgG3G8Kq4A_chLLGNHn6h+1XkTQq6Ypdp35JDmF+rEo=/rust/Cargo.lock";
       outputHashes = {
-
+        
       };
     };
   };
@@ -107,17 +107,17 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "2cb12c20215fd2b3e2bef8eda81ac789cea78b6a";
+    version = "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "2cb12c20215fd2b3e2bef8eda81ac789cea78b6a";
+      rev = "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-hGGOfsUonY+I34Qrok9U+Wzktv3i4TuInPjC/L8jBRA=";
+      sha256 = "sha256-NwOAvUw+F+JnfUQxJe9ZJpqhf21BJYBve37Az1T7tXI=";
     };
-    date = "2026-11-10";
+    date = "2026-11-12";
   };
   omnigraph = {
     pname = "omnigraph";
