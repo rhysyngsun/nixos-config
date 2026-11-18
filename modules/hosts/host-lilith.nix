@@ -18,6 +18,7 @@
 
         top.config.flake.modules.nixos.services-swap
         top.config.flake.modules.nixos.services-auto-upgrade
+        top.config.flake.modules.nixos.services-networking
 
         ../../hosts/lilith/open-learning
         ../../hosts/lilith/hardware-configuration.nix
@@ -98,6 +99,7 @@
         nvtopPackages.full
 
         dig
+        iw
 
         # Theme
         (catppuccin-kde.override {
@@ -116,13 +118,18 @@
         hostName = "lilith";
         networkmanager = {
           enable = true;
+          # WARN records nothing but unrelated p2p-dev noise, which left
+          # wpa_supplicant as the only usable source during wifi outages.
+          logLevel = "INFO";
+          # DHCP-provided resolvers win; these are only a fallback for
+          # networks that hand out nothing usable. MIT's split-horizon names
+          # need MIT's resolvers, and MIT GUEST's captive portal needs its
+          # DNS interception.
+          appendNameservers = [
+            "8.8.8.8"
+            "8.8.4.4"
+          ];
         };
-        nameservers = [
-          "8.8.8.8"
-          "8.8.4.4"
-          "2001:4860:4860::8888"
-          "2001:4860:4860::8844"
-        ];
       };
 
       boot.loader.systemd-boot.enable = true;
@@ -210,7 +217,19 @@
       };
 
       virtualisation = {
-        docker.enable = true;
+        docker = {
+          enable = true;
+          # Generated bridges default to 172.17/12 plus 192.168/16; the
+          # latter collides with ordinary home and hotel routers. 172.16/12
+          # at /24 leaves 4096 networks and touches neither 192.168/16 nor
+          # the 10/8 MIT hands out.
+          daemon.settings.default-address-pools = [
+            {
+              base = "172.16.0.0/12";
+              size = 24;
+            }
+          ];
+        };
       };
 
       programs.dconf.enable = true;

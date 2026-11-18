@@ -87,7 +87,7 @@
     cargoLock."rust/Cargo.lock" = {
       lockFile = ./. + "/sha256-JgG3G8Kq4A_chLLGNHn6h+1XkTQq6Ypdp35JDmF+rEo=/rust/Cargo.lock";
       outputHashes = {
-        
+
       };
     };
   };
