@@ -17,6 +17,13 @@
         # instead of just being the new text. Each bullet names the behavior
         # rather than asking for "concise", because "concise" is advice and
         # these are checkable.
+        #
+        # The deliverable bullet is the same instinct pointed at output that
+        # leaves the session. Trimming a standup draft is the single most
+        # repeated correction in the transcript history - always the same
+        # correction, always an announcements section nobody asked for - and a
+        # bullet about reply length never reached it, because a standup post is
+        # not a reply.
         style = ''
           Rules:
           - Use a single dash (`-`) instead of emdash unless emdash is semantically
@@ -37,6 +44,9 @@
             disclaimers.
           - Report outcomes plainly. "Three tests failed" is a sentence, not an
             apology.
+          - A deliverable contains only what I asked for. No extra sections, no
+            announcement block in a standup, nothing added to a PR body or a
+            comment because it seemed useful while you were in there.
 
           # Writing prose that ships
 
@@ -134,7 +144,153 @@
         k8s = ''
           - When using kubectl **always** explicitly specify the context in commands, don't depend on the default context as that can change out from under you.
         '';
+        # Every line here is a postmortem of a script written in this
+        # transcript history, not general shell advice: a diagnostic that
+        # hardcoded a /tmp log path and read back a pre-reboot log as if it
+        # were fresh, a guard whose pipeline exited 0 because nothing matched,
+        # and a jq call that parsed a filename beginning with `-` as a flag.
+        # Generic "write careful shell" guidance is unfalsifiable; each of
+        # these names a specific thing to check.
+        shell = ''
+          # Scripts and shell
+
+          - Every script you write starts with `set -euo pipefail`.
+          - No hardcoded `/tmp` paths. Use `mktemp -d`, or the session scratchpad
+            directory when one is provided. A fixed path under `/tmp` survives a
+            reboot, so the next run reads a stale file and believes it is fresh.
+          - Put anything beyond a single pipeline in a script file rather than
+            inlining it, so it can be read and re-run.
+          - Pass filenames as `-- <name>` or `./<name>` so one beginning with `-`
+            is not parsed as a flag.
+          - A pipeline that exits 0 because nothing matched is not a pipeline that
+            passed. Distinguish the two explicitly in any guard, and watch for
+            SIGPIPE closing a pipe early under `pipefail`.
+          - Run the script yourself once before calling it done. If it writes or
+            deletes anything, give it a `--dry-run` and run that first.
+        '';
+        # The gitleaks migration is the case this exists for: a hook that
+        # reported green on every commit while matching nothing at all, and a
+        # later exclude pattern that skipped the one directory holding real
+        # credentials. Both passed CI. Neither was caught by reading the diff -
+        # only by making the check fail on purpose.
+        ci = ''
+          # Hooks, guards and CI checks
+
+          - After adding or changing a hook, lint rule, guard or test, prove it
+            fires: introduce a deliberate violation, run it, confirm it fails,
+            then revert. A green run on an unchanged tree is not evidence the
+            check works - it is equally consistent with the check matching
+            nothing.
+          - Never add an exclude or ignore pattern to a secrets scanner or a
+            linter without telling me which paths it now skips and why.
+        '';
       };
+
+      # Advisory, never blocking. Buggy agent-authored shell is the single
+      # largest friction category in this machine's transcript history, and the
+      # bugs are the kind a linter names: unquoted expansions, a missing
+      # `set -euo pipefail`, a `cd` whose failure goes unchecked.
+      #
+      # PostToolUse rather than PreToolUse on purpose - the file has to exist to
+      # be linted, and the point is to put the findings in front of the model
+      # right after it writes, not to veto the write.
+      #
+      # `additionalContext` is the advisory channel. The exit-2 path also
+      # reaches the model but frames it as the tool call having failed, which is
+      # wrong for a style warning on a file that was written exactly as
+      # intended.
+      #
+      # zsh is deliberately out of scope: shellcheck cannot parse it and reports
+      # the whole file as a syntax error, which is noise rather than a finding.
+      # Hence a `.sh`/`.bash` extension or an explicit sh/bash shebang, nothing
+      # looser.
+      shellcheckHook =
+        pkgs.writers.writePython3Bin "claude-shellcheck-hook"
+          {
+            flakeIgnore = [
+              "E501" # the advisory text is a single long line
+            ];
+          }
+          ''
+            import json
+            import os
+            import subprocess
+            import sys
+
+            SHELLCHECK = "${pkgs.shellcheck}/bin/shellcheck"
+
+            EXTENSIONS = (".sh", ".bash")
+            SHEBANGS = ("sh", "bash", "dash", "ksh")
+
+
+            def silent():
+                sys.exit(0)
+
+
+            def is_shell(path):
+                if path.endswith(EXTENSIONS):
+                    return True
+                try:
+                    with open(path, "r", encoding="utf-8", errors="replace") as fh:
+                        first = fh.readline()
+                except OSError:
+                    return False
+                if not first.startswith("#!"):
+                    return False
+                # `#!/usr/bin/env bash` and `#!/bin/sh -e` both reduce to the
+                # interpreter basename once env and flags are dropped.
+                toks = [t for t in first[2:].split() if not t.startswith("-")]
+                if not toks:
+                    return False
+                name = os.path.basename(toks[0])
+                if name == "env" and len(toks) > 1:
+                    name = os.path.basename(toks[1])
+                return name in SHEBANGS
+
+
+            def main():
+                try:
+                    payload = json.loads(sys.stdin.read())
+                except Exception:
+                    silent()
+
+                path = (payload.get("tool_input") or {}).get("file_path") or ""
+                if not path or not os.path.isfile(path):
+                    silent()
+                if not is_shell(path):
+                    silent()
+
+                try:
+                    proc = subprocess.run(
+                        [SHELLCHECK, "--format=gcc", "--", path],
+                        capture_output=True,
+                        text=True,
+                        timeout=15,
+                    )
+                except Exception:
+                    silent()
+
+                findings = proc.stdout.strip()
+                if proc.returncode == 0 or not findings:
+                    silent()
+
+                json.dump(
+                    {
+                        "hookSpecificOutput": {
+                            "hookEventName": "PostToolUse",
+                            "additionalContext": (
+                                "shellcheck on " + path + ":\n" + findings + "\n\n"
+                                "Fix these before presenting the script as done, or say why each one does not apply."
+                            ),
+                        }
+                    },
+                    sys.stdout,
+                )
+                sys.exit(0)
+
+
+            main()
+          '';
     in
     {
       programs.git.ignores = [ ".claude/" ];
@@ -205,6 +361,28 @@
           theme = "auto";
           verbose = true;
 
+          # `settings.hooks` lists concatenate across home-manager modules, so
+          # this sits alongside the witan reindex entry from
+          # programs-ai-claude-mit.nix rather than replacing it - both fire on
+          # a write, in list order.
+          hooks.PostToolUse = [
+            {
+              # Full-match regex over the tool name, so no trailing `.*` is
+              # needed for these three - but a bare prefix would match nothing.
+              matcher = "Write|Edit|MultiEdit";
+              hooks = [
+                {
+                  type = "command";
+                  command = "${shellcheckHook}/bin/claude-shellcheck-hook";
+                  # shellcheck's own run is bounded at 15s inside the script,
+                  # and it exits silently on timeout, so this never decides an
+                  # outcome.
+                  timeout = 20;
+                }
+              ];
+            }
+          ];
+
           # Derived from the same discovery as `skills` above, so a skill that
           # grows a scripts/ directory or a cache directory is covered by the
           # next repin with no edit here.
@@ -234,6 +412,9 @@
             "Bash(grep:*)"
             "Bash(sed:*)"
             "Bash(gh issue:*)"
+            # Needed by the `restack` skill in programs-ai-claude-git.nix,
+            # which cannot enumerate a stack without `gh pr list`.
+            "Bash(gh pr:*)"
             "Bash(gh repo:*)"
             "Bash(gh run:*)"
             "Bash(gh stack:*)"
