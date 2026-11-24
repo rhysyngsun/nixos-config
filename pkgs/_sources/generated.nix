@@ -149,15 +149,15 @@
   };
   rhysyngsun-agent-skills = {
     pname = "rhysyngsun-agent-skills";
-    version = "c583eac2654a504a8cfc9250043940784fca1bc4";
+    version = "88fe29b7b592bb6df56a2bfbaed27e24504c3282";
     src = fetchgit {
       url = "https://github.com/rhysyngsun/agent-skills.git";
-      rev = "c583eac2654a504a8cfc9250043940784fca1bc4";
+      rev = "88fe29b7b592bb6df56a2bfbaed27e24504c3282";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-o0AiadunqVZXANsHnn9yy4NzCqmbcz8nA1JM96C24LQ=";
+      sha256 = "sha256-xCFEJ1QQv4Fu+KGOhph5Oxdup9LFVpqUBaItQwHR6UM=";
     };
     date = "2026-11-24";
   };
