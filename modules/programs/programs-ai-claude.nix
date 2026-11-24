@@ -8,6 +8,21 @@
       ...
     }:
     let
+      # Rule bodies and skills live in github.com/rhysyngsun/agent-skills,
+      # pinned by nvfetcher. Moving the markdown out buys it markdownlint, the
+      # Agent Skills spec validator and reuse by agents that are not this
+      # flake; the rationale for each rule stays here, next to the hook or
+      # permission it exists because of.
+      skillsSrc = pkgs.localSources.rhysyngsun-agent-skills.src;
+
+      # `builtins.readFile`, not the path. `rules` is typed
+      # `attrsOf (either lines path)` and home-manager's writer is
+      # `if lib.isPath content then { source = content; } else { text = content; }`
+      # (claude-code.nix, mkSourceEntry). A store-path *string* is not a Nix
+      # path, so `either` would resolve it as `lines` and write a rule file
+      # whose entire contents are its own store path.
+      ruleFile = name: builtins.readFile "${skillsSrc}/rules/${name}.md";
+
       rules = {
         # Tone and length guidance, not just the emdash rule it started as. The
         # default failure modes are all additive: a paragraph recapping a diff
@@ -24,42 +39,8 @@
         # correction, always an announcements section nobody asked for - and a
         # bullet about reply length never reached it, because a standup post is
         # not a reply.
-        style = ''
-          Rules:
-          - Use a single dash (`-`) instead of emdash unless emdash is semantically
-            significant to code
+        style = ruleFile "style";
 
-          # Writing to me
-
-          - Answer at the length the question deserves. A one-line change gets a
-            one-line reply. Do not restate a diff I can read, and do not append a
-            "what I did" summary to work that is already visible in the tool output
-            above it.
-          - No praise openers, no congratulating me on a question, no "you're
-            absolutely right". Lead with the answer.
-          - Do not explain things I did not ask about. If I want background I will
-            ask for it.
-          - State a caveat once, where it is load-bearing. Do not repeat a risk I
-            have already acknowledged, and do not pad a correct answer with
-            disclaimers.
-          - Report outcomes plainly. "Three tests failed" is a sentence, not an
-            apology.
-          - A deliverable contains only what I asked for. No extra sections, no
-            announcement block in a standup, nothing added to a PR body or a
-            comment because it seemed useful while you were in there.
-
-          # Writing prose that ships
-
-          When you edit text that gets read on its own - a PR description, an issue
-          body, a GitHub comment, a code comment, a docstring, a commit message, a
-          README - the result must read as if it had always said that.
-
-          - No references to the previous version: no "updated to", "changed from",
-            "previously this said", "now also handles", "as mentioned above".
-          - No narrating your own edit inside the artifact.
-          - Edit history belongs in git and the PR timeline, not in the text.
-          - If what you changed is not obvious from the diff, tell me in chat.
-        '';
         # The code-navigation section exists because the lean-ctx MCP tools are
         # *deferred*: they are not in the loaded tool list and need a ToolSearch
         # round trip before they are callable, while Read/Bash always are. A rules
@@ -91,59 +72,11 @@
         # a tree-sitter grammar and do nothing in a nix repo, where every .nix file
         # indexes as `Kind: text` - hence the explicit caveat rather than a blanket
         # promise. The `pls`/`rg` lines stay true and stay last.
-        tools = ''
-          # Code navigation
+        tools = ruleFile "tools";
 
-          In a lean-ctx-indexed project, `Grep`, `Glob` and a bare `rg`/`grep`/`find`
-          are **blocked by a hook** - route code search through lean-ctx instead. The
-          tools are deferred, so load them in one call first:
+        guardrails = ruleFile "guardrails";
+        k8s = ruleFile "k8s";
 
-              ToolSearch(query="select:mcp__plugin_claude-code-home-manager_lean-ctx__ctx_compose,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_search,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_glob,mcp__plugin_claude-code-home-manager_lean-ctx__ctx_read")
-
-          Then:
-
-          - `ctx_search(action="regex", pattern=..., path=...)` - replaces `Grep`. Ranked,
-            compressed matches with enclosing-symbol annotations, and it skips credential
-            files by boundary policy rather than reading them.
-          - `ctx_glob(pattern=...)` - replaces `Glob`.
-          - `ctx_compose(task=...)` - ranked files plus inline source for one question, in
-            one call. Best first move in unfamiliar code.
-          - `ctx_read(mode="signatures"|"map")` - a file's shape without its body.
-
-          Needs a tree-sitter grammar, so useless where files index as `Kind: text`
-          (every `.nix` file, for one - check `lean-ctx index status`):
-
-          - `ctx_search(action="symbol")` - exact definition
-          - `ctx_callgraph` - callers and callees
-
-          Searching *outside* the project - `/nix/store`, a vendored source tree, `/etc` -
-          is not blocked; use `rg` there as normal. If you genuinely need raw search inside
-          the project (binary files, a regex `ctx_search` cannot express), append
-          ` # lean-ctx:bypass` to the shell command.
-
-          Keep using `Bash` for running commands - not `ctx_shell`. The lean-ctx
-          server is allowed whole-server, so routing commands through `ctx_shell`
-          would sidestep the per-command `Bash(...)` permission gates.
-
-          # CLI tools
-          Rules:
-          - You may execute read-only operations of CLI tools
-
-          Some standard CLI tools have been replaced with alternatives:
-
-          - `ls` is aliased to `pls` - run `pls -h` to see example usages
-          - Use ripgrep (`rg`) instead of `grep`, for known paths and one-off greps
-        '';
-        guardrails = ''
-          - If you are executing a pre-approved plan and need to change direction in the middle of implementation, don't just implement it, show me a revised plan so I can approve it.
-          - If you do not have connection information for a database or service ask for the credentials do not connect to one you find.
-          - Ask for confirmation before commiting code or pushing.
-          - Ask for confirmation before creating issues, commenting, or anything else that writes to github.
-          - Do not expand the scope of a requested change beyond what has been approved. Set findings aside and ask for approval.
-        '';
-        k8s = ''
-          - When using kubectl **always** explicitly specify the context in commands, don't depend on the default context as that can change out from under you.
-        '';
         # Every line here is a postmortem of a script written in this
         # transcript history, not general shell advice: a diagnostic that
         # hardcoded a /tmp log path and read back a pre-reboot log as if it
@@ -151,39 +84,14 @@
         # and a jq call that parsed a filename beginning with `-` as a flag.
         # Generic "write careful shell" guidance is unfalsifiable; each of
         # these names a specific thing to check.
-        shell = ''
-          # Scripts and shell
+        shell = ruleFile "shell";
 
-          - Every script you write starts with `set -euo pipefail`.
-          - No hardcoded `/tmp` paths. Use `mktemp -d`, or the session scratchpad
-            directory when one is provided. A fixed path under `/tmp` survives a
-            reboot, so the next run reads a stale file and believes it is fresh.
-          - Put anything beyond a single pipeline in a script file rather than
-            inlining it, so it can be read and re-run.
-          - Pass filenames as `-- <name>` or `./<name>` so one beginning with `-`
-            is not parsed as a flag.
-          - A pipeline that exits 0 because nothing matched is not a pipeline that
-            passed. Distinguish the two explicitly in any guard, and watch for
-            SIGPIPE closing a pipe early under `pipefail`.
-          - Run the script yourself once before calling it done. If it writes or
-            deletes anything, give it a `--dry-run` and run that first.
-        '';
         # The gitleaks migration is the case this exists for: a hook that
         # reported green on every commit while matching nothing at all, and a
         # later exclude pattern that skipped the one directory holding real
         # credentials. Both passed CI. Neither was caught by reading the diff -
         # only by making the check fail on purpose.
-        ci = ''
-          # Hooks, guards and CI checks
-
-          - After adding or changing a hook, lint rule, guard or test, prove it
-            fires: introduce a deliberate violation, run it, confirm it fails,
-            then revert. A green run on an unchanged tree is not evidence the
-            check works - it is equally consistent with the check matching
-            nothing.
-          - Never add an exclude or ignore pattern to a secrets scanner or a
-            linter without telling me which paths it now skips and why.
-        '';
+        ci = ruleFile "ci";
       };
 
       # Advisory, never blocking. Buggy agent-authored shell is the single
@@ -412,8 +320,8 @@
             "Bash(grep:*)"
             "Bash(sed:*)"
             "Bash(gh issue:*)"
-            # Needed by the `stacked-prs` skill in programs-ai-claude-git.nix,
-            # which cannot enumerate a stack without `gh pr list`.
+            # Needed by the `stacked-prs` skill, which cannot enumerate a
+            # stack without `gh pr list`.
             "Bash(gh pr:*)"
             "Bash(gh repo:*)"
             "Bash(gh run:*)"
@@ -435,8 +343,10 @@
             # useless on its own: the skills are home-manager symlinks into the
             # store, and an allow rule only applies when the requested path and
             # every path it resolves to match, so the rule has to be emitted
-            # together with the store-path hops - which need the agent-kit
-            # `src` that only that module has.
+            # together with the store-path hops - which need a pinned `src`
+            # this module does not have. Each module owning a skill checkout
+            # adds its own hop: agent-kit there, agent-skills in
+            # programs-ai-claude-personal.nix.
           ]
           ++ (builtins.map (subcmd: "Bash(git ${subcmd}:*)") [
             "add"

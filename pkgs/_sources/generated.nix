@@ -107,17 +107,17 @@
   };
   odl-agent-kit = {
     pname = "odl-agent-kit";
-    version = "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243";
+    version = "56c162775c56e5c749fe3d2d6ee477c780f42dca";
     src = fetchgit {
       url = "https://github.com/mitodl/agent-kit.git";
-      rev = "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243";
+      rev = "56c162775c56e5c749fe3d2d6ee477c780f42dca";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-NwOAvUw+F+JnfUQxJe9ZJpqhf21BJYBve37Az1T7tXI=";
+      sha256 = "sha256-QZGnhOw725hhobr3ztTaXwfWClya5na0zjpH3RZvtjQ=";
     };
-    date = "2026-11-12";
+    date = "2026-11-24";
   };
   omnigraph = {
     pname = "omnigraph";
@@ -146,6 +146,20 @@
       sha256 = "sha256-gHq7RL/Y+nDwG07zjmG3QDlEoGlEhjsAK3+TaWwrfIk=";
     };
     date = "2026-09-30";
+  };
+  rhysyngsun-agent-skills = {
+    pname = "rhysyngsun-agent-skills";
+    version = "c583eac2654a504a8cfc9250043940784fca1bc4";
+    src = fetchgit {
+      url = "https://github.com/rhysyngsun/agent-skills.git";
+      rev = "c583eac2654a504a8cfc9250043940784fca1bc4";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-o0AiadunqVZXANsHnn9yy4NzCqmbcz8nA1JM96C24LQ=";
+    };
+    date = "2026-11-24";
   };
   tree-sitter-noy = {
     pname = "tree-sitter-noy";

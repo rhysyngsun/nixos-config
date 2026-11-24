@@ -51,8 +51,14 @@ fetch.git = "https://github.com/apple/tree-sitter-pkl"
 
 [odl-agent-kit]
 src.git = "https://github.com/mitodl/agent-kit.git"
-src.branch = "feat/plan-workflow-skills-followup"
+# src.branch = "feat/plan-workflow-skills-followup"
 fetch.git = "https://github.com/mitodl/agent-kit.git"
+
+# Personal skills and the always-on rule files, read straight out of the
+# checkout by programs-ai-claude-personal.nix and programs-ai-claude.nix.
+[rhysyngsun-agent-skills]
+src.git = "https://github.com/rhysyngsun/agent-skills.git"
+fetch.git = "https://github.com/rhysyngsun/agent-skills.git"
 
 # Pinned manually, not tracked: witan shells out to this binary and expects the
 # exact release named by `_OMNIGRAPH_VERSION` in

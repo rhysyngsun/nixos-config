@@ -170,7 +170,7 @@
     },
     "odl-agent-kit": {
         "cargoLock": null,
-        "date": "2026-11-12",
+        "date": "2026-11-24",
         "extract": null,
         "name": "odl-agent-kit",
         "passthru": null,
@@ -180,13 +180,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243",
-            "sha256": "sha256-NwOAvUw+F+JnfUQxJe9ZJpqhf21BJYBve37Az1T7tXI=",
+            "rev": "56c162775c56e5c749fe3d2d6ee477c780f42dca",
+            "sha256": "sha256-QZGnhOw725hhobr3ztTaXwfWClya5na0zjpH3RZvtjQ=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://github.com/mitodl/agent-kit.git"
         },
-        "version": "02e50bb78c62e3a1a29ac99c5b196ff5d59d2243"
+        "version": "56c162775c56e5c749fe3d2d6ee477c780f42dca"
     },
     "omnigraph": {
         "cargoLock": null,
@@ -238,6 +238,26 @@
             "type": "github"
         },
         "version": "20bfa7232262f36da45470170e7a954e487f4ac6"
+    },
+    "rhysyngsun-agent-skills": {
+        "cargoLock": null,
+        "date": "2026-11-24",
+        "extract": null,
+        "name": "rhysyngsun-agent-skills",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "c583eac2654a504a8cfc9250043940784fca1bc4",
+            "sha256": "sha256-o0AiadunqVZXANsHnn9yy4NzCqmbcz8nA1JM96C24LQ=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/rhysyngsun/agent-skills.git"
+        },
+        "version": "c583eac2654a504a8cfc9250043940784fca1bc4"
     },
     "tree-sitter-noy": {
         "cargoLock": null,
