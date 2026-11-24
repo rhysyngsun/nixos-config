@@ -19,6 +19,7 @@
         top.config.flake.modules.nixos.services-swap
         top.config.flake.modules.nixos.services-auto-upgrade
         top.config.flake.modules.nixos.services-networking
+        top.config.flake.modules.nixos.services-wifi-diagnostics
 
         ../../hosts/lilith/open-learning
         ../../hosts/lilith/hardware-configuration.nix
