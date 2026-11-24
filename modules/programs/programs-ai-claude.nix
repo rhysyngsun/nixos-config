@@ -412,11 +412,15 @@
             "Bash(grep:*)"
             "Bash(sed:*)"
             "Bash(gh issue:*)"
-            # Needed by the `restack` skill in programs-ai-claude-git.nix,
+            # Needed by the `stacked-prs` skill in programs-ai-claude-git.nix,
             # which cannot enumerate a stack without `gh pr list`.
             "Bash(gh pr:*)"
             "Bash(gh repo:*)"
             "Bash(gh run:*)"
+            # Same skill. `gh stack` is the github/gh-stack extension, the
+            # preferred path there for creating, rebasing and linking a stack
+            # when it is installed - it is not declared in this flake, so the
+            # skill probes for it.
             "Bash(gh stack:*)"
             "Bash(pre-commit:*)"
             "Bash(prek:*)"
