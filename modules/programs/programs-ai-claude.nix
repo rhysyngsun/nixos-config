@@ -291,9 +291,6 @@
             }
           ];
 
-          # Derived from the same discovery as `skills` above, so a skill that
-          # grows a scripts/ directory or a cache directory is covered by the
-          # next repin with no edit here.
           permissions.allow = [
             # Whole-server allow for the lean-ctx MCP server declared above.
             # The bare `mcp__<server>` form is the whole-server rule, and the
